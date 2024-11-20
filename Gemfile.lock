@@ -206,7 +206,6 @@ GEM
     marcel (1.0.2)
     method_source (1.1.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.7)
     minitest (5.18.0)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
@@ -221,9 +220,6 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.5)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.16.5-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.16.5-x86_64-linux)
@@ -242,6 +238,8 @@ GEM
     public_suffix (5.0.1)
     puma (6.4.2)
       nio4r (~> 2.0)
+    pundit (2.4.0)
+      activesupport (>= 3.0.0)
     racc (1.8.0)
     rack (2.2.9)
     rack-proxy (0.7.6)
@@ -374,7 +372,6 @@ GEM
     zeitwerk (2.6.15)
 
 PLATFORMS
-  ruby
   x86_64-darwin-21
   x86_64-darwin-22
   x86_64-darwin-23
@@ -402,6 +399,7 @@ DEPENDENCIES
   pg
   pry-byebug
   puma
+  pundit
   rails (~> 7.0.8)
   react-rails
   rubocop
