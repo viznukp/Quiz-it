@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import quizzesApi from "apis/quizzes";
-import { Container } from "components/commons";
+import { Container, NavBar } from "components/commons";
 
 const Dashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -21,6 +21,7 @@ const Dashboard = () => {
 
   return (
     <Container>
+      <NavBar backButtonVisible title="QuizIt" />
       <div className="flex flex-col">
         {quizzes?.map(quiz => (
           <p key={quiz.id}>{quiz.name}</p>
