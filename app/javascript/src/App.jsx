@@ -1,10 +1,9 @@
 import React from "react";
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import routes from "src/routes";
 
 import Dashboard from "components/Dashboard";
-
-import routes from "./routes";
 
 const App = () => (
   <BrowserRouter>

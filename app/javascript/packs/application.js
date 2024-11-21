@@ -13,7 +13,9 @@ const componentRequireContext = require.context("src", true);
 
 const { setAuthHeaders } = require("apis/axios");
 const { initializeLogger } = require("common/logger");
+const { initializeReactI18Next } = require("common/i18n");
 
+initializeReactI18Next();
 initializeLogger();
 setAuthHeaders();
 
