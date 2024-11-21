@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Tooltip } from "neetoui";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 
 import { isEmptyString } from "utils/stringUtils";
@@ -15,5 +16,11 @@ const SidebarNavItem = ({ toolTipLabel = "", icon, onClickRoute = "" }) => (
     </Link>
   </Tooltip>
 );
+
+SidebarNavItem.propTypes = {
+  toolTipLabel: PropTypes.string,
+  icon: PropTypes.node,
+  onClickRoute: PropTypes.string,
+};
 
 export default SidebarNavItem;

@@ -1,6 +1,10 @@
 {
   "labels": {
-    "quizzes": "Quizzes"
+    "quizzes": "Quizzes",
+    "name": "Name",
+    "category": "Category",
+    "status": "Status",
+    "createdOn": "Created on"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
