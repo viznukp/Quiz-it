@@ -105,3 +105,5 @@ group :test do
 end
 
 gem "pundit"
+
+gem "bcrypt", "~> 3.1.13"

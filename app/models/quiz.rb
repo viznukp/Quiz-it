@@ -4,7 +4,7 @@ class Quiz < ApplicationRecord
   MAX_NAME_LENGTH = 125
   VALID_NAME_REGEX = /\A.*[a-zA-Z0-9].*\z/i
 
-  enum :statuses, { draft: "draft", published: "published" }, default: :draft
+  enum :status, { draft: "draft", published: "published" }, default: :draft
 
   validates :name,
     presence: true,
