@@ -4,7 +4,9 @@
     "name": "Name",
     "category": "Category",
     "status": "Status",
-    "createdOn": "Created on"
+    "createdOn": "Created on",
+    "expand": "Expand",
+    "minimize": "Minimize"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
