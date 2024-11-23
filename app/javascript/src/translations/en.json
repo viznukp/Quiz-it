@@ -6,9 +6,23 @@
     "status": "Status",
     "createdOn": "Created on",
     "expand": "Expand",
-    "minimize": "Minimize"
+    "minimize": "Minimize",
+    "email": "Email",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "signup": "Signup",
+    "loginNow": "Or Login now"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
+  },
+  "messages": {
+    "error": {
+      "default": "Something went wrong!",
+      "invalidEmail": "Invalid email address",
+      "matchPassword": "Passwords must match"
+    }
   }
 }

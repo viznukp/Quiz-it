@@ -380,6 +380,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   autoprefixer-rails
+  bcrypt (~> 3.1.13)
   bootsnap (>= 1.9.4)
   bullet
   bundler-audit
