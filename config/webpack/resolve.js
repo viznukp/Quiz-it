@@ -13,6 +13,7 @@ module.exports = {
     reducers: absolutePath("src/reducers"),
     neetoui: "@bigbinary/neetoui",
     neetoicons: "@bigbinary/neeto-icons",
+    neetocist: "@bigbinary/neeto-cist",
     utils: absolutePath("src/utils"),
     translations: absolutePath("src/translations"),
   },

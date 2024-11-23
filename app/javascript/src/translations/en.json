@@ -20,6 +20,7 @@
   },
   "messages": {
     "error": {
+      "default": "Something went wrong!",
       "invalidEmail": "Invalid email address",
       "matchPassword": "Passwords must match"
     }
