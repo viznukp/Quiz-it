@@ -5,6 +5,8 @@ import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 
+import authApi from "apis/authentication";
+
 import {
   SIGNUP_FORM_INITIAL_VALUES,
   SIGNUP_FORM_VALIDATION_SCHEMA,
@@ -12,6 +14,14 @@ import {
 
 const Signup = () => {
   const { t } = useTranslation();
+
+  const handleSignup = async formData => {
+    try {
+      await authApi.signup(formData);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   return (
     <div className="neeto-ui-bg-gray-100 flex h-screen w-screen flex-row items-center justify-center overflow-y-auto overflow-x-hidden p-6">
@@ -25,16 +35,10 @@ const Signup = () => {
         <Formik
           initialValues={SIGNUP_FORM_INITIAL_VALUES}
           validationSchema={SIGNUP_FORM_VALIDATION_SCHEMA}
+          onSubmit={handleSignup}
         >
           {({ isSubmitting }) => (
             <Form className="neeto-ui-rounded-md neeto-ui-bg-white neeto-ui-shadow-s w-full space-y-6 border p-8">
-              <Input
-                required
-                label={t("labels.email")}
-                name="email"
-                placeholder="oliver@example.com"
-                type="email"
-              />
               <Input
                 required
                 label={t("labels.firstName")}
@@ -48,6 +52,13 @@ const Signup = () => {
                 name="lastName"
                 placeholder="Smith"
                 type="text"
+              />
+              <Input
+                required
+                label={t("labels.email")}
+                name="email"
+                placeholder="oliver@example.com"
+                type="email"
               />
               <Input
                 required

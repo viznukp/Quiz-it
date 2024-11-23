@@ -1,9 +1,9 @@
-import { Toastr } from "@bigbinary/neetoui";
 import axios from "axios";
 import i18n from "i18next";
 import { keysToCamelCase, serializeKeysToSnakeCase } from "neetocist";
+import { Toastr } from "neetoui";
 import { evolve } from "ramda";
-import routes from "routes";
+import routes from "src/routes";
 
 import {
   STORAGE_KEYS,
@@ -56,7 +56,12 @@ const handleSuccessResponse = response => {
 
 const handleErrorResponse = axiosErrorObject => {
   if (axiosErrorObject.response?.status === 401) {
-    setToLocalStorage({ authToken: null, email: null, userId: null });
+    setToLocalStorage({
+      authToken: null,
+      email: null,
+      userId: null,
+      userName: null,
+    });
     setTimeout(() => (window.location.href = ROOT_URL), 2000);
   }
 
