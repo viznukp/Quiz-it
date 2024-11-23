@@ -7,40 +7,47 @@ import routes from "src/routes";
 
 import QuizItLogo from "./QuizItLogo";
 import SidebarNavItem from "./SidebarNavItem";
+import SidebarUserProfile from "./SidebarUserProfile";
 
 const Sidebar = () => {
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <div
       className={classNames(
-        "flex w-16 flex-col items-center gap-3 border-r p-3 transition-all duration-500 ease-in-out",
-        { "w-64": isExpanded }
+        "flex flex-col items-center justify-between gap-3 overflow-hidden border-r p-3 transition-all duration-300 ease-in",
+        {
+          "w-64": isExpanded,
+          "w-16": !isExpanded,
+        }
       )}
     >
-      <QuizItLogo isExpanded={isExpanded} />
-      <div className="mt-4 w-full">
-        <SidebarNavItem
-          expanded={isExpanded}
-          style="button"
-          icon={
-            isExpanded ? (
-              <LeftArrow color="#ff0000" />
-            ) : (
-              <RightArrow color="#22C55E" />
-            )
-          }
-          onClickAction={() => setIsExpanded(!isExpanded)}
-        />
-        <SidebarNavItem
-          toolTipEnabled
-          expanded={isExpanded}
-          icon={<List />}
-          label={t("labels.quizzes")}
-          onClickRoute={routes.dashboard}
-        />
+      <div className="w-full">
+        <QuizItLogo isExpanded={isExpanded} />
+        <div className="mt-4 w-full">
+          <SidebarNavItem
+            expanded={isExpanded}
+            style="button"
+            icon={
+              isExpanded ? (
+                <LeftArrow color="#ff0000" />
+              ) : (
+                <RightArrow color="#22C55E" />
+              )
+            }
+            onClickAction={() => setIsExpanded(!isExpanded)}
+          />
+          <SidebarNavItem
+            toolTipEnabled
+            expanded={isExpanded}
+            icon={<List />}
+            label={t("labels.quizzes")}
+            onClickRoute={routes.dashboard}
+          />
+        </div>
       </div>
+      <SidebarUserProfile isExpanded={isExpanded} />
     </div>
   );
 };
