@@ -23,7 +23,7 @@ const App = () => {
         <PrivateRoute
           component={Dashboard}
           condition={isLoggedIn}
-          path="/"
+          path={routes.root}
           redirectRoute="/login"
         />
       </Switch>

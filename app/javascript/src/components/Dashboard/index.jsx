@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { Container, NavBar } from "components/commons";
 
+import NewQuizPane from "./NewQuizPane";
 import QuizList from "./QuizList";
 
 const Dashboard = () => {
@@ -11,7 +12,11 @@ const Dashboard = () => {
 
   return (
     <Container
-      navbar={<NavBar backButtonVisible title={t("pageTitles.allQuizzes")} />}
+      navbar={
+        <NavBar title={t("pageTitles.allQuizzes")}>
+          <NewQuizPane />
+        </NavBar>
+      }
     >
       <QuizList />
     </Container>
