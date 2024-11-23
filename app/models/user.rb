@@ -10,6 +10,7 @@ class User < ApplicationRecord
   enum :user_type, { admin: "admin", standard: "standard" }, default: :standard
 
   has_secure_password
+  has_secure_token :authentication_token
 
   validates :first_name, :last_name, length: { maximum: MAX_FIRST_NAME_AND_LAST_NAME_LENGTH }
   validates :first_name, presence: true

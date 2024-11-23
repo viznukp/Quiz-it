@@ -19,7 +19,7 @@ const SidebarNavItem = ({
   const renderContent = (
     <div
       className={classNames(
-        "flex h-10 items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:bg-gray-200",
+        "flex h-10 items-center gap-3 rounded-md hover:bg-gray-200",
         { "justify-start border-b px-2": expanded },
         { "w-10 justify-center": !expanded },
         { "bg-blue-500": active }
