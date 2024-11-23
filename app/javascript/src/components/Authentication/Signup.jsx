@@ -4,6 +4,8 @@ import { Form, Formik } from "formik";
 import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import routes from "src/routes";
 
 import authApi from "apis/authentication";
 
@@ -14,10 +16,12 @@ import {
 
 const Signup = () => {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const handleSignup = async formData => {
     try {
-      await authApi.signup(formData);
+      await authApi.signup({ ...formData, userType: "admin" });
+      history.push(routes.login);
     } catch (error) {
       logger.error(error);
     }
@@ -30,7 +34,12 @@ const Signup = () => {
           {t("labels.signup")}
         </h2>
         <div className="mb-4 mt-2 flex flex-row items-center justify-start space-x-1">
-          <Button label={t("labels.loginNow")} size="small" style="link" />
+          <Button
+            label={t("labels.loginNow")}
+            size="small"
+            style="link"
+            to={routes.login}
+          />
         </div>
         <Formik
           initialValues={SIGNUP_FORM_INITIAL_VALUES}

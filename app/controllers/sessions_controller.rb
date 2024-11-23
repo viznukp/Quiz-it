@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  skip_before_action :authenticate_user_using_x_auth_token
+
   def create
+    puts login_params
     @user = User.find_by!(email: login_params[:email].downcase)
     unless @user.authenticate(login_params[:password])
       render_error(t("session.incorrect_credentials"), :unauthorized)
@@ -11,6 +14,6 @@ class SessionsController < ApplicationController
   private
 
     def login_params
-      params.require(:login).permit(:email, :password)
+      params.require(:session).permit(:email, :password)
     end
 end

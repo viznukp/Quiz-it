@@ -4,8 +4,11 @@ import { Form, Formik } from "formik";
 import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
+import routes from "src/routes";
 
 import authApi from "apis/authentication";
+import { setAuthHeaders } from "apis/axios";
+import { setToLocalStorage } from "utils/storage";
 
 import {
   LOGIN_FORM_INITIAL_VALUES,
@@ -17,7 +20,17 @@ const Login = () => {
 
   const handleLogin = async formData => {
     try {
-      await authApi.login(formData);
+      const responseData = await authApi.login(formData);
+      setToLocalStorage({
+        authToken: responseData.authenticationToken,
+        email: responseData.email,
+        userId: responseData.id,
+        userName: [responseData.firstName, responseData.lastName]
+          .join(" ")
+          .trim(),
+      });
+      setAuthHeaders();
+      window.location.href = routes.root;
     } catch (error) {
       logger.error(error);
     }
@@ -30,7 +43,12 @@ const Login = () => {
           {t("labels.signIn")}
         </h2>
         <div className="mb-4 mt-2 flex flex-row items-center justify-start space-x-1">
-          <Button label={t("labels.registerNow")} size="small" style="link" />
+          <Button
+            label={t("labels.registerNow")}
+            size="small"
+            style="link"
+            to={routes.signup}
+          />
         </div>
         <Formik
           initialValues={LOGIN_FORM_INITIAL_VALUES}
@@ -50,13 +68,6 @@ const Login = () => {
                 required
                 label={t("labels.password")}
                 name="password"
-                placeholder="******"
-                type="password"
-              />
-              <Input
-                required
-                label={t("labels.confirmPassword")}
-                name="passwordConfirmation"
                 placeholder="******"
                 type="password"
               />
