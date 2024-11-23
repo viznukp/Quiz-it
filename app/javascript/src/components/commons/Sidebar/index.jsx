@@ -11,12 +11,12 @@ import SidebarUserProfile from "./SidebarUserProfile";
 
 const Sidebar = () => {
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div
       className={classNames(
-        "flex flex-col items-center justify-between gap-3 overflow-hidden border-r p-3 transition-all duration-300 ease-in",
+        "flex flex-col items-center justify-between gap-3 border-r p-3 transition-all duration-300 ease-in",
         {
           "w-64": isExpanded,
           "w-16": !isExpanded,
