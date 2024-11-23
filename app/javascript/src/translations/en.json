@@ -13,7 +13,9 @@
     "password": "Password",
     "confirmPassword": "Confirm password",
     "signup": "Signup",
-    "loginNow": "Or Login now"
+    "loginNow": "Or Login now",
+    "signIn": "Sign In",
+    "registerNow": "Or register now"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
