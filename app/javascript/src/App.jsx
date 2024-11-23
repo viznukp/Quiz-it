@@ -11,14 +11,13 @@ import Dashboard from "components/Dashboard";
 import { STORAGE_KEYS, getFromLocalStorage } from "utils/storage";
 
 const App = () => {
-  const authToken = getFromLocalStorage(STORAGE_KEYS);
+  const authToken = getFromLocalStorage(STORAGE_KEYS.TOKEN);
   const isLoggedIn = !either(isNil, isEmpty)(authToken);
 
   return (
     <BrowserRouter>
       <ToastContainer />
       <Switch>
-        <Route exact component={Dashboard} path={routes.root} />
         <Route exact component={Signup} path={routes.signup} />
         <Route exact component={Login} path={routes.login} />
         <PrivateRoute

@@ -47,7 +47,7 @@ const SidebarNavItem = ({
 };
 
 SidebarNavItem.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   toolTipLabel: PropTypes.string,
   toolTipEnabled: PropTypes.bool,
   icon: PropTypes.node,
