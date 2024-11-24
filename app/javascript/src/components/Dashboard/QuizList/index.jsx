@@ -10,7 +10,7 @@ import StatusTag from "./StatusTag";
 
 import { QUIZ_TABLE_SCHEMA } from "../constants";
 
-const QuizList = () => {
+const QuizList = ({ isQuizReloadRequired }) => {
   const [quizzes, setQuizzes] = useState([]);
 
   const transformQuizDataForTableDisplay = () =>
@@ -34,7 +34,7 @@ const QuizList = () => {
 
   useEffect(() => {
     fetchQuizzes();
-  }, []);
+  }, [isQuizReloadRequired]);
 
   return (
     <Table

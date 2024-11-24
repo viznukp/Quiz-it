@@ -9,7 +9,7 @@ import quizzesApi from "apis/quizzes";
 
 import { CREATE_NEW_QUIZ__FORM_VALIDATION_SCHEMA } from "./constants";
 
-const NewQuizPane = () => {
+const NewQuizPane = ({ reloadQuizzes }) => {
   const { t } = useTranslation();
   const [isPaneOpen, setIsPaneOpen] = useState(false);
 
@@ -19,6 +19,7 @@ const NewQuizPane = () => {
     try {
       await quizzesApi.create(formData);
       closePane();
+      reloadQuizzes();
     } catch (error) {
       logger.error(error);
     }
