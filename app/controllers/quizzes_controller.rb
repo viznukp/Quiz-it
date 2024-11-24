@@ -7,7 +7,7 @@ class QuizzesController < ApplicationController
   end
 
   def create
-    quiz = Quiz.new(quiz_params)
+    quiz = Quiz.new(quiz_params.merge(creator: current_user))
     quiz.save!
     render_notice(t("successfully_created", entity: "Quiz"))
   end
