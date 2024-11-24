@@ -18,7 +18,9 @@
     "registerNow": "Or register now",
     "addNewQuiz": "Add new quiz",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "exampleQuizName": "Eg: Solar system quiz",
+    "exampleCategoryName": "Astronomy"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"

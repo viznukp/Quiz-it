@@ -15,7 +15,7 @@ const NewQuizPane = () => {
 
   const closePane = () => setIsPaneOpen(false);
 
-  const handleCreatNewQuiz = async formData => {
+  const handleCreateNewQuiz = async formData => {
     try {
       await quizzesApi.create(formData);
       closePane();
@@ -27,7 +27,7 @@ const NewQuizPane = () => {
   return (
     <>
       <Button
-        label="Create new quiz"
+        label={t("labels.addNewQuiz")}
         onClick={() => setIsPaneOpen(!isPaneOpen)}
       />
       <Pane isOpen={isPaneOpen} onClose={closePane}>
@@ -36,7 +36,7 @@ const NewQuizPane = () => {
           <Formik
             initialValues={{ name: "" }}
             validationSchema={CREATE_NEW_QUIZ__FORM_VALIDATION_SCHEMA}
-            onSubmit={handleCreatNewQuiz}
+            onSubmit={handleCreateNewQuiz}
           >
             {({ isSubmitting, dirty }) => (
               <Form className="flex flex-1 flex-col justify-between">
@@ -46,11 +46,13 @@ const NewQuizPane = () => {
                     className="mt-4"
                     label={t("labels.name")}
                     name="name"
+                    placeHolder={t("labels.exampleQuizName")}
                   />
                   <Input
                     required
                     label={t("labels.category")}
                     name="category"
+                    placeHolder={t("labels.exampleCategoryName")}
                   />
                 </div>
                 <div className="flex gap-3">
