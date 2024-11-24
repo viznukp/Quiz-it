@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
+  after_action :verify_authorized, except: :index
+
   def index
     @quizzes = Quiz.all
     render
@@ -8,6 +10,7 @@ class QuizzesController < ApplicationController
 
   def create
     quiz = Quiz.new(quiz_params.merge(creator: current_user))
+    authorize quiz
     quiz.save!
     render_notice(t("successfully_created", entity: "Quiz"))
   end
