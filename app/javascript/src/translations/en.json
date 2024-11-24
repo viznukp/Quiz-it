@@ -15,7 +15,12 @@
     "signup": "Signup",
     "loginNow": "Or Login now",
     "signIn": "Sign In",
-    "registerNow": "Or register now"
+    "registerNow": "Or register now",
+    "addNewQuiz": "Add new quiz",
+    "save": "Save",
+    "cancel": "Cancel",
+    "exampleQuizName": "Eg: Solar system quiz",
+    "exampleCategoryName": "Astronomy"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
@@ -24,7 +29,8 @@
     "error": {
       "default": "Something went wrong!",
       "invalidEmail": "Invalid email address",
-      "matchPassword": "Passwords must match"
+      "matchPassword": "Passwords must match",
+      "requiredField": "This field is required"
     }
   }
 }

@@ -10,23 +10,23 @@ import StatusTag from "./StatusTag";
 
 import { QUIZ_TABLE_SCHEMA } from "../constants";
 
-const QuizList = () => {
+const QuizList = ({ isQuizReloadRequired }) => {
   const [quizzes, setQuizzes] = useState([]);
 
   const transformQuizDataForTableDisplay = () =>
-    quizzes?.map(({ id, name, status, updated_at, category }) => ({
+    quizzes?.map(({ id, name, status, updatedAt, category }) => ({
       id,
       key: id,
       name: <LabelToLink label={name} truncateAfter={20} />,
       status: <StatusTag label={status} primaryLabel="published" />,
       category,
-      createdOn: dateFromTimeStamp(updated_at),
+      createdOn: dateFromTimeStamp(updatedAt),
     }));
 
   const fetchQuizzes = async () => {
     try {
-      const response = await quizzesApi.fetch();
-      setQuizzes(response.data);
+      const data = await quizzesApi.fetch();
+      setQuizzes(data);
     } catch (error) {
       logger.error(error);
     }
@@ -34,7 +34,7 @@ const QuizList = () => {
 
   useEffect(() => {
     fetchQuizzes();
-  }, []);
+  }, [isQuizReloadRequired]);
 
   return (
     <Table

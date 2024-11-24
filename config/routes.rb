@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   constraints(lambda { |request| request.format == :json }) do
-    resources :quizzes, only: :index
+    resources :quizzes, only: %i[index create]
     resources :users, only: :create
     resource :session, only: %i[create destroy]
   end
