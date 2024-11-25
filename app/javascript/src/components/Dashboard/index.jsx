@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -9,19 +9,16 @@ import QuizList from "./QuizList";
 
 const Dashboard = () => {
   const { t } = useTranslation();
-  const [isQuizReloadRequired, setIsQuizReloadRequired] = useState(false);
 
   return (
     <Container
       navbar={
         <NavBar title={t("pageTitles.allQuizzes")}>
-          <NewQuizPane
-            reloadQuizzes={() => setIsQuizReloadRequired(!isQuizReloadRequired)}
-          />
+          <NewQuizPane />
         </NavBar>
       }
     >
-      <QuizList isQuizReloadRequired={isQuizReloadRequired} />
+      <QuizList />
     </Container>
   );
 };

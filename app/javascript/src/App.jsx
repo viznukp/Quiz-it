@@ -1,6 +1,7 @@
 import React from "react";
 
 import { either, isEmpty, isNil } from "ramda";
+import { QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import routes from "src/routes";
@@ -8,6 +9,7 @@ import routes from "src/routes";
 import { Login, Signup } from "components/Authentication";
 import { PrivateRoute } from "components/commons";
 import Dashboard from "components/Dashboard";
+import queryClient from "utils/queryClient";
 import { STORAGE_KEYS, getFromLocalStorage } from "utils/storage";
 
 const App = () => {
@@ -15,19 +17,21 @@ const App = () => {
   const isLoggedIn = !either(isNil, isEmpty)(authToken);
 
   return (
-    <BrowserRouter>
-      <ToastContainer />
-      <Switch>
-        <Route exact component={Signup} path={routes.signup} />
-        <Route exact component={Login} path={routes.login} />
-        <PrivateRoute
-          component={Dashboard}
-          condition={isLoggedIn}
-          path={routes.root}
-          redirectRoute="/login"
-        />
-      </Switch>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <ToastContainer />
+        <Switch>
+          <Route exact component={Signup} path={routes.signup} />
+          <Route exact component={Login} path={routes.login} />
+          <PrivateRoute
+            component={Dashboard}
+            condition={isLoggedIn}
+            path={routes.root}
+            redirectRoute="/login"
+          />
+        </Switch>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 };
 
