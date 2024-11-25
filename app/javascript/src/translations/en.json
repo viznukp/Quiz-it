@@ -20,7 +20,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "exampleQuizName": "Eg: Solar system quiz",
-    "exampleCategoryName": "Astronomy"
+    "exampleCategoryName": "Astronomy",
+    "addNewQuestion": "Add new question"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
@@ -31,6 +32,9 @@
       "invalidEmail": "Invalid email address",
       "matchPassword": "Passwords must match",
       "requiredField": "This field is required"
+    },
+    "info": {
+      "noQuestionsToShow": "There are no questions to show"
     }
   }
 }

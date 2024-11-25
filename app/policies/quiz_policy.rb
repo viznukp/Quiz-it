@@ -11,4 +11,8 @@ class QuizPolicy
   def create?
     user.admin? && quiz.creator_id == user.id
   end
+
+  def show?
+    create?
+  end
 end

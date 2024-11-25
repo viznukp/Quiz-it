@@ -1,0 +1,32 @@
+import React from "react";
+
+import { Typography, Button } from "neetoui";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
+
+import { Container, NavBar, PageLoader } from "components/commons";
+
+const QuestionBuilder = () => {
+  const { t } = useTranslation();
+  const { slug } = useParams();
+
+  const { data: { quiz } = {}, isLoading } = useShowQuiz(slug);
+
+  if (isLoading) return <PageLoader fullScreen />;
+
+  return (
+    <Container navbar={<NavBar backButtonVisible title={quiz?.name} />}>
+      <div className="flex justify-end">
+        <Button label={t("labels.addNewQuestion")} />
+      </div>
+      <div className="flex h-64 items-center justify-center">
+        <Typography style="h3">
+          {t("messages.info.noQuestionsToShow")}
+        </Typography>
+      </div>
+    </Container>
+  );
+};
+
+export default QuestionBuilder;
