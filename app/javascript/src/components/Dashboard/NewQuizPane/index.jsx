@@ -4,22 +4,25 @@ import { Form, Formik } from "formik";
 import { Pane, Button, Typography } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
+import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
 
 import quizzesApi from "apis/quizzes";
 
 import { CREATE_NEW_QUIZ__FORM_VALIDATION_SCHEMA } from "./constants";
 
-const NewQuizPane = ({ reloadQuizzes }) => {
+const NewQuizPane = () => {
   const { t } = useTranslation();
   const [isPaneOpen, setIsPaneOpen] = useState(false);
 
   const closePane = () => setIsPaneOpen(false);
 
+  const { refetch: refetchQuizzes } = useFetchQuizzes();
+
   const handleCreateNewQuiz = async formData => {
     try {
       await quizzesApi.create(formData);
       closePane();
-      reloadQuizzes();
+      refetchQuizzes();
     } catch (error) {
       logger.error(error);
     }

@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { Table } from "neetoui";
+import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
 
-import quizzesApi from "apis/quizzes";
-import { LabelToLink } from "components/commons";
+import { LabelToLink, PageLoader } from "components/commons";
 import { dateFromTimeStamp } from "utils/dateTime";
 
 import StatusTag from "./StatusTag";
 
 import { QUIZ_TABLE_SCHEMA } from "../constants";
 
-const QuizList = ({ isQuizReloadRequired }) => {
-  const [quizzes, setQuizzes] = useState([]);
-
-  const transformQuizDataForTableDisplay = () =>
+const QuizList = () => {
+  const transformQuizDataForTableDisplay = quizzes =>
     quizzes?.map(({ id, name, status, updatedAt, category }) => ({
       id,
       key: id,
@@ -23,24 +21,15 @@ const QuizList = ({ isQuizReloadRequired }) => {
       createdOn: dateFromTimeStamp(updatedAt),
     }));
 
-  const fetchQuizzes = async () => {
-    try {
-      const data = await quizzesApi.fetch();
-      setQuizzes(data);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
+  const { data: quizzes = {}, isLoading } = useFetchQuizzes();
 
-  useEffect(() => {
-    fetchQuizzes();
-  }, [isQuizReloadRequired]);
+  if (isLoading) return <PageLoader className="h-64" />;
 
   return (
     <Table
       rowSelection
       columnData={QUIZ_TABLE_SCHEMA}
-      rowData={quizzes ? transformQuizDataForTableDisplay() : []}
+      rowData={quizzes ? transformQuizDataForTableDisplay(quizzes) : []}
     />
   );
 };
