@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :quizzes, only: %i[index create show], param: :slug
     resources :users, only: :create
     resource :session, only: %i[create destroy]
+    resource :questions, only: :create
   end
 
   root "home#index"

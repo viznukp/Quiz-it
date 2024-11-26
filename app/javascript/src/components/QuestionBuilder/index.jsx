@@ -22,7 +22,7 @@ const QuestionBuilder = () => {
       <div className="flex justify-end">
         <Button label={t("labels.addNewQuestion")} />
       </div>
-      <Form />
+      <Form slug={slug} />
     </Container>
   );
 };

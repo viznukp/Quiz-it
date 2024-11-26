@@ -5,6 +5,8 @@ import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 
+import quizzesApi from "apis/quizzes";
+
 import {
   MIN_OPTIONS_COUNT,
   MAX_OPTIONS_COUNT,
@@ -13,15 +15,29 @@ import {
 } from "./constants";
 import Option from "./Option";
 
-const Form = () => {
+const Form = ({ slug }) => {
   const { t } = useTranslation();
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(0);
+
+  const handleSubmit = async formData => {
+    // console.log({...formData, answerIndex: correctAnswerIndex, quizSlug: slug });
+    try {
+      await quizzesApi.addQuestion({
+        ...formData,
+        answerIndex: correctAnswerIndex + 1,
+        quizSlug: slug,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   return (
     <div className="py-12">
       <Formik
         initialValues={QUESTION_BUILDER_FORM_INITIAL_VALUES}
         validationSchema={QUESTION_BUILDER_FORM_VALIDATION_SCHEMA}
+        onSubmit={handleSubmit}
       >
         {({ values, touched, errors }) => (
           <FormikForm>

@@ -6,6 +6,8 @@ const create = payload => axios.post("/quizzes", { quiz: payload });
 
 const show = slug => axios.get(`/quizzes/${slug}`);
 
-const quizzesApi = { fetch, create, show };
+const addQuestion = payload => axios.post("/questions", { question: payload });
+
+const quizzesApi = { fetch, create, show, addQuestion };
 
 export default quizzesApi;
