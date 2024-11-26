@@ -1,11 +1,13 @@
 import React from "react";
 
-import { Typography, Button } from "neetoui";
+import { Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 
 import { Container, NavBar, PageLoader } from "components/commons";
+
+import Form from "./Form";
 
 const QuestionBuilder = () => {
   const { t } = useTranslation();
@@ -20,11 +22,7 @@ const QuestionBuilder = () => {
       <div className="flex justify-end">
         <Button label={t("labels.addNewQuestion")} />
       </div>
-      <div className="flex h-64 items-center justify-center">
-        <Typography style="h3">
-          {t("messages.info.noQuestionsToShow")}
-        </Typography>
-      </div>
+      <Form />
     </Container>
   );
 };

@@ -47,7 +47,7 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
       {(isUserProfileVisible || isExpanded) && (
         <div
           className={classNames({
-            "absolute bottom-0 left-full ml-4 rounded-md border bg-white px-6 py-4 shadow-xl ":
+            "absolute bottom-0 left-full z-10 ml-4 rounded-md border bg-white px-6 py-4 shadow-xl ":
               !isExpanded,
           })}
         >
