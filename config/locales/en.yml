@@ -9,3 +9,8 @@ en:
     incorrect_credentials: "Incorrect credentials, try again."
   authorization:
     denied: "Access denied. You are not authorized to perform this action."
+  options:
+    must_be_array: "must be an array with at least two elements"
+    cannot_contain_empty_values: "cannot contain empty values"
+  answer_index:
+    cannot_be_greater_than_number_of_options: "cannot be grater than number of options"
