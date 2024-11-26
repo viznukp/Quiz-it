@@ -16,7 +16,7 @@ class QuizzesController < ApplicationController
   end
 
   def show
-    @quiz = Quiz.find_by!(slug: params[:slug])
+    @quiz = Quiz.includes(:questions).find_by!(slug: params[:slug])
     authorize @quiz
   end
 

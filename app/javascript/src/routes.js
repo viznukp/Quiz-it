@@ -2,7 +2,10 @@ const routes = {
   root: "/",
   signup: "/signup",
   login: "/login",
-  questionBuilder: "/:slug/questions/new",
+  quiz: {
+    questions: "/:slug/questions",
+    new: "/:slug/questions/new",
+  },
 };
 
 export default routes;

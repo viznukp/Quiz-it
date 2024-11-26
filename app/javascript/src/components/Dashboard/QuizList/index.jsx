@@ -19,7 +19,7 @@ const QuizList = () => {
       name: (
         <LabelToLink
           label={name}
-          pathTo={routes.questionBuilder.replace(":slug", slug)}
+          pathTo={routes.quiz.questions.replace(":slug", slug)}
           truncateAfter={20}
         />
       ),

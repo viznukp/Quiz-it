@@ -3,5 +3,6 @@ json.quiz do
     :id,
     :name,
     :category,
-    :status
+    :status,
+    :questions
 end
