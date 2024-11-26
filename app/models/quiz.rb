@@ -19,6 +19,7 @@ class Quiz < ApplicationRecord
     inclusion: { in: statuses.keys }
   validates :creator_id, presence: true
   validates :slug, uniqueness: true
+  validate :slug_not_changed
 
   before_create :set_slug
 
@@ -42,5 +43,11 @@ class Quiz < ApplicationRecord
       slug_candidate = slug_count.positive? ? "#{name_slug}-#{slug_count + 1}" : name_slug
 
       self.slug = slug_candidate
+    end
+
+    def slug_not_changed
+      if slug_changed? && self.persisted?
+        errors.add(:slug, I18n.t("quiz.slug.immutable"))
+      end
     end
 end

@@ -14,3 +14,6 @@ en:
     cannot_contain_empty_values: "cannot contain empty values"
   answer_index:
     cannot_be_greater_than_number_of_options: "cannot be grater than number of options"
+  quiz:
+    slug:
+     immutable: "is immutable"
