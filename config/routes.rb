@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   constraints(lambda { |request| request.format == :json }) do
-    resources :quizzes, only: %i[index create show destroy], param: :slug do
+    resources :quizzes, except: %i[new edit], param: :slug do
       get "question/:id", to: "quizzes#show_question", as: :show_question
     end
     resources :users, only: :create

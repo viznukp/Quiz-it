@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
+  before_action :load_quiz, only: %i[update destroy]
   after_action :verify_authorized, except: :index
 
   def index
@@ -26,16 +27,25 @@ class QuizzesController < ApplicationController
     @question = @quiz.questions.find_by!(id: params[:id])
   end
 
+  def update
+    authorize @quiz
+    @quiz.update!(quiz_params)
+    render_notice(t("successfully_updated", entity: "Quiz"))
+  end
+
   def destroy
-    quiz = Quiz.find_by!(slug: params[:slug])
-    authorize quiz
-    quiz.destroy!
+    authorize @quiz
+    @quiz.destroy!
     render_notice(t("successfully_deleted", entity: "Quiz"))
   end
 
   private
 
     def quiz_params
-      params.require(:quiz).permit(:name, :category)
+      params.require(:quiz).permit(:name, :category, :status)
+    end
+
+    def load_quiz
+      @quiz = Quiz.find_by!(slug: params[:slug])
     end
 end

@@ -23,6 +23,8 @@
     "clone": "Clone",
     "delete": "Delete",
     "update": "Update",
+    "publish": "Publish",
+    "unpublish": "Unpublish",
     "exampleQuizName": "Eg: Solar system quiz",
     "exampleCategoryName": "Astronomy",
     "addNewQuestion": "Add new question",
