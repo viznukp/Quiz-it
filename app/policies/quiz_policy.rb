@@ -15,4 +15,8 @@ class QuizPolicy
   def show?
     create?
   end
+
+  def show_question?
+    show?
+  end
 end

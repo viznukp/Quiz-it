@@ -22,13 +22,15 @@
     "edit": "Edit",
     "clone": "Clone",
     "delete": "Delete",
+    "update": "Update",
     "exampleQuizName": "Eg: Solar system quiz",
     "exampleCategoryName": "Astronomy",
     "addNewQuestion": "Add new question",
     "saveAndAddNewQuestion": "Save & add new question",
     "addOption": "Add Option",
     "enterQuestion": "Enter your question here...",
-    "typeOption": "Type option {{number}}"
+    "typeOption": "Type option {{number}}",
+    "questions": "{{count}} questions"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"

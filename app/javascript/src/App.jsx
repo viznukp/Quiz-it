@@ -11,6 +11,7 @@ import { PrivateRoute } from "components/commons";
 import Dashboard from "components/Dashboard";
 import QuestionBuilder from "components/QuestionBuilder";
 import Create from "components/QuestionBuilder/Create";
+import Edit from "components/QuestionBuilder/Edit";
 import queryClient from "utils/queryClient";
 import { STORAGE_KEYS, getFromLocalStorage } from "utils/storage";
 
@@ -30,7 +31,8 @@ const App = () => {
             component={QuestionBuilder}
             path={routes.quiz.questions}
           />
-          <Route exact component={Create} path={routes.quiz.new} />
+          <Route exact component={Create} path={routes.quiz.question.new} />
+          <Route exact component={Edit} path={routes.quiz.question.edit} />
           <PrivateRoute
             component={Dashboard}
             condition={isLoggedIn}

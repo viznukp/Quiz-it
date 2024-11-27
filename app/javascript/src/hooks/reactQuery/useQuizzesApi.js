@@ -13,3 +13,9 @@ export const useShowQuiz = queryParams =>
     queryKey: ["quiz", queryParams],
     queryFn: () => quizzesApi.show(queryParams),
   });
+
+export const useFetchQuestion = (slug, id) =>
+  useQuery({
+    queryKey: ["question", slug, id],
+    queryFn: () => quizzesApi.fetchQuestion(slug, id),
+  });

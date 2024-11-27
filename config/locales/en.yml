@@ -3,6 +3,7 @@ en:
   not_found: "%{entity} not found!"
   generic_error: "Something went wrong. Please try again later."
   successfully_created: "%{entity} was successfully created!"
+  successfully_updated: "%{entity} was successfully updated!"
   signup_successful: "Signup successful. Please login to continue"
   session:
     could_not_auth: "Could not authenticate with the provided credentials."

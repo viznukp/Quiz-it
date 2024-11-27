@@ -28,19 +28,24 @@ const QuestionBuilder = () => {
       <div className="flex justify-end">
         <Button
           label={t("labels.addNewQuestion")}
-          onClick={() => history.push(routes.quiz.new.replace(":slug", slug))}
+          onClick={() =>
+            history.push(routes.quiz.question.new.replace(":slug", slug))
+          }
         />
       </div>
       {isEmpty(quiz.questions) ? (
         <div className="flex h-64 items-center justify-center">
           <Typography style="h3" weight="semibold">
-            No Questions to show
+            {t("messages.info.noQuestionsToShow")}
           </Typography>
         </div>
       ) : (
         <div className="mb-12 mt-4 flex flex-col gap-4">
-          {quiz.questions.map((question, index) => (
-            <QuestionDisplayCard key={index} {...question} />
+          <Typography>
+            {t("labels.questions", { count: quiz.questions.length })}
+          </Typography>
+          {quiz.questions.map(question => (
+            <QuestionDisplayCard key={question.id} slug={slug} {...question} />
           ))}
         </div>
       )}

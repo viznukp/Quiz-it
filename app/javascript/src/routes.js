@@ -4,7 +4,10 @@ const routes = {
   login: "/login",
   quiz: {
     questions: "/:slug/questions",
-    new: "/:slug/questions/new",
+    question: {
+      new: "/:slug/question/new",
+      edit: "/:slug/questions/:id/edit",
+    },
   },
 };
 
