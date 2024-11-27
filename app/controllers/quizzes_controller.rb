@@ -26,6 +26,13 @@ class QuizzesController < ApplicationController
     @question = @quiz.questions.find_by!(id: params[:id])
   end
 
+  def destroy
+    quiz = Quiz.find_by!(slug: params[:slug])
+    authorize quiz
+    quiz.destroy!
+    render_notice(t("successfully_deleted", entity: "Quiz"))
+  end
+
   private
 
     def quiz_params
