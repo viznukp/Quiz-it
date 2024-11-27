@@ -7,7 +7,9 @@ Rails.application.routes.draw do
     end
     resources :users, only: :create
     resource :session, only: %i[create destroy]
-    resources :questions, only: %i[create update destroy]
+    resources :questions, only: %i[create update destroy] do
+      get "clone", to: "questions#clone", as: :clone
+    end
   end
 
   root "home#index"

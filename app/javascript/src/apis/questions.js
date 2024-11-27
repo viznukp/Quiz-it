@@ -5,6 +5,8 @@ const update = (id, payload) =>
 
 const destroy = id => axios.delete(`questions/${id}`);
 
-const questionsApi = { update, destroy };
+const clone = id => axios.get(`questions/${id}/clone`);
+
+const questionsApi = { update, destroy, clone };
 
 export default questionsApi;

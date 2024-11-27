@@ -51,7 +51,17 @@ const QuestionDisplayCard = ({
                 )
               }
             />
-            <Button label={t("labels.clone")} style="text" />
+            <Button
+              label={t("labels.clone")}
+              style="text"
+              onClick={() =>
+                history.push(
+                  routes.quiz.question.clone
+                    .replace(":slug", slug)
+                    .replace(":id", id)
+                )
+              }
+            />
             <Button
               label={t("labels.delete")}
               style="danger-text"

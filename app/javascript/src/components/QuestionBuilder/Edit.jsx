@@ -25,10 +25,7 @@ const Edit = () => {
 
   const handleSubmit = async ({ formData }) => {
     try {
-      await questionsApi.update(id, {
-        ...formData,
-        quizSlug: slug,
-      });
+      await questionsApi.update(id, formData);
       refetch();
       history.push(routes.quiz.questions.replace(":slug", slug));
     } catch (error) {

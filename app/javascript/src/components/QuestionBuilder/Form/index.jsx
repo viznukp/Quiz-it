@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { Form as FormikForm, Formik, FieldArray } from "formik";
 import { Button } from "neetoui";
@@ -16,28 +16,32 @@ import Option from "./Option";
 
 const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
   const { t } = useTranslation();
+  const shouldRedirect = useRef(true);
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(
     initialValues?.answerIndex - 1 || 0
+  );
+
+  const [formInitialValues, setFormInitialValues] = useState(() =>
+    isEmpty(initialValues)
+      ? QUESTION_BUILDER_FORM_INITIAL_VALUES
+      : initialValues
   );
 
   return (
     <div className="py-12">
       <Formik
+        enableReinitialize
+        initialValues={formInitialValues}
         validationSchema={QUESTION_BUILDER_FORM_VALIDATION_SCHEMA}
-        initialValues={
-          isEmpty(initialValues)
-            ? QUESTION_BUILDER_FORM_INITIAL_VALUES
-            : initialValues
-        }
         onSubmit={(values, { resetForm }) =>
           handleSubmit({
             formData: { ...values, answerIndex: correctAnswerIndex + 1 },
             resetForm,
-            shouldRedirect: true,
+            shouldRedirect: shouldRedirect.current,
           })
         }
       >
-        {({ values, touched, errors, resetForm }) => (
+        {({ values, touched, errors, submitForm }) => (
           <FormikForm>
             <Input
               nakedInput
@@ -97,21 +101,19 @@ const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
                     ? t("labels.update")
                     : t("labels.save")
                 }
+                onClick={() => {
+                  shouldRedirect.current = true;
+                }}
               />
               {actionType === "create" && (
                 <Button
                   label={t("labels.saveAndAddNewQuestion")}
                   style="secondary"
-                  onClick={() => {
+                  onClick={async () => {
+                    shouldRedirect.current = false;
+                    await submitForm();
                     setCorrectAnswerIndex(0);
-                    handleSubmit({
-                      formData: {
-                        ...values,
-                        answerIndex: correctAnswerIndex + 1,
-                      },
-                      resetForm,
-                      shouldRedirect: false,
-                    });
+                    setFormInitialValues(QUESTION_BUILDER_FORM_INITIAL_VALUES);
                   }}
                 />
               )}

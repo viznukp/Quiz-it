@@ -107,3 +107,5 @@ end
 gem "pundit"
 
 gem "bcrypt", "~> 3.1.13"
+
+gem "deep_cloneable", "~> 3.2.1"
