@@ -17,7 +17,7 @@ import Option from "./Option";
 const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
   const { t } = useTranslation();
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(
-    initialValues?.answerIndex - 1
+    initialValues?.answerIndex - 1 || 0
   );
 
   return (
@@ -30,7 +30,11 @@ const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
             : initialValues
         }
         onSubmit={(values, { resetForm }) =>
-          handleSubmit(values, correctAnswerIndex, resetForm, true)
+          handleSubmit({
+            formData: { ...values, answerIndex: correctAnswerIndex + 1 },
+            resetForm,
+            shouldRedirect: true,
+          })
         }
       >
         {({ values, touched, errors, resetForm }) => (
@@ -100,7 +104,14 @@ const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
                   style="secondary"
                   onClick={() => {
                     setCorrectAnswerIndex(0);
-                    handleSubmit(values, correctAnswerIndex, resetForm, false);
+                    handleSubmit({
+                      formData: {
+                        ...values,
+                        answerIndex: correctAnswerIndex + 1,
+                      },
+                      resetForm,
+                      shouldRedirect: false,
+                    });
                   }}
                 />
               )}

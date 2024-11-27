@@ -23,25 +23,14 @@ const Edit = () => {
 
   const { refetch } = useShowQuiz(slug);
 
-  const handleSubmit = async (
-    formData,
-    correctAnswerIndex,
-    resetForm,
-    shouldRedirect
-  ) => {
+  const handleSubmit = async ({ formData }) => {
     try {
       await questionsApi.update(id, {
         ...formData,
-        answerIndex: correctAnswerIndex + 1,
         quizSlug: slug,
       });
       refetch();
-
-      if (shouldRedirect) {
-        history.push(routes.quiz.questions.replace(":slug", slug));
-      } else {
-        resetForm();
-      }
+      history.push(routes.quiz.questions.replace(":slug", slug));
     } catch (error) {
       logger.error(error);
     }

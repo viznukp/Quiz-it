@@ -18,16 +18,10 @@ const Create = () => {
 
   const { data: { quiz } = {}, isLoading, refetch } = useShowQuiz(slug);
 
-  const handleSubmit = async (
-    formData,
-    correctAnswerIndex,
-    resetForm,
-    shouldRedirect
-  ) => {
+  const handleSubmit = async ({ formData, resetForm, shouldRedirect }) => {
     try {
       await quizzesApi.addQuestion({
         ...formData,
-        answerIndex: correctAnswerIndex + 1,
         quizSlug: slug,
       });
       refetch();
