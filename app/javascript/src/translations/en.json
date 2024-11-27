@@ -19,8 +19,18 @@
     "addNewQuiz": "Add new quiz",
     "save": "Save",
     "cancel": "Cancel",
+    "edit": "Edit",
+    "clone": "Clone",
+    "delete": "Delete",
+    "update": "Update",
     "exampleQuizName": "Eg: Solar system quiz",
-    "exampleCategoryName": "Astronomy"
+    "exampleCategoryName": "Astronomy",
+    "addNewQuestion": "Add new question",
+    "saveAndAddNewQuestion": "Save & add new question",
+    "addOption": "Add Option",
+    "enterQuestion": "Enter your question here...",
+    "typeOption": "Type option {{number}}",
+    "questions": "{{count}} questions"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
@@ -28,9 +38,17 @@
   "messages": {
     "error": {
       "default": "Something went wrong!",
-      "invalidEmail": "Invalid email address",
-      "matchPassword": "Passwords must match",
-      "requiredField": "This field is required"
+      "invalidEmail": "Invalid email address!",
+      "matchPassword": "Passwords must match!",
+      "requiredField": "This field is required!",
+      "requiredQuestion": "Question is required!",
+      "nonEmptyOption": "Option cannot be empty!",
+      "minRequiredOptions": "At least {{count}} options are required!",
+      "maxAllowedOptions": "No more than {{count}} options are allowed!",
+      "uniqueOptions": "Duplicate options are not permitted!"
+    },
+    "info": {
+      "noQuestionsToShow": "There are no questions to show"
     }
   }
 }

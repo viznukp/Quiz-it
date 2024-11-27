@@ -8,7 +8,7 @@ import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
 
 import quizzesApi from "apis/quizzes";
 
-import { CREATE_NEW_QUIZ__FORM_VALIDATION_SCHEMA } from "./constants";
+import { CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA } from "./constants";
 
 const NewQuizPane = () => {
   const { t } = useTranslation();
@@ -39,7 +39,7 @@ const NewQuizPane = () => {
           <Typography style="h2">{t("labels.addNewQuiz")}</Typography>
           <Formik
             initialValues={{ name: "" }}
-            validationSchema={CREATE_NEW_QUIZ__FORM_VALIDATION_SCHEMA}
+            validationSchema={CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA}
             onSubmit={handleCreateNewQuiz}
           >
             {({ isSubmitting, dirty }) => (
@@ -50,13 +50,13 @@ const NewQuizPane = () => {
                     className="mt-4"
                     label={t("labels.name")}
                     name="name"
-                    placeHolder={t("labels.exampleQuizName")}
+                    placeholder={t("labels.exampleQuizName")}
                   />
                   <Input
                     required
                     label={t("labels.category")}
                     name="category"
-                    placeHolder={t("labels.exampleCategoryName")}
+                    placeholder={t("labels.exampleCategoryName")}
                   />
                 </div>
                 <div className="flex gap-3">

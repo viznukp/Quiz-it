@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_24_223914) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_26_134954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -57,6 +57,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_24_223914) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "question", null: false
+    t.string "options", default: [], array: true
+    t.integer "answer_index", null: false
+    t.uuid "quiz_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "quizzes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "status", null: false
@@ -64,6 +73,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_24_223914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "creator_id", null: false
+    t.string "slug"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -80,5 +90,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_24_223914) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "questions", "quizzes"
   add_foreign_key "quizzes", "users", column: "creator_id", on_delete: :cascade
 end

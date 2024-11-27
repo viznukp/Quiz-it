@@ -15,6 +15,17 @@ class QuizzesController < ApplicationController
     render_notice(t("successfully_created", entity: "Quiz"))
   end
 
+  def show
+    @quiz = Quiz.includes(:questions).find_by!(slug: params[:slug])
+    authorize @quiz
+  end
+
+  def show_question
+    @quiz = Quiz.find_by!(slug: params[:quiz_slug])
+    authorize @quiz
+    @question = @quiz.questions.find_by!(id: params[:id])
+  end
+
   private
 
     def quiz_params

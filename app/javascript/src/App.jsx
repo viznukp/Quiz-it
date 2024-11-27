@@ -9,6 +9,10 @@ import routes from "src/routes";
 import { Login, Signup } from "components/Authentication";
 import { PrivateRoute } from "components/commons";
 import Dashboard from "components/Dashboard";
+import QuestionBuilder from "components/QuestionBuilder";
+import Clone from "components/QuestionBuilder/Clone";
+import Create from "components/QuestionBuilder/Create";
+import Edit from "components/QuestionBuilder/Edit";
 import queryClient from "utils/queryClient";
 import { STORAGE_KEYS, getFromLocalStorage } from "utils/storage";
 
@@ -23,6 +27,14 @@ const App = () => {
         <Switch>
           <Route exact component={Signup} path={routes.signup} />
           <Route exact component={Login} path={routes.login} />
+          <Route
+            exact
+            component={QuestionBuilder}
+            path={routes.quiz.questions}
+          />
+          <Route exact component={Create} path={routes.quiz.question.new} />
+          <Route exact component={Edit} path={routes.quiz.question.edit} />
+          <Route exact component={Clone} path={routes.quiz.question.clone} />
           <PrivateRoute
             component={Dashboard}
             condition={isLoggedIn}

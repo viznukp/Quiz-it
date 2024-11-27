@@ -4,5 +4,6 @@ json.array! @quizzes do |quiz|
     :name,
     :category,
     :status,
+    :slug,
     :updated_at
 end
