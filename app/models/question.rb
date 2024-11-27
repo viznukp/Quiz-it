@@ -3,7 +3,7 @@
 class Question < ApplicationRecord
   belongs_to :quiz
 
-  validates :quiz_id, :question, :answer_index, :options, presence: true
+  validates :question, :answer_index, :options, presence: true
   validate :validate_options_array
   validate :validate_answer_index
 

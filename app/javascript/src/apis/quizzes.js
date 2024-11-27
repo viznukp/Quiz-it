@@ -16,6 +16,8 @@ const addQuestion = payload => axios.post("/questions", { question: payload });
 const fetchQuestion = (slug, id) =>
   axios.get(`/quizzes/${slug}/question/${id}`);
 
+const clone = slug => axios.post(`/quizzes/${slug}/clone`);
+
 const quizzesApi = {
   fetch,
   create,
@@ -24,6 +26,7 @@ const quizzesApi = {
   destroy,
   addQuestion,
   fetchQuestion,
+  clone,
 };
 
 export default quizzesApi;

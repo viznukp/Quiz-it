@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  before_action :load_quiz, only: %i[update destroy]
+  before_action :load_quiz, only: %i[update destroy clone]
   after_action :verify_authorized, except: :index
 
   def index
@@ -37,6 +37,14 @@ class QuizzesController < ApplicationController
     authorize @quiz
     @quiz.destroy!
     render_notice(t("successfully_deleted", entity: "Quiz"))
+  end
+
+  def clone
+    cloned_quiz = @quiz.deep_clone include: :questions
+    cloned_quiz.set_slug
+    authorize cloned_quiz
+    cloned_quiz.save!
+    render_notice(t("successfully_cloned", entity: "Quiz"))
   end
 
   private

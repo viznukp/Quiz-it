@@ -40,6 +40,15 @@ const ActionList = ({ slug, status, reloadQuizzes }) => {
     }
   };
 
+  const handleClone = async () => {
+    try {
+      await quizzesApi.clone(slug);
+      reloadQuizzes();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   return (
     <Dropdown buttonStyle="text" icon={MenuHorizontal} strategy="fixed">
       <div className="flex flex-col">
@@ -48,6 +57,7 @@ const ActionList = ({ slug, status, reloadQuizzes }) => {
           style="text"
           onClick={handleUpdate}
         />
+        <Button label={t("labels.clone")} style="text" onClick={handleClone} />
         <Button
           label={t("labels.delete")}
           style="danger-text"

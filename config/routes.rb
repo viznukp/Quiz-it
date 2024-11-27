@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   constraints(lambda { |request| request.format == :json }) do
     resources :quizzes, except: %i[new edit], param: :slug do
       get "question/:id", to: "quizzes#show_question", as: :show_question
+      member do
+        post :clone
+      end
     end
     resources :users, only: :create
     resource :session, only: %i[create destroy]

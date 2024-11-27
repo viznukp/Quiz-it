@@ -28,6 +28,10 @@ class QuizPolicy
     authorize_if_user_is_admin_and_quiz_creator_is_current_user
   end
 
+  def clone?
+    authorize_if_user_is_admin_and_quiz_creator_is_current_user
+  end
+
   private
 
     def authorize_if_user_is_admin_and_quiz_creator_is_current_user
