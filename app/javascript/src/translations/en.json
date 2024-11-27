@@ -38,13 +38,14 @@
   "messages": {
     "error": {
       "default": "Something went wrong!",
-      "invalidEmail": "Invalid email address",
-      "matchPassword": "Passwords must match",
-      "requiredField": "This field is required",
-      "requiredQuestion": "Question is required",
-      "nonEmptyOption": "Option cannot be empty",
-      "minRequiredOptions": "At least {{count}} options are required",
-      "maxAllowedOptions": "No more than {{count}} options are allowed"
+      "invalidEmail": "Invalid email address!",
+      "matchPassword": "Passwords must match!",
+      "requiredField": "This field is required!",
+      "requiredQuestion": "Question is required!",
+      "nonEmptyOption": "Option cannot be empty!",
+      "minRequiredOptions": "At least {{count}} options are required!",
+      "maxAllowedOptions": "No more than {{count}} options are allowed!",
+      "uniqueOptions": "Duplicate options are not permitted!"
     },
     "info": {
       "noQuestionsToShow": "There are no questions to show"

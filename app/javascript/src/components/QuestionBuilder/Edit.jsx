@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 import {
   useHistory,
   useParams,
@@ -18,6 +19,7 @@ import Form from "./Form";
 const Edit = () => {
   const history = useHistory();
   const { slug, id } = useParams();
+  const { t } = useTranslation();
 
   const { data: { quiz } = {}, isLoading } = useFetchQuestion(slug, id);
 
@@ -38,9 +40,9 @@ const Edit = () => {
   return (
     <Container navbar={<NavBar backButtonVisible title={quiz.name} />}>
       <Form
-        actionType="update"
         handleSubmit={handleSubmit}
         initialValues={quiz.question || {}}
+        primaryButtonLabel={t("labels.update")}
       />
     </Container>
   );

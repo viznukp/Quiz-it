@@ -25,5 +25,10 @@ export const QUESTION_BUILDER_FORM_VALIDATION_SCHEMA = yup.object({
     .max(
       MAX_OPTIONS_COUNT,
       i18n.t("messages.error.maxAllowedOptions", { MAX_OPTIONS_COUNT })
-    ),
+    )
+    .test("uniqueOptions", i18n.t("messages.error.uniqueOptions"), options => {
+      const optionsSet = new Set(options);
+
+      return optionsSet.size === options.length;
+    }),
 });

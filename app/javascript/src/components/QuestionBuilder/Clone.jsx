@@ -21,7 +21,7 @@ const Clone = () => {
     useCloneQuizzes(id);
   const { refetch } = useShowQuiz(slug);
 
-  const handleSubmit = async ({ formData, resetForm, shouldRedirect }) => {
+  const handleSubmit = async ({ formData, submissionSource }) => {
     try {
       await quizzesApi.addQuestion({
         ...formData,
@@ -29,10 +29,10 @@ const Clone = () => {
       });
       refetch();
 
-      if (shouldRedirect) {
+      if (submissionSource === "primary") {
         history.push(routes.quiz.questions.replace(":slug", slug));
       } else {
-        resetForm();
+        history.replace(routes.quiz.question.new.replace(":slug", slug));
       }
     } catch (error) {
       logger.error(error);
@@ -43,7 +43,11 @@ const Clone = () => {
 
   return (
     <Container navbar={<NavBar backButtonVisible title={quiz} />}>
-      <Form handleSubmit={handleSubmit} initialValues={question || {}} />
+      <Form
+        isSecondaryButtonVisible
+        handleSubmit={handleSubmit}
+        initialValues={question || {}}
+      />
     </Container>
   );
 };

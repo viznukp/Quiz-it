@@ -18,7 +18,7 @@ const Create = () => {
 
   const { data: { quiz } = {}, isLoading, refetch } = useShowQuiz(slug);
 
-  const handleSubmit = async ({ formData, resetForm, shouldRedirect }) => {
+  const handleSubmit = async ({ formData, resetForm, submissionSource }) => {
     try {
       await quizzesApi.addQuestion({
         ...formData,
@@ -26,7 +26,7 @@ const Create = () => {
       });
       refetch();
 
-      if (shouldRedirect) {
+      if (submissionSource === "primary") {
         history.push(routes.quiz.questions.replace(":slug", slug));
       } else {
         resetForm();
@@ -40,7 +40,7 @@ const Create = () => {
 
   return (
     <Container navbar={<NavBar backButtonVisible title={quiz?.name} />}>
-      <Form handleSubmit={handleSubmit} />
+      <Form isSecondaryButtonVisible handleSubmit={handleSubmit} />
     </Container>
   );
 };

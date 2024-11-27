@@ -18,4 +18,6 @@ export const useFetchQuestion = (slug, id) =>
   useQuery({
     queryKey: ["question", slug, id],
     queryFn: () => quizzesApi.fetchQuestion(slug, id),
+    staleTime: 0,
+    cacheTime: 0,
   });

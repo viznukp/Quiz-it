@@ -14,9 +14,15 @@ import {
 } from "./constants";
 import Option from "./Option";
 
-const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
+const Form = ({
+  handleSubmit,
+  initialValues = {},
+  primaryButtonLabel,
+  secondaryButtonLabel,
+  isSecondaryButtonVisible = false,
+}) => {
   const { t } = useTranslation();
-  const shouldRedirect = useRef(true);
+  const submissionSource = useRef("primary");
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(
     initialValues?.answerIndex - 1 || 0
   );
@@ -37,7 +43,7 @@ const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
           handleSubmit({
             formData: { ...values, answerIndex: correctAnswerIndex + 1 },
             resetForm,
-            shouldRedirect: shouldRedirect.current,
+            submissionSource: submissionSource.current,
           })
         }
       >
@@ -69,14 +75,13 @@ const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
                           }
                           onSelectCorrect={() => setCorrectAnswerIndex(index)}
                         />
-                        {touched.options?.[index] &&
-                          errors.options?.[index] && (
-                            <p className="mt-0 text-xs leading-tight text-red-700">
-                              {errors.options[index]}
-                            </p>
-                          )}
                       </div>
                     ))}
+                    {touched.options && errors.options && (
+                      <p className="mt-0 text-xs leading-tight text-red-700">
+                        {errors.options}
+                      </p>
+                    )}
                     {values.options.length < MAX_OPTIONS_COUNT && (
                       <Button
                         className="mt-2"
@@ -95,22 +100,20 @@ const Form = ({ handleSubmit, initialValues = {}, actionType = "create" }) => {
             </div>
             <div className="mt-12 flex gap-3">
               <Button
+                label={primaryButtonLabel || t("labels.save")}
                 type="submit"
-                label={
-                  actionType === "update"
-                    ? t("labels.update")
-                    : t("labels.save")
-                }
                 onClick={() => {
-                  shouldRedirect.current = true;
+                  submissionSource.current = "primary";
                 }}
               />
-              {actionType === "create" && (
+              {isSecondaryButtonVisible && (
                 <Button
-                  label={t("labels.saveAndAddNewQuestion")}
                   style="secondary"
+                  label={
+                    secondaryButtonLabel || t("labels.saveAndAddNewQuestion")
+                  }
                   onClick={async () => {
-                    shouldRedirect.current = false;
+                    submissionSource.current = "secondary";
                     await submitForm();
                     setCorrectAnswerIndex(0);
                     setFormInitialValues(QUESTION_BUILDER_FORM_INITIAL_VALUES);
