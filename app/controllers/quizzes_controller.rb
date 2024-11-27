@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  before_action :load_quiz, only: %i[update destroy clone]
+  before_action :load_quiz, only: %i[update destroy clone show_question]
   after_action :verify_authorized, except: :index
 
   def index
@@ -22,7 +22,6 @@ class QuizzesController < ApplicationController
   end
 
   def show_question
-    @quiz = Quiz.find_by!(slug: params[:quiz_slug])
     authorize @quiz
     @question = @quiz.questions.find_by!(id: params[:id])
   end
