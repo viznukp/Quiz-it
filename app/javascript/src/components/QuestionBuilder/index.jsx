@@ -19,7 +19,7 @@ const QuestionBuilder = () => {
   const { slug } = useParams();
   const history = useHistory();
 
-  const { data: { quiz } = {}, isLoading } = useShowQuiz(slug);
+  const { data: { quiz } = {}, isLoading, refetch } = useShowQuiz(slug);
 
   if (isLoading) return <PageLoader fullScreen />;
 
@@ -45,7 +45,12 @@ const QuestionBuilder = () => {
             {t("labels.questions", { count: quiz.questions.length })}
           </Typography>
           {quiz.questions.map(question => (
-            <QuestionDisplayCard key={question.id} slug={slug} {...question} />
+            <QuestionDisplayCard
+              key={question.id}
+              slug={slug}
+              {...question}
+              refetchQuizzes={refetch}
+            />
           ))}
         </div>
       )}

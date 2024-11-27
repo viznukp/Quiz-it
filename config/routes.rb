@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     end
     resources :users, only: :create
     resource :session, only: %i[create destroy]
-    resources :questions, only: %i[create update]
+    resources :questions, only: %i[create update destroy]
   end
 
   root "home#index"

@@ -6,10 +6,28 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import routes from "src/routes";
 
-const QuestionDisplayCard = ({ question, id, options, answerIndex, slug }) => {
+import questionsApi from "apis/questions";
+
+const QuestionDisplayCard = ({
+  question,
+  id,
+  options,
+  answerIndex,
+  slug,
+  refetchQuizzes,
+}) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleQuestionDelete = async () => {
+    try {
+      await questionsApi.destroy(id);
+      refetchQuizzes();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   return (
     <div className="border p-4">
@@ -21,7 +39,7 @@ const QuestionDisplayCard = ({ question, id, options, answerIndex, slug }) => {
           onClick={() => setIsOpen(!isOpen)}
         />
         {isOpen && (
-          <div className="absolute right-0 top-full mt-2 flex flex-col rounded-lg border bg-white p-3 shadow-lg">
+          <div className="absolute right-0 top-full z-10 mt-2 flex flex-col rounded-lg border bg-white p-3 shadow-lg">
             <Button
               label={t("labels.edit")}
               style="text"
@@ -34,15 +52,19 @@ const QuestionDisplayCard = ({ question, id, options, answerIndex, slug }) => {
               }
             />
             <Button label={t("labels.clone")} style="text" />
-            <Button label={t("labels.delete")} style="danger-text" />
+            <Button
+              label={t("labels.delete")}
+              style="danger-text"
+              onClick={handleQuestionDelete}
+            />
           </div>
         )}
       </div>
       <Radio stacked>
-        {options?.map(option => (
+        {options?.map((option, index) => (
           <Radio.Item
             checked={options[answerIndex - 1] === option}
-            key={option}
+            key={index}
             label={option}
             value={option}
           />
