@@ -28,7 +28,12 @@ const QuizList = () => {
       category,
       createdOn: dateFromTimeStamp(updatedAt),
       actions: (
-        <ActionList reloadQuizzes={reloadQuizzes} slug={slug} status={status} />
+        <ActionList
+          quizName={name}
+          reloadQuizzes={reloadQuizzes}
+          slug={slug}
+          status={status}
+        />
       ),
     }));
 

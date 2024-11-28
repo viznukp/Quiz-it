@@ -22,6 +22,8 @@
     "edit": "Edit",
     "clone": "Clone",
     "delete": "Delete",
+    "confirmDelete": "Yes, delete",
+    "confirmDeleteTitle": "Delete quiz?",
     "update": "Update",
     "publish": "Publish",
     "unpublish": "Unpublish",
@@ -51,6 +53,10 @@
     },
     "info": {
       "noQuestionsToShow": "There are no questions to show"
+    },
+    "warnings": {
+      "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
+      "confirmDelete": "It will be permanently deleted and we won't be able to recover it!"
     }
   }
 }
