@@ -25,6 +25,7 @@
     "confirmDelete": "Yes, delete",
     "confirmDeleteTitle": "Delete quiz?",
     "update": "Update",
+    "draft": "Draft",
     "publish": "Publish",
     "unpublish": "Unpublish",
     "exampleQuizName": "Eg: Solar system quiz",

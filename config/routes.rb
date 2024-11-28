@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       end
       collection do
         delete :bulk_destroy
+        post :bulk_update
       end
     end
     resources :users, only: :create

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Delete } from "neetoicons";
-import { Table, Button } from "neetoui";
+import { Table, Button, Dropdown } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
@@ -9,6 +9,7 @@ import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
 import { LabelToLink, PageLoader } from "components/commons";
+import { QUIZ_STATUSES } from "components/constants";
 import { dateFromTimeStamp } from "utils/dateTime";
 
 import ActionList from "./ActionList";
@@ -51,12 +52,25 @@ const QuizList = () => {
     setSelectedQuizzesIds(selectedRowKeys);
   };
 
+  const handleResetAfterAction = () => {
+    reloadQuizzes();
+    setSelectedQuizzesIds([]);
+    setSelectedQuizzesSlugs([]);
+  };
+
   const handleDeleteMultipleQuizzes = async () => {
     try {
       await quizzesApi.deleteMultiple(selectedQuizzesSlugs);
-      reloadQuizzes();
-      setSelectedQuizzesIds([]);
-      setSelectedQuizzesSlugs([]);
+      handleResetAfterAction();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const handleUpdateMultipleQuizzes = async updateParams => {
+    try {
+      await quizzesApi.updateMultiple(selectedQuizzesSlugs, updateParams);
+      handleResetAfterAction();
     } catch (error) {
       logger.error(error);
     }
@@ -73,7 +87,33 @@ const QuizList = () => {
   return (
     <>
       {!isEmpty(selectedQuizzesSlugs) && (
-        <div className="mb-3">
+        <div className="mb-3 flex gap-3">
+          <Dropdown
+            buttonStyle="secondary"
+            className="border"
+            label={t("labels.status")}
+          >
+            <div className="flex flex-col">
+              <Button
+                label={t("labels.publish")}
+                style="text"
+                onClick={() =>
+                  handleUpdateMultipleQuizzes({
+                    status: QUIZ_STATUSES.PUBLISHED.STATUS,
+                  })
+                }
+              />
+              <Button
+                label={t("labels.draft")}
+                style="text"
+                onClick={() =>
+                  handleUpdateMultipleQuizzes({
+                    status: QUIZ_STATUSES.DRAFT.STATUS,
+                  })
+                }
+              />
+            </div>
+          </Dropdown>
           <Button
             icon={Delete}
             label={t("labels.delete")}
