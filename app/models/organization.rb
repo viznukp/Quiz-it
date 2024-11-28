@@ -7,8 +7,9 @@ class Organization < ApplicationRecord
   has_many :quizzes, through: :users
 
   validates :name, presence: true, length: { maximum: MAX_NAME_LENGTH }
+  validates :slug, presence: true, uniqueness: true
 
-  before_create :set_slug
+  before_validation :set_slug, on: :create
 
   private
 

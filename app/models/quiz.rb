@@ -19,10 +19,10 @@ class Quiz < ApplicationRecord
     presence: true,
     inclusion: { in: statuses.keys }
   validates :creator_id, presence: true
-  validates :slug, uniqueness: true
+  validates :slug, presence: true, uniqueness: true
   validate :slug_not_changed
 
-  before_create :set_slug
+  before_validation :set_slug, on: :create
 
   def set_slug
     slug_service = SlugGeneratorService.new(self, :name, :slug)

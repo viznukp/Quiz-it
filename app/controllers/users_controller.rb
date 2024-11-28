@@ -27,7 +27,8 @@ class UsersController < ApplicationController
     def build_organization_for_user
       organization = Organization.first
       if organization.nil?
-        organization = Organization.create!(name: "Big Binary Academy")
+        organization = Organization.new(name: "Big Binary Academy")
+        organization.save!
       end
       organization
     end
