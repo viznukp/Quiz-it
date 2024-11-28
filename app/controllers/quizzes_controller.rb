@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
+  skip_before_action :authenticate_user_using_x_auth_token, only: :index_public
   before_action :load_quiz, only: %i[update destroy clone show_question]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: %i[index index_public]
 
   def index
     @quizzes = Quiz.all
-    render
+  end
+
+  def index_public
+    @quizzes = Quiz.all
   end
 
   def create

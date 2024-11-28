@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button } from "neetoui";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
+import { useFetchQuizzesPublic } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
 import { Container, NavBar, PageLoader } from "components/commons";
@@ -12,7 +12,7 @@ import Card from "./Card";
 const PublicPage = () => {
   const history = useHistory();
 
-  const { data: quizzes = {}, isLoading } = useFetchQuizzes();
+  const { data: quizzes = {}, isLoading } = useFetchQuizzesPublic();
 
   if (isLoading) return <PageLoader className="h-64" />;
 

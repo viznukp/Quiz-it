@@ -8,6 +8,12 @@ export const useFetchQuizzes = queryParams =>
     queryFn: () => quizzesApi.fetch(queryParams),
   });
 
+export const useFetchQuizzesPublic = queryParams =>
+  useQuery({
+    queryKey: ["quizzesPublic", queryParams],
+    queryFn: () => quizzesApi.fetchPublic(queryParams),
+  });
+
 export const useShowQuiz = queryParams =>
   useQuery({
     queryKey: ["quiz", queryParams],

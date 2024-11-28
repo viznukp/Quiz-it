@@ -2,6 +2,8 @@ import axios from "axios";
 
 const fetch = () => axios.get("/quizzes");
 
+const fetchPublic = () => axios.get("/quizzes/index_public");
+
 const create = payload => axios.post("/quizzes", { quiz: payload });
 
 const show = slug => axios.get(`/quizzes/${slug}`);
@@ -35,6 +37,7 @@ const quizzesApi = {
   fetchQuestion,
   deleteMultiple,
   updateMultiple,
+  fetchPublic,
 };
 
 export default quizzesApi;
