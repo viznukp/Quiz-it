@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Table } from "neetoui";
 import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
@@ -13,9 +13,12 @@ import StatusTag from "./StatusTag";
 import { QUIZ_TABLE_SCHEMA } from "../constants";
 
 const QuizList = () => {
+  const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
+
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
       id,
+      slug,
       key: id,
       name: (
         <LabelToLink
@@ -37,6 +40,10 @@ const QuizList = () => {
       ),
     }));
 
+  const handleRowSelection = selectedRowKeys => {
+    setSelectedQuizzesIds(selectedRowKeys);
+  };
+
   const {
     data: quizzes = {},
     isLoading,
@@ -49,9 +56,11 @@ const QuizList = () => {
     <Table
       rowSelection
       columnData={QUIZ_TABLE_SCHEMA}
+      selectedRowKeys={selectedQuizzesIds}
       rowData={
         quizzes ? transformQuizDataForTableDisplay(quizzes, reloadQuizzes) : []
       }
+      onRowSelect={handleRowSelection}
     />
   );
 };
