@@ -6,4 +6,5 @@ json.array! @quizzes do |quiz|
     :status,
     :slug,
     :updated_at
+  json.question_count quiz.questions.size
 end
