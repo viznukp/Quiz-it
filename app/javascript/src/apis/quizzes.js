@@ -6,11 +6,27 @@ const create = payload => axios.post("/quizzes", { quiz: payload });
 
 const show = slug => axios.get(`/quizzes/${slug}`);
 
+const update = (slug, payload) =>
+  axios.put(`/quizzes/${slug}`, { quiz: payload });
+
+const destroy = slug => axios.delete(`/quizzes/${slug}`);
+
 const addQuestion = payload => axios.post("/questions", { question: payload });
 
 const fetchQuestion = (slug, id) =>
   axios.get(`/quizzes/${slug}/question/${id}`);
 
-const quizzesApi = { fetch, create, show, addQuestion, fetchQuestion };
+const clone = slug => axios.post(`/quizzes/${slug}/clone`);
+
+const quizzesApi = {
+  fetch,
+  create,
+  show,
+  update,
+  destroy,
+  addQuestion,
+  fetchQuestion,
+  clone,
+};
 
 export default quizzesApi;

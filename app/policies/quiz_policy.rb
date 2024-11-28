@@ -9,14 +9,32 @@ class QuizPolicy
   end
 
   def create?
-    user.admin? && quiz.creator_id == user.id
+    authorize_if_user_is_admin_and_quiz_creator_is_current_user
   end
 
   def show?
-    create?
+    authorize_if_user_is_admin_and_quiz_creator_is_current_user
   end
 
   def show_question?
-    show?
+    authorize_if_user_is_admin_and_quiz_creator_is_current_user
   end
+
+  def destroy?
+    authorize_if_user_is_admin_and_quiz_creator_is_current_user
+  end
+
+  def update?
+    authorize_if_user_is_admin_and_quiz_creator_is_current_user
+  end
+
+  def clone?
+    authorize_if_user_is_admin_and_quiz_creator_is_current_user
+  end
+
+  private
+
+    def authorize_if_user_is_admin_and_quiz_creator_is_current_user
+      user.admin? && quiz.creator_id == user.id
+    end
 end

@@ -22,4 +22,10 @@ export const QUIZ_TABLE_SCHEMA = [
     dataIndex: "status",
     key: "status",
   },
+  {
+    dataIndex: "actions",
+    key: "actions",
+    width: 25,
+    excludeFromColumnFilter: true,
+  },
 ];
