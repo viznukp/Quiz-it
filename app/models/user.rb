@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_secure_password
   has_secure_token :authentication_token
 
+  belongs_to :organization
   has_many :quizzes, foreign_key: "creator_id", dependent: :destroy
 
   validates :first_name, :last_name, length: { maximum: MAX_FIRST_NAME_AND_LAST_NAME_LENGTH }
@@ -22,6 +23,7 @@ class User < ApplicationRecord
     length: { maximum: MAX_EMAIL_LENGTH },
     format: { with: VALID_EMAIL_REGEX }
   validates :user_type, presence: true, inclusion: { in: user_types.keys }
+  validates :organization_id, presence: true
 
   with_options if: :admin? do
     validates :password, presence: true, length: { minimum: MIN_PASSWORD_LENGTH }
