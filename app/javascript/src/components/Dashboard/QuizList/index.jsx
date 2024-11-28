@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 
-import { Table } from "neetoui";
+import { Delete } from "neetoicons";
+import { Table, Button } from "neetoui";
+import { isEmpty } from "ramda";
+import { useTranslation } from "react-i18next";
 import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
+import quizzesApi from "apis/quizzes";
 import { LabelToLink, PageLoader } from "components/commons";
 import { dateFromTimeStamp } from "utils/dateTime";
 
@@ -13,7 +17,9 @@ import StatusTag from "./StatusTag";
 import { QUIZ_TABLE_SCHEMA } from "../constants";
 
 const QuizList = () => {
+  const { t } = useTranslation();
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
+  const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
@@ -40,8 +46,20 @@ const QuizList = () => {
       ),
     }));
 
-  const handleRowSelection = selectedRowKeys => {
+  const handleRowSelection = (selectedRowKeys, selectedRows) => {
+    setSelectedQuizzesSlugs(selectedRows.map(row => row.slug));
     setSelectedQuizzesIds(selectedRowKeys);
+  };
+
+  const handleDeleteMultipleQuizzes = async () => {
+    try {
+      await quizzesApi.deleteMultiple(selectedQuizzesSlugs);
+      reloadQuizzes();
+      setSelectedQuizzesIds([]);
+      setSelectedQuizzesSlugs([]);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   const {
@@ -53,15 +71,29 @@ const QuizList = () => {
   if (isLoading) return <PageLoader className="h-64" />;
 
   return (
-    <Table
-      rowSelection
-      columnData={QUIZ_TABLE_SCHEMA}
-      selectedRowKeys={selectedQuizzesIds}
-      rowData={
-        quizzes ? transformQuizDataForTableDisplay(quizzes, reloadQuizzes) : []
-      }
-      onRowSelect={handleRowSelection}
-    />
+    <>
+      {!isEmpty(selectedQuizzesSlugs) && (
+        <div className="mb-3">
+          <Button
+            icon={Delete}
+            label={t("labels.delete")}
+            style="danger"
+            onClick={handleDeleteMultipleQuizzes}
+          />
+        </div>
+      )}
+      <Table
+        rowSelection
+        columnData={QUIZ_TABLE_SCHEMA}
+        selectedRowKeys={selectedQuizzesIds}
+        rowData={
+          quizzes
+            ? transformQuizDataForTableDisplay(quizzes, reloadQuizzes)
+            : []
+        }
+        onRowSelect={handleRowSelection}
+      />
+    </>
   );
 };
 

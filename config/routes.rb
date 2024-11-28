@@ -7,6 +7,9 @@ Rails.application.routes.draw do
         post :clone
         get "question/:id", to: "quizzes#show_question", as: :show_question
       end
+      collection do
+        delete :bulk_destroy
+      end
     end
     resources :users, only: :create
     resource :session, only: %i[create destroy]

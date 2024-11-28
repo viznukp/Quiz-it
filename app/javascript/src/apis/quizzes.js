@@ -18,15 +18,19 @@ const fetchQuestion = (slug, id) =>
 
 const clone = slug => axios.post(`/quizzes/${slug}/clone`);
 
+const deleteMultiple = slugs =>
+  axios.delete("/quizzes/bulk_destroy", { data: { quizzes: { slugs } } });
+
 const quizzesApi = {
   fetch,
-  create,
   show,
+  create,
+  clone,
   update,
   destroy,
   addQuestion,
   fetchQuestion,
-  clone,
+  deleteMultiple,
 };
 
 export default quizzesApi;

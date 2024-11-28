@@ -38,6 +38,16 @@ class QuizzesController < ApplicationController
     render_notice(t("successfully_deleted", entity: "Quiz"))
   end
 
+  def bulk_destroy
+    quizzes = Quiz.where(slug: bulk_destroy_params[:slugs])
+    quizzes.each do |quiz|
+      authorize quiz, :destroy?
+    end
+
+    quizzes.destroy_all
+    render_notice(t("successfully_deleted", entity: "Quizzes"))
+  end
+
   def clone
     cloned_quiz = @quiz.deep_clone include: :questions
     cloned_quiz.set_slug
@@ -50,6 +60,10 @@ class QuizzesController < ApplicationController
 
     def quiz_params
       params.require(:quiz).permit(:name, :category, :status)
+    end
+
+    def bulk_destroy_params
+      params.require(:quizzes).permit(slugs: [])
     end
 
     def load_quiz
