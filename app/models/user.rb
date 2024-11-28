@@ -23,6 +23,7 @@ class User < ApplicationRecord
     length: { maximum: MAX_EMAIL_LENGTH },
     format: { with: VALID_EMAIL_REGEX }
   validates :user_type, presence: true, inclusion: { in: user_types.keys }
+  validates :organization_id, presence: true
 
   with_options if: :admin? do
     validates :password, presence: true, length: { minimum: MIN_PASSWORD_LENGTH }
