@@ -25,6 +25,7 @@
     "confirmDelete": "Yes, delete",
     "confirmDeleteTitle": "Delete quiz?",
     "update": "Update",
+    "draft": "Draft",
     "publish": "Publish",
     "unpublish": "Unpublish",
     "exampleQuizName": "Eg: Solar system quiz",
@@ -52,7 +53,9 @@
       "uniqueOptions": "Duplicate options are not permitted!"
     },
     "info": {
-      "noQuestionsToShow": "There are no questions to show"
+      "noQuestionsToShow": "There are no questions to show",
+      "availableQuizzes": "{{count}} quizzes",
+      "selectedRows": "{{selected}} {{entity}} selected of {{total}}"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
