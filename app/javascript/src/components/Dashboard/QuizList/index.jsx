@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Delete } from "neetoicons";
-import { Table, Button, Dropdown } from "neetoui";
+import { Table, Button, Dropdown, Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
@@ -86,42 +86,55 @@ const QuizList = () => {
 
   return (
     <>
-      {!isEmpty(selectedQuizzesSlugs) && (
-        <div className="mb-3 flex gap-3">
-          <Dropdown
-            buttonStyle="secondary"
-            className="border"
-            label={t("labels.status")}
-          >
-            <div className="flex flex-col">
-              <Button
-                label={t("labels.publish")}
-                style="text"
-                onClick={() =>
-                  handleUpdateMultipleQuizzes({
-                    status: QUIZ_STATUSES.PUBLISHED.STATUS,
-                  })
-                }
-              />
-              <Button
-                label={t("labels.draft")}
-                style="text"
-                onClick={() =>
-                  handleUpdateMultipleQuizzes({
-                    status: QUIZ_STATUSES.DRAFT.STATUS,
-                  })
-                }
-              />
-            </div>
-          </Dropdown>
-          <Button
-            icon={Delete}
-            label={t("labels.delete")}
-            style="danger"
-            onClick={handleDeleteMultipleQuizzes}
-          />
-        </div>
-      )}
+      <div className="mb-3 flex gap-3">
+        <Typography style="h4">
+          {selectedQuizzesIds.length > 0
+            ? t("messages.info.selectedRows", {
+                selected: selectedQuizzesIds.length,
+                total: quizzes.length,
+                entity: "quizzes",
+              })
+            : t("messages.info.availableQuizzes", {
+                count: quizzes.length,
+              })}
+        </Typography>
+        {!isEmpty(selectedQuizzesSlugs) && (
+          <div className="flex gap-3">
+            <Dropdown
+              buttonStyle="secondary"
+              className="border"
+              label={t("labels.status")}
+            >
+              <div className="flex flex-col">
+                <Button
+                  label={t("labels.publish")}
+                  style="text"
+                  onClick={() =>
+                    handleUpdateMultipleQuizzes({
+                      status: QUIZ_STATUSES.PUBLISHED.STATUS,
+                    })
+                  }
+                />
+                <Button
+                  label={t("labels.draft")}
+                  style="text"
+                  onClick={() =>
+                    handleUpdateMultipleQuizzes({
+                      status: QUIZ_STATUSES.DRAFT.STATUS,
+                    })
+                  }
+                />
+              </div>
+            </Dropdown>
+            <Button
+              icon={Delete}
+              label={t("labels.delete")}
+              style="danger"
+              onClick={handleDeleteMultipleQuizzes}
+            />
+          </div>
+        )}
+      </div>
       <Table
         rowSelection
         columnData={QUIZ_TABLE_SCHEMA}
