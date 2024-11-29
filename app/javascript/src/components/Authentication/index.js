@@ -1,4 +1,5 @@
-import Login from "./Login";
-import Signup from "./Signup";
+import Login from "./Admin/Login";
+import Signup from "./Admin/Signup";
+import RegisterStandardUser from "./Standard/Register";
 
-export { Login, Signup };
+export { Login, Signup, RegisterStandardUser };
