@@ -12,14 +12,15 @@ import Card from "./Card";
 const PublicPage = () => {
   const history = useHistory();
 
-  const { data: quizzes = {}, isLoading } = useFetchQuizzesPublic();
+  const { data = {}, isLoading } = useFetchQuizzesPublic();
+  const { quizData: { organization, quizzes = [] } = {} } = data;
 
   if (isLoading) return <PageLoader className="h-64" />;
 
   return (
     <Container
       navbar={
-        <NavBar title="Organization Name">
+        <NavBar title={organization}>
           <Button
             label="Login as admin"
             onClick={() => history.push(routes.login)}
