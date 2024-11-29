@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Question < ApplicationRecord
-  belongs_to :quiz
+  belongs_to :quiz, counter_cache: true
 
   validates :question, :answer_index, :options, presence: true
   validate :validate_options_array

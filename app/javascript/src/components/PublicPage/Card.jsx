@@ -17,7 +17,7 @@ const randomColorClass = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const Card = ({ name, category, questionCount = 0 }) => {
+const Card = ({ name, category, questionsCount = 0 }) => {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +29,7 @@ const Card = ({ name, category, questionCount = 0 }) => {
         type="solid"
       />
       <Typography className="mt-6">
-        {t("labels.questions", { count: questionCount })}
+        {t("labels.questions", { count: questionsCount })}
       </Typography>
       <Button fullWidth className="mt-2" label={t("labels.startQuiz")} />
     </div>
