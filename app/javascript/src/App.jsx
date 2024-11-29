@@ -9,6 +9,7 @@ import routes from "src/routes";
 import { Login, Signup } from "components/Authentication";
 import { PrivateRoute } from "components/commons";
 import Dashboard from "components/Dashboard";
+import PublicPage from "components/PublicPage";
 import QuestionBuilder from "components/QuestionBuilder";
 import Clone from "components/QuestionBuilder/Clone";
 import Create from "components/QuestionBuilder/Create";
@@ -35,6 +36,7 @@ const App = () => {
           <Route exact component={Create} path={routes.quiz.question.new} />
           <Route exact component={Edit} path={routes.quiz.question.edit} />
           <Route exact component={Clone} path={routes.quiz.question.clone} />
+          <Route exact component={PublicPage} path={routes.publicPage} />
           <PrivateRoute
             component={Dashboard}
             condition={isLoggedIn}

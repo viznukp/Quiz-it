@@ -35,7 +35,9 @@
     "addOption": "Add Option",
     "enterQuestion": "Enter your question here...",
     "typeOption": "Type option {{number}}",
-    "questions": "{{count}} questions"
+    "questions": "{{count}} questions",
+    "publicPage": "Public page",
+    "startQuiz": "Start quiz"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"

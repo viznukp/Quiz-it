@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       collection do
         delete :bulk_destroy
         post :bulk_update
+        get :index_public
       end
     end
     resources :users, only: :create

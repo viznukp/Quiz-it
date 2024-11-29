@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import classNames from "classnames";
-import { List, RightArrow, LeftArrow } from "neetoicons";
+import { List, RightArrow, LeftArrow, Globe } from "neetoicons";
 import { useTranslation } from "react-i18next";
 import routes from "src/routes";
 
@@ -44,6 +44,13 @@ const Sidebar = () => {
             icon={<List />}
             label={t("labels.quizzes")}
             onClickRoute={routes.dashboard}
+          />
+          <SidebarNavItem
+            toolTipEnabled
+            expanded={isExpanded}
+            icon={<Globe />}
+            label={t("labels.publicPage")}
+            onClickRoute={routes.publicPage}
           />
         </div>
       </div>

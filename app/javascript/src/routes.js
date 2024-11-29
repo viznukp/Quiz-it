@@ -10,6 +10,7 @@ const routes = {
       clone: "/:slug/questions/:id/clone",
     },
   },
+  publicPage: "/public",
 };
 
 export default routes;
