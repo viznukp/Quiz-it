@@ -4,7 +4,6 @@ import { Form, Formik } from "formik";
 import { Button, Typography } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
-import routes from "src/routes";
 
 import authApi from "apis/authentication";
 import { setAuthHeaders } from "apis/axios";
@@ -20,7 +19,7 @@ const Register = ({ quizName }) => {
 
   const handleStandardUserRegistration = async formData => {
     try {
-      const responseData = await authApi.login(formData);
+      const responseData = await authApi.authenticateStandardUser(formData);
       setToLocalStorage({
         authToken: responseData.authenticationToken,
         email: responseData.email,
@@ -30,7 +29,6 @@ const Register = ({ quizName }) => {
           .trim(),
       });
       setAuthHeaders();
-      window.location.href = routes.root;
     } catch (error) {
       logger.error(error);
     }

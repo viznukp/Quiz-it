@@ -6,10 +6,14 @@ const login = payload => axios.post("/session", { session: payload });
 
 const logout = () => axios.delete("/session");
 
+const authenticateStandardUser = payload =>
+  axios.post("/users/create_standard_user", { session: payload });
+
 const authApi = {
   signup,
   login,
   logout,
+  authenticateStandardUser,
 };
 
 export default authApi;

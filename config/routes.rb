@@ -13,7 +13,11 @@ Rails.application.routes.draw do
         get :index_public
       end
     end
-    resources :users, only: :create
+    resources :users, only: :create do
+      collection do
+        post :create_standard_user
+      end
+    end
     resource :session, only: %i[create destroy]
     resources :questions, only: %i[create update destroy] do
       get "clone", to: "questions#clone", as: :clone
