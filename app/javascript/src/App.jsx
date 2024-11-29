@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import routes from "src/routes";
 
-import { Login, Signup } from "components/Authentication";
+import { Login, Signup, RegisterStandardUser } from "components/Authentication";
 import { PrivateRoute } from "components/commons";
 import Dashboard from "components/Dashboard";
 import PublicPage from "components/PublicPage";
@@ -28,6 +28,11 @@ const App = () => {
         <Switch>
           <Route exact component={Signup} path={routes.signup} />
           <Route exact component={Login} path={routes.login} />
+          <Route
+            exact
+            component={RegisterStandardUser}
+            path={routes.registerStandardUser}
+          />
           <Route
             exact
             component={QuestionBuilder}

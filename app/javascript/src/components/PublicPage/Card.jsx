@@ -3,22 +3,14 @@ import React from "react";
 import { capitalize } from "neetocist";
 import { Typography, Button, Tag } from "neetoui";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import routes from "src/routes";
 
-const randomColorClass = () => {
-  const colors = [
-    "bg-red-300",
-    "bg-blue-300",
-    "bg-green-300",
-    "bg-yellow-300",
-    "bg-purple-300",
-    "bg-pink-300",
-  ];
+import { randomColorClass } from "utils/randomColor";
 
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
-const Card = ({ name, category, questionsCount = 0 }) => {
+const Card = ({ name, slug, category, questionsCount = 0 }) => {
   const { t } = useTranslation();
+  const history = useHistory();
 
   return (
     <div className="rounded border px-3 py-4 shadow-lg">
@@ -31,7 +23,14 @@ const Card = ({ name, category, questionsCount = 0 }) => {
       <Typography className="mt-6">
         {t("labels.questions", { count: questionsCount })}
       </Typography>
-      <Button fullWidth className="mt-2" label={t("labels.startQuiz")} />
+      <Button
+        fullWidth
+        className="mt-2"
+        label={t("labels.startQuiz")}
+        onClick={() =>
+          history.push(routes.registerStandardUser.replace(":slug", slug))
+        }
+      />
     </div>
   );
 };

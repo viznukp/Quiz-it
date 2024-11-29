@@ -11,6 +11,7 @@ const routes = {
     },
   },
   publicPage: "/public",
+  registerStandardUser: "/user/standard/register/:slug",
 };
 
 export default routes;
