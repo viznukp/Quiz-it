@@ -15,6 +15,7 @@ const Option = ({
   markAsWrong = false,
   isCorrect = false,
   isDisabled = false,
+  isStatusLabelEnabled = false,
 }) => {
   const { t } = useTranslation();
 
@@ -60,7 +61,7 @@ const Option = ({
           />
         )}
       </div>
-      {(markAsCorrect || markAsWrong) && (
+      {isStatusLabelEnabled && (
         <div className="mt-1 flex justify-end">
           <Typography
             style="body3"

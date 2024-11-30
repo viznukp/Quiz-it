@@ -1,14 +1,10 @@
 import React from "react";
 
 import { Form, Formik } from "formik";
-import { Button, Typography } from "neetoui";
+import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
-import {
-  useHistory,
-  useParams,
-} from "react-router-dom/cjs/react-router-dom.min";
-import routes from "src/routes";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 import authApi from "apis/authentication";
 import { setAuthHeaders } from "apis/axios";
@@ -19,10 +15,9 @@ import {
   REGISTRATION_FORM_VALIDATION_SCHEMA,
 } from "./constants";
 
-const Register = ({ quizName }) => {
+const Register = ({ redirectUrl }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const { slug } = useParams();
 
   const handleStandardUserRegistration = async formData => {
     try {
@@ -36,7 +31,8 @@ const Register = ({ quizName }) => {
           .trim(),
       });
       setAuthHeaders();
-      history.replace(routes.attemptQuiz.replace(":slug", slug));
+      // history.replace(routes.attemptQuiz.replace(":slug", slug));
+      history.replace(redirectUrl);
     } catch (error) {
       logger.error(error);
     }
@@ -45,7 +41,6 @@ const Register = ({ quizName }) => {
   return (
     <div className="neeto-ui-bg-gray-100 h-screen overflow-y-auto p-6">
       <div className="mx-auto max-w-6xl">
-        <Typography style="h1">{quizName}</Typography>
         <Formik
           initialValues={REGISTRATION_FORM_INITIAL_VALUES}
           validationSchema={REGISTRATION_FORM_VALIDATION_SCHEMA}

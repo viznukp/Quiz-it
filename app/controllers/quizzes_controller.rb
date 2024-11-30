@@ -4,7 +4,8 @@ class QuizzesController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token, only: :index_public
   before_action :load_quiz, only: %i[update destroy clone show_question]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
-  after_action :verify_authorized, except: %i[index_public show]
+  before_action :load_quiz_with_questions, only: %i[show show_quiz_without_answer]
+  after_action :verify_authorized, except: %i[index_public show show_quiz_without_answer]
 
   def index
     @quizzes = Quiz.all
@@ -23,8 +24,11 @@ class QuizzesController < ApplicationController
   end
 
   def show
-    @quiz = Quiz.includes(:questions).find_by!(slug: params[:slug])
-    # authorize @quiz
+    authorize @quiz
+  end
+
+  def show_quiz_without_answer
+    render
   end
 
   def show_question
@@ -78,6 +82,10 @@ class QuizzesController < ApplicationController
 
     def load_quiz
       @quiz = Quiz.find_by!(slug: params[:slug])
+    end
+
+    def load_quiz_with_questions
+      @quiz = Quiz.includes(:questions).find_by!(slug: params[:slug])
     end
 
     def load_quizzes

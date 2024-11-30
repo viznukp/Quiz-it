@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
 import { Typography, Button } from "neetoui";
+import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 import submissionsApi from "apis/submissions";
 import { PageLoader } from "components/commons";
-import { useShowQuiz } from "hooks/reactQuery/useQuizzesApi";
+import { useShowQuizWithoutAnswer } from "hooks/reactQuery/useQuizzesApi";
 import { getFromLocalStorage, STORAGE_KEYS } from "utils/storage";
 
 import ShowQuestion from "./ShowQuestion";
@@ -17,7 +18,7 @@ const QuizAttempt = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
 
-  const { data = {}, isLoading } = useShowQuiz(slug);
+  const { data = {}, isLoading } = useShowQuizWithoutAnswer(slug);
 
   if (isLoading) {
     return <PageLoader fullScreen />;
@@ -26,6 +27,7 @@ const QuizAttempt = () => {
   const { quiz: { questions = [] } = {} } = data;
   const questionCount = questions.length;
   const currentQuestion = questions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === questionCount - 1;
 
   const handleResponseSubmission = async () => {
     try {
@@ -40,6 +42,9 @@ const QuizAttempt = () => {
     }
   };
 
+  const isOptionInAnswers = (questionId, selectedChoice) =>
+    includes({ questionId, selectedChoice }, userAnswers);
+
   const handleOptionSelect = (questionId, selectedChoice) => {
     setUserAnswers(prevAnswers => {
       const existingAnswerIndex = prevAnswers.findIndex(
@@ -47,6 +52,12 @@ const QuizAttempt = () => {
       );
 
       if (existingAnswerIndex !== -1) {
+        const existingAnswer = prevAnswers[existingAnswerIndex];
+
+        if (existingAnswer.selectedChoice === selectedChoice) {
+          return prevAnswers.filter(answer => answer.questionId !== questionId);
+        }
+
         const updatedAnswers = [...prevAnswers];
         updatedAnswers[existingAnswerIndex] = { questionId, selectedChoice };
 
@@ -61,9 +72,13 @@ const QuizAttempt = () => {
     <div className="neeto-ui-bg-gray-200 flex h-screen items-center justify-center overflow-y-auto p-6">
       <div className="flex w-full max-w-lg flex-col gap-2 rounded-3xl bg-white p-16 sm:max-w-xl md:max-w-2xl lg:max-w-3xl">
         <Typography weight="semibold">
-          Question {currentQuestionIndex + 1} of {questionCount}
+          {t("labels.questionFromPool", {
+            current: currentQuestionIndex + 1,
+            total: questionCount,
+          })}
         </Typography>
         <ShowQuestion
+          isOptionInAnswers={isOptionInAnswers}
           questionId={currentQuestion.id}
           onOptionSelect={handleOptionSelect}
           {...currentQuestion}
@@ -75,14 +90,16 @@ const QuizAttempt = () => {
             onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
           />
           <Button
-            disabled={currentQuestionIndex === questionCount - 1}
+            disabled={isLastQuestion}
             label={t("labels.next")}
             onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
           />
-          <Button
-            label={t("labels.saveAndSubmit")}
-            onClick={handleResponseSubmission}
-          />
+          {isLastQuestion && (
+            <Button
+              label={t("labels.saveAndSubmit")}
+              onClick={handleResponseSubmission}
+            />
+          )}
         </div>
       </div>
     </div>

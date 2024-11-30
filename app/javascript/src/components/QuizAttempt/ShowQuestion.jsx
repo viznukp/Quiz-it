@@ -5,7 +5,13 @@ import { Typography } from "neetoui";
 
 import { Option } from "components/commons";
 
-const ShowQuestion = ({ questionId, question, options, onOptionSelect }) => (
+const ShowQuestion = ({
+  questionId,
+  question,
+  options,
+  onOptionSelect,
+  isOptionInAnswers,
+}) => (
   <>
     <Typography style="h3">{question} </Typography>
     <Formik initialValues={{ options }}>
@@ -17,8 +23,8 @@ const ShowQuestion = ({ questionId, question, options, onOptionSelect }) => (
                 values?.options?.map((_, index) => (
                   <Option
                     isDisabled
-                    // markAsCorrect=
                     key={index}
+                    markAsCorrect={isOptionInAnswers(questionId, index + 1)}
                     number={index + 1}
                     onSelectCorrect={() =>
                       onOptionSelect(questionId, index + 1)

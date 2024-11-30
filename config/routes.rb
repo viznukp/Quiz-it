@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       member do
         post :clone
         get "question/:id", to: "quizzes#show_question", as: :show_question
+        get :show_quiz_without_answer
       end
       collection do
         delete :bulk_destroy
