@@ -4,6 +4,11 @@ import { Form, Formik } from "formik";
 import { Button, Typography } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
+import {
+  useHistory,
+  useParams,
+} from "react-router-dom/cjs/react-router-dom.min";
+import routes from "src/routes";
 
 import authApi from "apis/authentication";
 import { setAuthHeaders } from "apis/axios";
@@ -16,6 +21,8 @@ import {
 
 const Register = ({ quizName }) => {
   const { t } = useTranslation();
+  const history = useHistory();
+  const { slug } = useParams();
 
   const handleStandardUserRegistration = async formData => {
     try {
@@ -29,6 +36,7 @@ const Register = ({ quizName }) => {
           .trim(),
       });
       setAuthHeaders();
+      history.replace(routes.attemptQuiz.replace(":slug", slug));
     } catch (error) {
       logger.error(error);
     }

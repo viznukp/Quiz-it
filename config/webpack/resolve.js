@@ -15,6 +15,7 @@ module.exports = {
     neetoicons: "@bigbinary/neeto-icons",
     neetocist: "@bigbinary/neeto-cist",
     utils: absolutePath("src/utils"),
+    hooks: absolutePath("src/hooks"),
     translations: absolutePath("src/translations"),
   },
   extensions: [

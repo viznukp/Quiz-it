@@ -37,7 +37,12 @@
     "typeOption": "Type option {{number}}",
     "questions": "{{count}} questions",
     "publicPage": "Public page",
-    "startQuiz": "Start quiz"
+    "startQuiz": "Start quiz",
+    "previous": "Previous",
+    "next": "Next",
+    "saveAndSubmit": "Save and submit",
+    "yourAnswer": "Your answer",
+    "correctAnswer": "Correct answer"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
