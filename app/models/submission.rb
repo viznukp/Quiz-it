@@ -14,5 +14,4 @@ class Submission < ApplicationRecord
   validates :unanswered_count, numericality: { greater_than_or_equal_to: 0, only_integer: true }
   validates :status, inclusion: { in: statuses.keys }
   validates :answers, presence: true
-  validate :validate_answers_format
 end

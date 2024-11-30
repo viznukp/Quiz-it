@@ -6,6 +6,7 @@ en:
   successfully_updated: "%{entity} was successfully updated!"
   successfully_deleted: "%{entity} was successfully deleted!"
   successfully_cloned: "%{entity} was successfully cloned!"
+  submission_successfully_saved: "Your response is saved successfully!"
   signup_successful: "Signup successful. Please login to continue"
   session:
     could_not_auth: "Could not authenticate with the provided credentials."

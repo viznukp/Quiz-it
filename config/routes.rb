@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     resources :questions, only: %i[create update destroy] do
       get "clone", to: "questions#clone", as: :clone
     end
+
+    resources :submissions, only: :create
   end
 
   root "home#index"
