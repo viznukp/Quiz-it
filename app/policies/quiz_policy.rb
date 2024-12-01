@@ -8,10 +8,6 @@ class QuizPolicy
     @quiz = quiz
   end
 
-  def index
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
-  end
-
   def create?
     authorize_if_user_is_admin_and_quiz_creator_is_current_user
   end

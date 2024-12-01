@@ -1,6 +1,12 @@
 import axios from "axios";
+import qs from "qs";
 
-const fetch = () => axios.get("/quizzes");
+const fetch = filters =>
+  axios.get("/quizzes", {
+    params: filters,
+    paramsSerializer: params =>
+      qs.stringify(params, { arrayFormat: "brackets" }),
+  });
 
 const fetchPublic = () => axios.get("/quizzes/index_public");
 

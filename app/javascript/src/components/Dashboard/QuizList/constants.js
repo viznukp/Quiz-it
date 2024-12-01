@@ -29,3 +29,9 @@ export const QUIZ_TABLE_SCHEMA = [
     excludeFromColumnFilter: true,
   },
 ];
+
+export const FILTER_INITIAL_VALUES = {
+  name: "",
+  category: [],
+  status: "",
+};
