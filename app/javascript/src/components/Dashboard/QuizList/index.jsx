@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { Delete, Filter as FilterIcon } from "neetoicons";
-import { Table, Button, Dropdown, Typography } from "neetoui";
-import { isEmpty } from "ramda";
+import { Delete, Column, Filter as FilterIcon } from "neetoicons";
+import { Table, Button, Dropdown, Typography, Checkbox } from "neetoui";
+import { isEmpty, without } from "ramda";
 import { useTranslation } from "react-i18next";
 import routes from "src/routes";
 
@@ -13,6 +13,7 @@ import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import { dateFromTimeStamp } from "utils/dateTime";
 
 import ActionList from "./ActionList";
+import CategorySelector from "./CategorySelector";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
 import StatusTag from "./StatusTag";
@@ -23,6 +24,9 @@ const QuizList = () => {
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [filterParams, setFilterParams] = useState({});
+  const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
+  const [columnsToHide, setColumnsToHide] = useState([]);
+  // const [selectedCategory, setSelectedCategory] = useState("");
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
@@ -69,6 +73,18 @@ const QuizList = () => {
     }
   };
 
+  const filterColumns = columns =>
+    QUIZ_TABLE_SCHEMA.filter(column => !columns.includes(column.key));
+
+  const handleColumnFilterChange = key => {
+    const updatedColumnsToHide = columnsToHide.includes(key)
+      ? without([key], columnsToHide)
+      : [...columnsToHide, key];
+
+    setColumnsToHide(updatedColumnsToHide);
+    setVisibleColumns(filterColumns(updatedColumnsToHide));
+  };
+
   const handleUpdateMultipleQuizzes = async updateParams => {
     try {
       await quizzesApi.updateMultiple(selectedQuizzesSlugs, updateParams);
@@ -106,6 +122,17 @@ const QuizList = () => {
               <Dropdown
                 buttonStyle="secondary"
                 className="border"
+                label={t("labels.changeCategory")}
+              >
+                <CategorySelector
+                  onSelect={selectedCategory => {
+                    handleUpdateMultipleQuizzes({ category: selectedCategory });
+                  }}
+                />
+              </Dropdown>
+              <Dropdown
+                buttonStyle="secondary"
+                className="border"
                 label={t("labels.status")}
               >
                 <div className="flex flex-col">
@@ -138,7 +165,29 @@ const QuizList = () => {
             </div>
           )}
         </div>
-        <div className="flex">
+        <div className="flex gap-2">
+          <Dropdown buttonStyle="text" icon={Column}>
+            <div className="flex flex-col gap-3 p-4">
+              {QUIZ_TABLE_SCHEMA.map(
+                ({
+                  title,
+                  key,
+                  excludeFromColumnFilter,
+                  isDisabledInColumnFilter,
+                }) =>
+                  !excludeFromColumnFilter && (
+                    <Checkbox
+                      checked={!columnsToHide.includes(key)}
+                      disabled={isDisabledInColumnFilter}
+                      key={key}
+                      label={title}
+                      value={key}
+                      onChange={() => handleColumnFilterChange(key)}
+                    />
+                  )
+              )}
+            </div>
+          </Dropdown>
           <Button
             icon={FilterIcon}
             style="text"
@@ -148,7 +197,7 @@ const QuizList = () => {
       </div>
       <Table
         rowSelection
-        columnData={QUIZ_TABLE_SCHEMA}
+        columnData={visibleColumns}
         selectedRowKeys={selectedQuizzesIds}
         rowData={
           quizzes

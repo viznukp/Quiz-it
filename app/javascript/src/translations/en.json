@@ -46,7 +46,9 @@
     "correctAnswer": "Correct answer",
     "questionFromPool": "Question {{current}} of {{total}}",
     "clearFilters": "Clear filters",
-    "done": "Done"
+    "done": "Done",
+    "changeCategory": "Change category",
+    "searchCategory": "Search category"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
