@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FilterService
+  include Pagy::Backend
+
   attr_reader :params
 
   def initialize(params)
@@ -22,10 +24,10 @@ class FilterService
       quizzes = quizzes.where("LOWER(name) LIKE ?", "%#{filter_params[:quiz_name].downcase}%")
     end
 
-    quizzes
+    pagy(quizzes, limit: filter_params[:page_size], page: filter_params[:page])
   end
 
   def filter_params
-    params.fetch(:filters, {}).permit(:quiz_name, :status, :category)
+    params.fetch(:filters, {}).permit(:quiz_name, :status, :category, :page_size, :page)
   end
 end

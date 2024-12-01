@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 
 import { Delete, Column, Filter as FilterIcon } from "neetoicons";
-import { Table, Button, Dropdown, Typography, Checkbox } from "neetoui";
+import {
+  Table,
+  Button,
+  Dropdown,
+  Typography,
+  Checkbox,
+  Pagination,
+} from "neetoui";
 import { isEmpty, without } from "ramda";
 import { useTranslation } from "react-i18next";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
 import { LabelToLink, PageLoader } from "components/commons";
-import { QUIZ_STATUSES } from "components/constants";
+import {
+  QUIZ_STATUSES,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_INDEX,
+} from "components/constants";
 import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import { dateFromTimeStamp } from "utils/dateTime";
 
@@ -26,7 +37,7 @@ const QuizList = () => {
   const [filterParams, setFilterParams] = useState({});
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
   const [columnsToHide, setColumnsToHide] = useState([]);
-  // const [selectedCategory, setSelectedCategory] = useState("");
+  const [page, setPage] = useState(DEFAULT_PAGE_INDEX);
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
@@ -95,10 +106,12 @@ const QuizList = () => {
   };
 
   const {
-    data: quizzes = {},
+    data: { quizzes = [], paginationData = {} } = {},
     isLoading,
     refetch: reloadQuizzes,
-  } = useFetchQuizzes({ filters: filterParams });
+  } = useFetchQuizzes({
+    filters: { ...filterParams, pageSize: DEFAULT_PAGE_SIZE, page },
+  });
 
   if (isLoading) return <PageLoader className="h-64" />;
 
@@ -205,6 +218,13 @@ const QuizList = () => {
             : []
         }
         onRowSelect={handleRowSelection}
+      />
+      <Pagination
+        className="mt-3"
+        count={paginationData.count}
+        navigate={pageNumber => setPage(pageNumber)}
+        pageNo={paginationData.page}
+        pageSize={DEFAULT_PAGE_SIZE}
       />
       <Filter
         closeFilter={() => setIsFilterPaneOpen(false)}
