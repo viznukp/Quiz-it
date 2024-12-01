@@ -28,6 +28,7 @@
     "draft": "Draft",
     "publish": "Publish",
     "unpublish": "Unpublish",
+    "published": "Published",
     "exampleQuizName": "Eg: Solar system quiz",
     "exampleCategoryName": "Astronomy",
     "addNewQuestion": "Add new question",
@@ -43,7 +44,9 @@
     "saveAndSubmit": "Save and submit",
     "yourAnswer": "Your answer",
     "correctAnswer": "Correct answer",
-    "questionFromPool": "Question {{current}} of {{total}}"
+    "questionFromPool": "Question {{current}} of {{total}}",
+    "clearFilters": "Clear filters",
+    "done": "Done"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"

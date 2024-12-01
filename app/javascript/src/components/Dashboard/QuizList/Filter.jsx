@@ -5,6 +5,7 @@ import { Form as NeetoUIForm, Input, Select } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 
 import { QUIZ_STATUSES } from "components/constants";
+import { useFetchCategories } from "hooks/reactQuery/useQuizzesApi";
 
 import { FILTER_INITIAL_VALUES } from "./constants";
 
@@ -12,10 +13,13 @@ const Filter = ({ isOpen, closeFilter, setFilterParams }) => {
   const { t } = useTranslation();
   const [filterValues, setFilterValues] = useState(FILTER_INITIAL_VALUES);
 
-  const handleFilterSubmit = values => {
+  const { data: { categories = [] } = {} } = useFetchCategories();
+
+  const handleFilterSubmit = formData => {
     const filter = {
-      ...values,
-      status: values.status?.value,
+      ...formData,
+      category: formData.category?.value,
+      status: formData.status?.value,
     };
     setFilterParams(filter);
     setFilterValues(filter);
@@ -32,7 +36,17 @@ const Filter = ({ isOpen, closeFilter, setFilterParams }) => {
           onSubmit: handleFilterSubmit,
         }}
       >
-        <Input label={t("labels.name")} name="name" />
+        <Input label={t("labels.name")} name="quizName" />
+        <Select
+          isClearable
+          isSearchable
+          label={t("labels.category")}
+          name="category"
+          options={categories?.map(category => ({
+            label: category,
+            value: category,
+          }))}
+        />
         <Select
           isClearable
           label={t("labels.status")}
