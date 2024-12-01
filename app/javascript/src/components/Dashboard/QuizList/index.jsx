@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 
-import { Delete } from "neetoicons";
-import { Table, Button, Dropdown, Typography } from "neetoui";
-import { isEmpty } from "ramda";
+import { Delete, Column, Filter as FilterIcon } from "neetoicons";
+import { Table, Button, Dropdown, Typography, Checkbox } from "neetoui";
+import { isEmpty, without } from "ramda";
 import { useTranslation } from "react-i18next";
-import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
 import { LabelToLink, PageLoader } from "components/commons";
 import { QUIZ_STATUSES } from "components/constants";
+import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import { dateFromTimeStamp } from "utils/dateTime";
 
 import ActionList from "./ActionList";
+import CategorySelector from "./CategorySelector";
+import { QUIZ_TABLE_SCHEMA } from "./constants";
+import Filter from "./Filter";
 import StatusTag from "./StatusTag";
-
-import { QUIZ_TABLE_SCHEMA } from "../constants";
 
 const QuizList = () => {
   const { t } = useTranslation();
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
+  const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+  const [filterParams, setFilterParams] = useState({});
+  const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
+  const [columnsToHide, setColumnsToHide] = useState([]);
+  // const [selectedCategory, setSelectedCategory] = useState("");
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
@@ -67,6 +73,18 @@ const QuizList = () => {
     }
   };
 
+  const filterColumns = columns =>
+    QUIZ_TABLE_SCHEMA.filter(column => !columns.includes(column.key));
+
+  const handleColumnFilterChange = key => {
+    const updatedColumnsToHide = columnsToHide.includes(key)
+      ? without([key], columnsToHide)
+      : [...columnsToHide, key];
+
+    setColumnsToHide(updatedColumnsToHide);
+    setVisibleColumns(filterColumns(updatedColumnsToHide));
+  };
+
   const handleUpdateMultipleQuizzes = async updateParams => {
     try {
       await quizzesApi.updateMultiple(selectedQuizzesSlugs, updateParams);
@@ -80,64 +98,106 @@ const QuizList = () => {
     data: quizzes = {},
     isLoading,
     refetch: reloadQuizzes,
-  } = useFetchQuizzes();
+  } = useFetchQuizzes({ filters: filterParams });
 
   if (isLoading) return <PageLoader className="h-64" />;
 
   return (
     <>
-      <div className="mb-3 flex gap-3">
-        <Typography style="h4">
-          {selectedQuizzesIds.length > 0
-            ? t("messages.info.selectedRows", {
-                selected: selectedQuizzesIds.length,
-                total: quizzes.length,
-                entity: "quizzes",
-              })
-            : t("messages.info.availableQuizzes", {
-                count: quizzes.length,
-              })}
-        </Typography>
-        {!isEmpty(selectedQuizzesSlugs) && (
-          <div className="flex gap-3">
-            <Dropdown
-              buttonStyle="secondary"
-              className="border"
-              label={t("labels.status")}
-            >
-              <div className="flex flex-col">
-                <Button
-                  label={t("labels.publish")}
-                  style="text"
-                  onClick={() =>
-                    handleUpdateMultipleQuizzes({
-                      status: QUIZ_STATUSES.PUBLISHED.STATUS,
-                    })
-                  }
+      <div className="mb-3 flex justify-between gap-3">
+        <div className="mb-3 flex gap-3">
+          <Typography style="h4">
+            {selectedQuizzesIds.length > 0
+              ? t("messages.info.selectedRows", {
+                  selected: selectedQuizzesIds.length,
+                  total: quizzes.length,
+                  entity: "quizzes",
+                })
+              : t("messages.info.availableQuizzes", {
+                  count: quizzes.length,
+                })}
+          </Typography>
+          {!isEmpty(selectedQuizzesSlugs) && (
+            <div className="flex gap-3">
+              <Dropdown
+                buttonStyle="secondary"
+                className="border"
+                label={t("labels.changeCategory")}
+              >
+                <CategorySelector
+                  onSelect={selectedCategory => {
+                    handleUpdateMultipleQuizzes({ category: selectedCategory });
+                  }}
                 />
-                <Button
-                  label={t("labels.draft")}
-                  style="text"
-                  onClick={() =>
-                    handleUpdateMultipleQuizzes({
-                      status: QUIZ_STATUSES.DRAFT.STATUS,
-                    })
-                  }
-                />
-              </div>
-            </Dropdown>
-            <Button
-              icon={Delete}
-              label={t("labels.delete")}
-              style="danger"
-              onClick={handleDeleteMultipleQuizzes}
-            />
-          </div>
-        )}
+              </Dropdown>
+              <Dropdown
+                buttonStyle="secondary"
+                className="border"
+                label={t("labels.status")}
+              >
+                <div className="flex flex-col">
+                  <Button
+                    label={t("labels.publish")}
+                    style="text"
+                    onClick={() =>
+                      handleUpdateMultipleQuizzes({
+                        status: QUIZ_STATUSES.PUBLISHED.STATUS,
+                      })
+                    }
+                  />
+                  <Button
+                    label={t("labels.draft")}
+                    style="text"
+                    onClick={() =>
+                      handleUpdateMultipleQuizzes({
+                        status: QUIZ_STATUSES.DRAFT.STATUS,
+                      })
+                    }
+                  />
+                </div>
+              </Dropdown>
+              <Button
+                icon={Delete}
+                label={t("labels.delete")}
+                style="danger"
+                onClick={handleDeleteMultipleQuizzes}
+              />
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <Dropdown buttonStyle="text" icon={Column}>
+            <div className="flex flex-col gap-3 p-4">
+              {QUIZ_TABLE_SCHEMA.map(
+                ({
+                  title,
+                  key,
+                  excludeFromColumnFilter,
+                  isDisabledInColumnFilter,
+                }) =>
+                  !excludeFromColumnFilter && (
+                    <Checkbox
+                      checked={!columnsToHide.includes(key)}
+                      disabled={isDisabledInColumnFilter}
+                      key={key}
+                      label={title}
+                      value={key}
+                      onChange={() => handleColumnFilterChange(key)}
+                    />
+                  )
+              )}
+            </div>
+          </Dropdown>
+          <Button
+            icon={FilterIcon}
+            style="text"
+            onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
+          />
+        </div>
       </div>
       <Table
         rowSelection
-        columnData={QUIZ_TABLE_SCHEMA}
+        columnData={visibleColumns}
         selectedRowKeys={selectedQuizzesIds}
         rowData={
           quizzes
@@ -145,6 +205,11 @@ const QuizList = () => {
             : []
         }
         onRowSelect={handleRowSelection}
+      />
+      <Filter
+        closeFilter={() => setIsFilterPaneOpen(false)}
+        isOpen={isFilterPaneOpen}
+        setFilterParams={setFilterParams}
       />
     </>
   );

@@ -5,11 +5,10 @@ class QuizzesController < ApplicationController
   before_action :load_quiz, only: %i[update destroy clone show_question]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
   before_action :load_quiz_with_questions, only: %i[show show_quiz_without_answer]
-  after_action :verify_authorized, except: %i[index_public show show_quiz_without_answer]
+  after_action :verify_authorized, except: %i[index categories index_public show show_quiz_without_answer]
 
   def index
-    @quizzes = Quiz.all
-    authorize_quizzes
+    @quizzes = FilterService.new(params).filter_quizzes
   end
 
   def index_public
@@ -67,6 +66,10 @@ class QuizzesController < ApplicationController
     authorize cloned_quiz
     cloned_quiz.save!
     render_notice(t("successfully_cloned", entity: "Quiz"))
+  end
+
+  def categories
+    @categories = Quiz.distinct.pluck(:category)
   end
 
   private
