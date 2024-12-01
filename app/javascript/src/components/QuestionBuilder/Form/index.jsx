@@ -6,13 +6,14 @@ import { Input } from "neetoui/formik";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 
+import { Option } from "components/commons";
+
 import {
   MIN_OPTIONS_COUNT,
   MAX_OPTIONS_COUNT,
   QUESTION_BUILDER_FORM_INITIAL_VALUES,
   QUESTION_BUILDER_FORM_VALIDATION_SCHEMA,
 } from "./constants";
-import Option from "./Option";
 
 const Form = ({
   handleSubmit,
@@ -62,8 +63,8 @@ const Form = ({
                     {values.options.map((_, index) => (
                       <div key={index}>
                         <Option
-                          isSelected={correctAnswerIndex === index}
                           key={index}
+                          markAsCorrect={correctAnswerIndex === index}
                           number={index + 1}
                           deleteSelf={() => {
                             if (values.options.length > MIN_OPTIONS_COUNT) {

@@ -14,6 +14,7 @@ import QuestionBuilder from "components/QuestionBuilder";
 import Clone from "components/QuestionBuilder/Clone";
 import Create from "components/QuestionBuilder/Create";
 import Edit from "components/QuestionBuilder/Edit";
+import QuizAttempt from "components/QuizAttempt";
 import queryClient from "utils/queryClient";
 import { STORAGE_KEYS, getFromLocalStorage } from "utils/storage";
 
@@ -28,6 +29,11 @@ const App = () => {
         <Switch>
           <Route exact component={Signup} path={routes.signup} />
           <Route exact component={Login} path={routes.login} />
+          <Route exact component={Create} path={routes.quiz.question.new} />
+          <Route exact component={Edit} path={routes.quiz.question.edit} />
+          <Route exact component={Clone} path={routes.quiz.question.clone} />
+          <Route exact component={PublicPage} path={routes.publicPage} />
+          <Route exact component={QuizAttempt} path={routes.attemptQuiz} />
           <Route
             exact
             component={RegisterStandardUser}
@@ -38,15 +44,11 @@ const App = () => {
             component={QuestionBuilder}
             path={routes.quiz.questions}
           />
-          <Route exact component={Create} path={routes.quiz.question.new} />
-          <Route exact component={Edit} path={routes.quiz.question.edit} />
-          <Route exact component={Clone} path={routes.quiz.question.clone} />
-          <Route exact component={PublicPage} path={routes.publicPage} />
           <PrivateRoute
             component={Dashboard}
             condition={isLoggedIn}
             path={routes.root}
-            redirectRoute="/login"
+            redirectRoute={routes.login}
           />
         </Switch>
       </BrowserRouter>
