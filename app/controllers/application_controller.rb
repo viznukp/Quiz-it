@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user_using_x_auth_token
 
+  include Pagy::Backend
   include Pundit::Authorization
 
   rescue_from StandardError, with: :handle_api_exception

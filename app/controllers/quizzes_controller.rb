@@ -8,7 +8,7 @@ class QuizzesController < ApplicationController
   after_action :verify_authorized, except: %i[index categories index_public show show_quiz_without_answer]
 
   def index
-    @quizzes = FilterService.new(params).filter_quizzes
+    @pagination_metadata, @paginated_quizzes = FilterService.new(params).filter_quizzes
   end
 
   def index_public
