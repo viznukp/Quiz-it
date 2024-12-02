@@ -36,7 +36,8 @@
     "addOption": "Add Option",
     "enterQuestion": "Enter your question here...",
     "typeOption": "Type option {{number}}",
-    "questionsCount": "{{count}} questions",
+    "questionsCount": "{{count}} Question",
+    "questionsCount_other": "{{count}} Questions",
     "publicPage": "Public page",
     "startQuiz": "Start quiz",
     "previous": "Previous",
@@ -55,7 +56,9 @@
     "wrongAnswers": "Wrong answers",
     "unanswered": "Unanswered",
     "questions": "Questions",
-    "submissions": "Submissions"
+    "submissions": "Submissions",
+    "availableSubmissions": "{{count}} Submission",
+    "availableSubmissions_other": "{{count}} Submissions"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes",
@@ -75,7 +78,8 @@
     },
     "info": {
       "noQuestionsToShow": "There are no questions to show",
-      "availableQuizzes": "{{count}} quizzes",
+      "availableQuizzes": "{{count}} quiz",
+      "availableQuizzes_other": "{{count}} quizzes",
       "selectedRows": "{{selected}} {{entity}} selected of {{total}}"
     },
     "warnings": {

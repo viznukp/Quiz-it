@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Table } from "neetoui";
+import { Table, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom/cjs/react-router-dom";
 
-import { Container, NavBar, PageLoader, StatusTag } from "components/commons";
+import {
+  Container,
+  NavBar,
+  PageLoader,
+  StatusTag,
+  ColumnFilter,
+} from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 
@@ -13,6 +19,7 @@ import { SUBMISSION_TABLE_SCHEMA } from "./constants";
 const SubmissionList = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
+  const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
 
   const { data, isLoading } = useFetchSubmissions(slug);
 
@@ -41,9 +48,24 @@ const SubmissionList = () => {
         />
       }
     >
+      <div className="mb-3 flex justify-between gap-3">
+        <div className="mb-3 flex gap-3">
+          <Typography style="h4">
+            {t("labels.availableSubmissions", {
+              count: data?.submissions.length,
+            })}
+          </Typography>
+        </div>
+        <div className="flex gap-2">
+          <ColumnFilter
+            schema={SUBMISSION_TABLE_SCHEMA}
+            setVisibleColumns={setVisibleColumns}
+          />
+        </div>
+      </div>
       <Table
         rowSelection
-        columnData={SUBMISSION_TABLE_SCHEMA}
+        columnData={visibleColumns}
         rowData={
           data ? transformSubmissionDataForTableDisplay(data.submissions) : []
         }
