@@ -33,6 +33,10 @@ class User < ApplicationRecord
   before_validation :set_default_password_for_standard_user, if: :standard?
   before_save :email_to_lowercase
 
+  def name
+    [first_name, last_name].join(" ").strip
+  end
+
   private
 
     def set_default_password_for_standard_user

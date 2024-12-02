@@ -5,6 +5,7 @@ import NavBar from "./NavBar";
 import Option from "./Option";
 import PageLoader from "./PageLoader";
 import PrivateRoute from "./PrivateRoute";
+import StatusTag from "./StatusTag";
 
 export {
   Container,
@@ -14,4 +15,5 @@ export {
   PageLoader,
   Option,
   ColumnFilter,
+  StatusTag,
 };

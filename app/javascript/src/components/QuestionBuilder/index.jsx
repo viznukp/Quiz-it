@@ -42,7 +42,7 @@ const QuestionBuilder = () => {
       ) : (
         <div className="mb-12 mt-4 flex flex-col gap-4">
           <Typography>
-            {t("labels.questions", { count: quiz.questions.length })}
+            {t("labels.questionsCount", { count: quiz.questions.length })}
           </Typography>
           {quiz.questions.map(question => (
             <QuestionDisplayCard

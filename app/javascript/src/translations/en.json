@@ -36,7 +36,7 @@
     "addOption": "Add Option",
     "enterQuestion": "Enter your question here...",
     "typeOption": "Type option {{number}}",
-    "questions": "{{count}} questions",
+    "questionsCount": "{{count}} questions",
     "publicPage": "Public page",
     "startQuiz": "Start quiz",
     "previous": "Previous",
@@ -48,10 +48,17 @@
     "clearFilters": "Clear filters",
     "done": "Done",
     "changeCategory": "Change category",
-    "searchCategory": "Search category"
+    "searchCategory": "Search category",
+    "actions": "Actions",
+    "submissionDate": "Submission date",
+    "correctAnswers": "Correct answers",
+    "wrongAnswers": "Wrong answers",
+    "unanswered": "Unanswered",
+    "questions": "Questions"
   },
   "pageTitles": {
-    "allQuizzes": "All Quizzes"
+    "allQuizzes": "All Quizzes",
+    "allSubmissions": "All Submissions"
   },
   "messages": {
     "error": {

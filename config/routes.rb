@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       get "clone", to: "questions#clone", as: :clone
     end
 
-    resources :submissions, only: :create
+    resources :submissions, only: %i[index create]
   end
 
   root "home#index"

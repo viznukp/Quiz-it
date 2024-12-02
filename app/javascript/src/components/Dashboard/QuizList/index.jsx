@@ -7,7 +7,12 @@ import { useTranslation } from "react-i18next";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
-import { LabelToLink, PageLoader, ColumnFilter } from "components/commons";
+import {
+  LabelToLink,
+  PageLoader,
+  ColumnFilter,
+  StatusTag,
+} from "components/commons";
 import {
   QUIZ_STATUSES,
   DEFAULT_PAGE_SIZE,
@@ -20,7 +25,6 @@ import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
-import StatusTag from "./StatusTag";
 
 const QuizList = () => {
   const { t } = useTranslation();
@@ -179,6 +183,9 @@ const QuizList = () => {
             ? transformQuizDataForTableDisplay(quizzes, reloadQuizzes)
             : []
         }
+        scroll={{
+          x: "100%",
+        }}
         onRowSelect={handleRowSelection}
       />
       <Pagination

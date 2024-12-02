@@ -18,6 +18,8 @@ import QuizAttempt from "components/QuizAttempt";
 import queryClient from "utils/queryClient";
 import { STORAGE_KEYS, getFromLocalStorage } from "utils/storage";
 
+import SubmissionList from "./components/SubmissionList";
+
 const App = () => {
   const authToken = getFromLocalStorage(STORAGE_KEYS.TOKEN);
   const isLoggedIn = !either(isNil, isEmpty)(authToken);
@@ -34,6 +36,7 @@ const App = () => {
           <Route exact component={Clone} path={routes.quiz.question.clone} />
           <Route exact component={PublicPage} path={routes.publicPage} />
           <Route exact component={QuizAttempt} path={routes.attemptQuiz} />
+          <Route exact component={SubmissionList} path={routes.submissions} />
           <Route
             exact
             component={RegisterStandardUser}

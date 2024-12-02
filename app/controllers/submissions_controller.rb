@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class SubmissionsController < ApplicationController
+  def index
+    @submissions = Submission.includes(:user).all
+  end
+
   def create
     user = User.find_by!(email: submission_params[:email])
     quiz = Quiz.find_by!(slug: submission_params[:quiz_slug])
