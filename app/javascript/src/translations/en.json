@@ -54,7 +54,8 @@
     "correctAnswers": "Correct answers",
     "wrongAnswers": "Wrong answers",
     "unanswered": "Unanswered",
-    "questions": "Questions"
+    "questions": "Questions",
+    "submissions": "Submissions"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes",

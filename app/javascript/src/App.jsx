@@ -36,7 +36,11 @@ const App = () => {
           <Route exact component={Clone} path={routes.quiz.question.clone} />
           <Route exact component={PublicPage} path={routes.publicPage} />
           <Route exact component={QuizAttempt} path={routes.attemptQuiz} />
-          <Route exact component={SubmissionList} path={routes.submissions} />
+          <Route
+            exact
+            component={SubmissionList}
+            path={routes.quiz.submissions}
+          />
           <Route
             exact
             component={RegisterStandardUser}

@@ -2,14 +2,17 @@ import React from "react";
 
 import { Table } from "neetoui";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom/cjs/react-router-dom";
 
 import { Container, NavBar, PageLoader, StatusTag } from "components/commons";
+import { TAB_IDS } from "components/commons/NavBar/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 
 import { SUBMISSION_TABLE_SCHEMA } from "./constants";
 
 const SubmissionList = () => {
   const { t } = useTranslation();
+  const { slug } = useParams();
 
   const { data, isLoading } = useFetchSubmissions();
 
@@ -28,7 +31,16 @@ const SubmissionList = () => {
   if (isLoading) return <PageLoader fullScreen />;
 
   return (
-    <Container navbar={<NavBar title={t("pageTitles.allSubmissions")} />}>
+    <Container
+      navbar={
+        <NavBar
+          isTabsEnabled
+          activeTab={TAB_IDS.submissions}
+          quizSlug={slug}
+          title={t("pageTitles.allSubmissions")}
+        />
+      }
+    >
       <Table
         rowSelection
         columnData={SUBMISSION_TABLE_SCHEMA}
