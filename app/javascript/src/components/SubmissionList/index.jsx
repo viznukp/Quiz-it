@@ -14,7 +14,7 @@ const SubmissionList = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
 
-  const { data, isLoading } = useFetchSubmissions();
+  const { data, isLoading } = useFetchSubmissions(slug);
 
   const transformSubmissionDataForTableDisplay = data =>
     data?.map(({ submission, user }) => ({

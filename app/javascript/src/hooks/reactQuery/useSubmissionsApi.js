@@ -2,8 +2,8 @@ import { useQuery } from "react-query";
 
 import submissionsApi from "apis/submissions";
 
-export const useFetchSubmissions = () =>
+export const useFetchSubmissions = slug =>
   useQuery({
-    queryKey: ["quizzes"],
-    queryFn: () => submissionsApi.fetch(),
+    queryKey: ["quizzes", slug],
+    queryFn: () => submissionsApi.fetch(slug),
   });

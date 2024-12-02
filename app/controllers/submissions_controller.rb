@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class SubmissionsController < ApplicationController
-  def index
-    @submissions = Submission.includes(:user).all
-  end
-
   def create
     user = User.find_by!(email: submission_params[:email])
     quiz = Quiz.find_by!(slug: submission_params[:quiz_slug])
@@ -13,6 +9,10 @@ class SubmissionsController < ApplicationController
     submission.save!
 
     render_notice(t("submission_successfully_saved"))
+  end
+
+  def show
+    @submissions = Submission.includes(:user).joins(:quiz).where(quizzes: { slug: params[:slug] })
   end
 
   private
