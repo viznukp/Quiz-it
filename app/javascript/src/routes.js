@@ -9,6 +9,7 @@ const routes = {
       edit: "/:slug/questions/:id/edit",
       clone: "/:slug/questions/:id/clone",
     },
+    submissions: "/:slug/submissions",
   },
   publicPage: "/public",
   registerStandardUser: "/user/standard/register/:slug",

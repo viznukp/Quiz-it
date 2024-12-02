@@ -36,7 +36,8 @@
     "addOption": "Add Option",
     "enterQuestion": "Enter your question here...",
     "typeOption": "Type option {{number}}",
-    "questions": "{{count}} questions",
+    "questionsCount": "{{count}} Question",
+    "questionsCount_other": "{{count}} Questions",
     "publicPage": "Public page",
     "startQuiz": "Start quiz",
     "previous": "Previous",
@@ -48,10 +49,20 @@
     "clearFilters": "Clear filters",
     "done": "Done",
     "changeCategory": "Change category",
-    "searchCategory": "Search category"
+    "searchCategory": "Search category",
+    "actions": "Actions",
+    "submissionDate": "Submission date",
+    "correctAnswers": "Correct answers",
+    "wrongAnswers": "Wrong answers",
+    "unanswered": "Unanswered",
+    "questions": "Questions",
+    "submissions": "Submissions",
+    "availableSubmissions": "{{count}} Submission",
+    "availableSubmissions_other": "{{count}} Submissions"
   },
   "pageTitles": {
-    "allQuizzes": "All Quizzes"
+    "allQuizzes": "All Quizzes",
+    "allSubmissions": "All Submissions"
   },
   "messages": {
     "error": {
@@ -67,7 +78,8 @@
     },
     "info": {
       "noQuestionsToShow": "There are no questions to show",
-      "availableQuizzes": "{{count}} quizzes",
+      "availableQuizzes": "{{count}} quiz",
+      "availableQuizzes_other": "{{count}} quizzes",
       "selectedRows": "{{selected}} {{entity}} selected of {{total}}"
     },
     "warnings": {

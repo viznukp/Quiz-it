@@ -4,4 +4,4 @@ export const QUIZ_STATUSES = {
 };
 
 export const DEFAULT_PAGE_SIZE = 2;
-export const DEFAULT_PAGE_INDEX = 2;
+export const DEFAULT_PAGE_INDEX = 1;

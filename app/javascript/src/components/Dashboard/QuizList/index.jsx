@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 
-import { Delete, Column, Filter as FilterIcon } from "neetoicons";
-import {
-  Table,
-  Button,
-  Dropdown,
-  Typography,
-  Checkbox,
-  Pagination,
-} from "neetoui";
-import { isEmpty, without } from "ramda";
+import { Delete, Filter as FilterIcon } from "neetoicons";
+import { Table, Button, Dropdown, Typography, Pagination } from "neetoui";
+import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
-import { LabelToLink, PageLoader } from "components/commons";
+import {
+  LabelToLink,
+  PageLoader,
+  ColumnFilter,
+  StatusTag,
+} from "components/commons";
 import {
   QUIZ_STATUSES,
   DEFAULT_PAGE_SIZE,
@@ -27,7 +25,6 @@ import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
-import StatusTag from "./StatusTag";
 
 const QuizList = () => {
   const { t } = useTranslation();
@@ -36,7 +33,6 @@ const QuizList = () => {
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [filterParams, setFilterParams] = useState({});
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
-  const [columnsToHide, setColumnsToHide] = useState([]);
   const [page, setPage] = useState(DEFAULT_PAGE_INDEX);
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
@@ -82,18 +78,6 @@ const QuizList = () => {
     } catch (error) {
       logger.error(error);
     }
-  };
-
-  const filterColumns = columns =>
-    QUIZ_TABLE_SCHEMA.filter(column => !columns.includes(column.key));
-
-  const handleColumnFilterChange = key => {
-    const updatedColumnsToHide = columnsToHide.includes(key)
-      ? without([key], columnsToHide)
-      : [...columnsToHide, key];
-
-    setColumnsToHide(updatedColumnsToHide);
-    setVisibleColumns(filterColumns(updatedColumnsToHide));
   };
 
   const handleUpdateMultipleQuizzes = async updateParams => {
@@ -179,28 +163,10 @@ const QuizList = () => {
           )}
         </div>
         <div className="flex gap-2">
-          <Dropdown buttonStyle="text" icon={Column}>
-            <div className="flex flex-col gap-3 p-4">
-              {QUIZ_TABLE_SCHEMA.map(
-                ({
-                  title,
-                  key,
-                  excludeFromColumnFilter,
-                  isDisabledInColumnFilter,
-                }) =>
-                  !excludeFromColumnFilter && (
-                    <Checkbox
-                      checked={!columnsToHide.includes(key)}
-                      disabled={isDisabledInColumnFilter}
-                      key={key}
-                      label={title}
-                      value={key}
-                      onChange={() => handleColumnFilterChange(key)}
-                    />
-                  )
-              )}
-            </div>
-          </Dropdown>
+          <ColumnFilter
+            schema={QUIZ_TABLE_SCHEMA}
+            setVisibleColumns={setVisibleColumns}
+          />
           <Button
             icon={FilterIcon}
             style="text"
@@ -217,6 +183,9 @@ const QuizList = () => {
             ? transformQuizDataForTableDisplay(quizzes, reloadQuizzes)
             : []
         }
+        scroll={{
+          x: "100%",
+        }}
         onRowSelect={handleRowSelection}
       />
       <Pagination
