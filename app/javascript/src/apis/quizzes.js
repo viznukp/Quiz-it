@@ -35,7 +35,7 @@ const deleteMultiple = slugs =>
 const updateMultiple = (slugs, updateFields) =>
   axios.post("/quizzes/bulk_update", { quizzes: { updateFields, slugs } });
 
-const fetchQuizCategories = axios.get("/quizzes/categories");
+const fetchQuizCategories = () => axios.get("/quizzes/categories");
 
 const quizzesApi = {
   fetch,

@@ -39,5 +39,5 @@ export const useFetchQuestion = (slug, id) =>
 export const useFetchCategories = () =>
   useQuery({
     queryKey: ["categories"],
-    queryFn: () => quizzesApi.fetchQuizCategories,
+    queryFn: () => quizzesApi.fetchQuizCategories(),
   });
