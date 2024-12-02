@@ -32,6 +32,7 @@ const SubmissionList = () => {
       correctAnswers: submission.correctAnswersCount,
       wrongAnswers: submission.wrongAnswersCount,
       unanswered: submission.unansweredCount,
+      questions: submission.totalQuestions,
       status: <StatusTag label={submission.status} primaryLabel="completed" />,
     }));
 
@@ -66,12 +67,10 @@ const SubmissionList = () => {
       <Table
         rowSelection
         columnData={visibleColumns}
+        scroll={{ x: "100%" }}
         rowData={
           data ? transformSubmissionDataForTableDisplay(data.submissions) : []
         }
-        scroll={{
-          x: "30%",
-        }}
       />
     </Container>
   );

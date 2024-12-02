@@ -13,6 +13,7 @@ json.submissions do
         :correct_answers_count,
         :wrong_answers_count,
         :unanswered_count,
+        :total_questions,
         :status
 
       json.submission_date [formatted_date(submission.updated_at), formatted_time(submission.updated_at)].join(" ").strip

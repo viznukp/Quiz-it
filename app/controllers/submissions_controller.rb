@@ -6,6 +6,7 @@ class SubmissionsController < ApplicationController
     quiz = Quiz.find_by!(slug: submission_params[:quiz_slug])
 
     submission = Submission.new(user:, quiz:, status: submission_params[:status], answers: submission_params[:answers])
+    submission = EvaluationService.new().evaluate_submission(submission)
     submission.save!
 
     render_notice(t("submission_successfully_saved"))
