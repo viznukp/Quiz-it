@@ -4,6 +4,8 @@ const fetch = slug => axios.get(`/submissions/${slug}`);
 
 const create = payload => axios.post("/submissions", { submission: payload });
 
-const submissionsApi = { fetch, create };
+const fetchResult = slug => axios.get(`/submissions/${slug}/result`);
+
+const submissionsApi = { fetch, create, fetchResult };
 
 export default submissionsApi;

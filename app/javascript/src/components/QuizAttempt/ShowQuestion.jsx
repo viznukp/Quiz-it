@@ -24,8 +24,10 @@ const ShowQuestion = ({
                   <Option
                     isDisabled
                     key={index}
-                    markAsCorrect={isOptionInAnswers(questionId, index + 1)}
                     number={index + 1}
+                    style={
+                      isOptionInAnswers(questionId, index + 1) ? "correct" : ""
+                    }
                     onSelectCorrect={() =>
                       onOptionSelect(questionId, index + 1)
                     }

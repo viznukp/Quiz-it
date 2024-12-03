@@ -16,16 +16,16 @@ Rails.application.routes.draw do
       end
     end
     resources :users, only: :create do
-      collection do
-        post :create_standard_user
-      end
+      post :create_standard_user, on: :collection
     end
     resource :session, only: %i[create destroy]
     resources :questions, only: %i[create update destroy] do
-      get "clone", to: "questions#clone", as: :clone
+      get :clone
     end
 
-    resources :submissions, only: %i[show create], param: :slug
+    resources :submissions, only: %i[show create], param: :slug do
+      get :result, on: :member
+    end
   end
 
   root "home#index"

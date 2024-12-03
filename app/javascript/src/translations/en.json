@@ -58,7 +58,14 @@
     "questions": "Questions",
     "submissions": "Submissions",
     "availableSubmissions": "{{count}} Submission",
-    "availableSubmissions_other": "{{count}} Submissions"
+    "availableSubmissions_other": "{{count}} Submissions",
+    "yourResult": "Your result",
+    "backToHome": "Back to home",
+    "totalQuestionsCount": "Total questions {{count}}",
+    "score": "Score",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "nthQuestion": "Question {{count}}"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes",
@@ -80,7 +87,9 @@
       "noQuestionsToShow": "There are no questions to show",
       "availableQuizzes": "{{count}} quiz",
       "availableQuizzes_other": "{{count}} quizzes",
-      "selectedRows": "{{selected}} {{entity}} selected of {{total}}"
+      "selectedRows": "{{selected}} {{entity}} selected of {{total}}",
+      "correctAnswer": "Your answer is correct",
+      "incorrectAnswer": "Your answer is incorrect"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",

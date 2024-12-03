@@ -16,6 +16,16 @@ class SubmissionsController < ApplicationController
     @submissions = Submission.includes(:user).joins(:quiz).where(quizzes: { slug: params[:slug] })
   end
 
+  def result
+    user = User.find_by!(email: request.headers["X-Auth-Email"])
+    quiz = Quiz.find_by!(slug: params[:slug])
+
+    submission = Submission.find_by(user:, quiz:)
+    result = ResultService.new.generate_result(submission)
+
+    render_json(result)
+  end
+
   private
 
     def submission_params
