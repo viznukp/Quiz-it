@@ -11,18 +11,21 @@ const Option = ({
   deleteSelf,
   isRemovable,
   onSelectCorrect,
-  markAsCorrect = false,
-  markAsWrong = false,
-  isCorrect = false,
+  style = "",
   isDisabled = false,
   isStatusLabelEnabled = false,
+  statusLabel = "",
+  statusLabelStyle = "",
 }) => {
   const { t } = useTranslation();
+  const styles = { correct: "correct", wrong: "wrong" };
+  const isCorrectStyle = style === styles.correct;
+  const isWrongStyle = style === styles.wrong;
 
   const renderIcon = () => {
-    if (markAsWrong) return <CloseCircle />;
+    if (isWrongStyle) return <CloseCircle />;
 
-    if (markAsCorrect) return <Checkmark />;
+    if (isCorrectStyle) return <Checkmark />;
 
     return <CheckCircle />;
   };
@@ -30,17 +33,17 @@ const Option = ({
   return (
     <div
       className={classNames("rounded-lg border-2 px-2 py-3", {
-        "border-green-500": markAsCorrect,
-        "border-red-500": markAsWrong,
+        "border-green-500": isCorrectStyle,
+        "border-red-500": isWrongStyle,
       })}
     >
       <div className="flex items-center gap-3">
         <button
           type="button"
           className={classNames("cursor-pointer", {
-            "text-green-500": markAsCorrect,
-            "text-red-500": markAsWrong,
-            "text-blue-300": !(markAsCorrect || markAsWrong),
+            "text-green-500": isCorrectStyle,
+            "text-red-500": isWrongStyle,
+            "text-blue-300": !(isWrongStyle || isCorrectStyle),
           })}
           onClick={onSelectCorrect}
         >
@@ -66,11 +69,11 @@ const Option = ({
           <Typography
             style="body3"
             className={classNames({
-              "text-green-500": markAsCorrect,
-              "text-red-500": markAsWrong,
+              "text-green-500": statusLabelStyle === styles.correct,
+              "text-red-500": statusLabelStyle === styles.wrong,
             })}
           >
-            {isCorrect ? t("labels.yourAnswer") : t("labels.correctAnswer")}
+            {statusLabel}
           </Typography>
         </div>
       )}

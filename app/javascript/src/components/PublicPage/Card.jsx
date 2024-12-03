@@ -27,9 +27,7 @@ const Card = ({ name, slug, category, questionsCount = 0 }) => {
         fullWidth
         className="mt-2"
         label={t("labels.startQuiz")}
-        onClick={() =>
-          history.push(routes.registerStandardUser.replace(":slug", slug))
-        }
+        onClick={() => history.push(routes.attemptQuiz.replace(":slug", slug))}
       />
     </div>
   );

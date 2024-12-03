@@ -7,3 +7,9 @@ export const useFetchSubmissions = slug =>
     queryKey: ["quizzes", slug],
     queryFn: () => submissionsApi.fetch(slug),
   });
+
+export const useFetchResult = slug =>
+  useQuery({
+    queryKey: ["result", slug],
+    queryFn: () => submissionsApi.fetchResult(slug),
+  });

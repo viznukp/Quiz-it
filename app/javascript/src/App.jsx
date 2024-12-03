@@ -18,6 +18,7 @@ import QuizAttempt from "components/QuizAttempt";
 import queryClient from "utils/queryClient";
 import { STORAGE_KEYS, getFromLocalStorage } from "utils/storage";
 
+import QuizResult from "./components/QuizResult";
 import SubmissionList from "./components/SubmissionList";
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
           <Route exact component={Clone} path={routes.quiz.question.clone} />
           <Route exact component={PublicPage} path={routes.publicPage} />
           <Route exact component={QuizAttempt} path={routes.attemptQuiz} />
+          <Route exact component={QuizResult} path={routes.quiz.result} />
           <Route
             exact
             component={SubmissionList}

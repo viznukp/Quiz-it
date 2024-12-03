@@ -64,8 +64,8 @@ const Form = ({
                       <div key={index}>
                         <Option
                           key={index}
-                          markAsCorrect={correctAnswerIndex === index}
                           number={index + 1}
+                          style={correctAnswerIndex === index ? "correct" : ""}
                           deleteSelf={() => {
                             if (values.options.length > MIN_OPTIONS_COUNT) {
                               remove(index);

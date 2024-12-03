@@ -14,7 +14,7 @@ const ShowQuestion = ({
 }) => (
   <>
     <Typography style="h3">{question} </Typography>
-    <Formik initialValues={{ options }}>
+    <Formik enableReinitialize initialValues={{ options }}>
       {({ values }) => (
         <FormikForm>
           <div className="mt-4 flex flex-col gap-4">
@@ -24,8 +24,10 @@ const ShowQuestion = ({
                   <Option
                     isDisabled
                     key={index}
-                    markAsCorrect={isOptionInAnswers(questionId, index + 1)}
                     number={index + 1}
+                    style={
+                      isOptionInAnswers(questionId, index + 1) ? "correct" : ""
+                    }
                     onSelectCorrect={() =>
                       onOptionSelect(questionId, index + 1)
                     }
