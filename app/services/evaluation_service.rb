@@ -18,7 +18,7 @@ class EvaluationService
       selected_choice = answer["selected_choice"]
       correct_answer = answer_key[question_id]
 
-      if selected_choice == 0 || selected_choice.nil
+      if selected_choice == 0 || selected_choice.nil?
         unanswered_count += 1
       elsif selected_choice == correct_answer
         correct_answers_count += 1

@@ -14,7 +14,7 @@ const ShowQuestion = ({
 }) => (
   <>
     <Typography style="h3">{question} </Typography>
-    <Formik initialValues={{ options }}>
+    <Formik enableReinitialize initialValues={{ options }}>
       {({ values }) => (
         <FormikForm>
           <div className="mt-4 flex flex-col gap-4">

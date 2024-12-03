@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import { Typography, Button } from "neetoui";
 import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams, useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import submissionsApi from "apis/submissions";
+import { RegisterStandardUser } from "components/Authentication";
 import { PageLoader } from "components/commons";
 import { useShowQuizWithoutAnswer } from "hooks/reactQuery/useQuizzesApi";
 import { getFromLocalStorage, STORAGE_KEYS } from "utils/storage";
@@ -15,8 +17,10 @@ import ShowQuestion from "./ShowQuestion";
 const QuizAttempt = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
+  const history = useHistory();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
 
   const { data = {}, isLoading } = useShowQuizWithoutAnswer(slug);
 
@@ -24,7 +28,8 @@ const QuizAttempt = () => {
     return <PageLoader fullScreen />;
   }
 
-  const { quiz: { questions = [] } = {} } = data;
+  const { quiz = {} } = data;
+  const { questions = [] } = quiz;
   const questionCount = questions.length;
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questionCount - 1;
@@ -37,6 +42,7 @@ const QuizAttempt = () => {
         status: "completed",
         answers: userAnswers,
       });
+      history.replace(routes.quiz.result.replace(":slug", slug));
     } catch (error) {
       logger.error(error);
     }
@@ -67,6 +73,20 @@ const QuizAttempt = () => {
       return [...prevAnswers, { questionId, selectedChoice }];
     });
   };
+
+  if (!isUserAuthenticated) {
+    return (
+      <div className="neeto-ui-bg-gray-100 flex h-screen items-center justify-center overflow-y-auto p-6">
+        <div className=" max-w-6xl sm:max-w-md lg:max-w-xl ">
+          <Typography style="h1">{quiz.name}</Typography>
+          <RegisterStandardUser
+            className="mt-12"
+            onSuccess={() => setIsUserAuthenticated(true)}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="neeto-ui-bg-gray-200 flex h-screen items-center justify-center overflow-y-auto p-6">

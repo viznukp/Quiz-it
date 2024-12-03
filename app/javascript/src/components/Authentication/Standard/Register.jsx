@@ -4,7 +4,6 @@ import { Form, Formik } from "formik";
 import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 import authApi from "apis/authentication";
 import { setAuthHeaders } from "apis/axios";
@@ -15,9 +14,8 @@ import {
   REGISTRATION_FORM_VALIDATION_SCHEMA,
 } from "./constants";
 
-const Register = ({ redirectUrl }) => {
+const Register = ({ onSuccess, className = "" }) => {
   const { t } = useTranslation();
-  const history = useHistory();
 
   const handleStandardUserRegistration = async formData => {
     try {
@@ -31,58 +29,55 @@ const Register = ({ redirectUrl }) => {
           .trim(),
       });
       setAuthHeaders();
-      // history.replace(routes.attemptQuiz.replace(":slug", slug));
-      history.replace(redirectUrl);
+      onSuccess();
     } catch (error) {
       logger.error(error);
     }
   };
 
   return (
-    <div className="neeto-ui-bg-gray-100 h-screen overflow-y-auto p-6">
-      <div className="mx-auto max-w-6xl">
-        <Formik
-          initialValues={REGISTRATION_FORM_INITIAL_VALUES}
-          validationSchema={REGISTRATION_FORM_VALIDATION_SCHEMA}
-          onSubmit={handleStandardUserRegistration}
-        >
-          {({ isSubmitting }) => (
-            <Form className="mt-12 space-y-6 p-8 sm:max-w-md lg:max-w-xl">
-              <div className="flex gap-3">
-                <Input
-                  required
-                  label={t("labels.firstName")}
-                  name="firstName"
-                  placeholder="Oliver"
-                  type="text"
-                />
-                <Input
-                  required
-                  label={t("labels.lastName")}
-                  name="lastName"
-                  placeholder="Smith"
-                  type="text"
-                />
-              </div>
+    <div className={className}>
+      <Formik
+        initialValues={REGISTRATION_FORM_INITIAL_VALUES}
+        validationSchema={REGISTRATION_FORM_VALIDATION_SCHEMA}
+        onSubmit={handleStandardUserRegistration}
+      >
+        {({ isSubmitting }) => (
+          <Form className="space-y-6">
+            <div className="flex gap-3">
               <Input
                 required
-                label={t("labels.email")}
-                name="email"
-                placeholder="oliver@example.com"
-                type="email"
+                label={t("labels.firstName")}
+                name="firstName"
+                placeholder="Oliver"
+                type="text"
               />
-              <Button
-                className="h-8"
-                disabled={isSubmitting}
-                label={t("labels.startQuiz")}
-                loading={isSubmitting}
-                size="small"
-                type="submit"
+              <Input
+                required
+                label={t("labels.lastName")}
+                name="lastName"
+                placeholder="Smith"
+                type="text"
               />
-            </Form>
-          )}
-        </Formik>
-      </div>
+            </div>
+            <Input
+              required
+              label={t("labels.email")}
+              name="email"
+              placeholder="oliver@example.com"
+              type="email"
+            />
+            <Button
+              className="h-8"
+              disabled={isSubmitting}
+              label={t("labels.startQuiz")}
+              loading={isSubmitting}
+              size="small"
+              type="submit"
+            />
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
