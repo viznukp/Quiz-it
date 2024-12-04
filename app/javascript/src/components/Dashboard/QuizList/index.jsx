@@ -44,6 +44,13 @@ const QuizList = () => {
     history.replace(buildUrl("", mergeLeft({ page }, queryParams)));
   };
 
+  const handlePageNumber = () => {
+    const currentPage = Number(page);
+    const pageFromApi = Number(paginationData.page);
+
+    return currentPage !== pageFromApi ? pageFromApi : currentPage;
+  };
+
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
       id,
@@ -184,22 +191,20 @@ const QuizList = () => {
       <Table
         rowSelection
         columnData={visibleColumns}
+        scroll={{ x: "100%" }}
         selectedRowKeys={selectedQuizzesIds}
         rowData={
           quizzes
             ? transformQuizDataForTableDisplay(quizzes, reloadQuizzes)
             : []
         }
-        scroll={{
-          x: "100%",
-        }}
         onRowSelect={handleRowSelection}
       />
       <Pagination
         className="mt-3"
         count={paginationData.count}
         navigate={pageNumber => handlePageNavigation(pageNumber)}
-        pageNo={Number(page)}
+        pageNo={handlePageNumber()}
         pageSize={Number(pageSize)}
       />
       <Filter
