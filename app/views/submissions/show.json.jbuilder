@@ -16,7 +16,7 @@ json.submissions do
         :total_questions,
         :status
 
-      json.submission_date [formatted_date(submission.updated_at), formatted_time(submission.updated_at)].join(" ").strip
+      json.submission_date date_and_time_from_timestamp(submission.updated_at)
     end
 
   end

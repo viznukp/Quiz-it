@@ -31,7 +31,7 @@ class EvaluationService
     submission.total_questions = total_questions
     submission.correct_answers_count = correct_answers_count
     submission.wrong_answers_count = wrong_answers_count
-    submission.unanswered_count = total_questions - correct_answers_count + wrong_answers_count
+    submission.unanswered_count = total_questions - correct_answers_count - wrong_answers_count
     submission
   end
 end
