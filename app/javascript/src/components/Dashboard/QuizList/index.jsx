@@ -2,8 +2,9 @@ import React, { useState } from "react";
 
 import { Delete, Filter as FilterIcon } from "neetoicons";
 import { Table, Button, Dropdown, Typography, Pagination } from "neetoui";
-import { isEmpty } from "ramda";
+import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
@@ -19,7 +20,9 @@ import {
   DEFAULT_PAGE_INDEX,
 } from "components/constants";
 import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
+import useQueryParams from "hooks/useQueryParams";
 import { dateFromTimeStamp } from "utils/dateTime";
+import { buildUrl } from "utils/url";
 
 import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
@@ -28,12 +31,18 @@ import Filter from "./Filter";
 
 const QuizList = () => {
   const { t } = useTranslation();
+  const history = useHistory();
+  const queryParams = useQueryParams();
+  const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
+    queryParams;
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
-  const [filterParams, setFilterParams] = useState({});
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
-  const [page, setPage] = useState(DEFAULT_PAGE_INDEX);
+
+  const handlePageNavigation = page => {
+    history.replace(buildUrl("", mergeLeft({ page }, queryParams)));
+  };
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
@@ -93,9 +102,7 @@ const QuizList = () => {
     data: { quizzes = [], paginationData = {} } = {},
     isLoading,
     refetch: reloadQuizzes,
-  } = useFetchQuizzes({
-    filters: { ...filterParams, pageSize: DEFAULT_PAGE_SIZE, page },
-  });
+  } = useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
 
   if (isLoading) return <PageLoader className="h-64" />;
 
@@ -191,14 +198,13 @@ const QuizList = () => {
       <Pagination
         className="mt-3"
         count={paginationData.count}
-        navigate={pageNumber => setPage(pageNumber)}
-        pageNo={paginationData.page}
-        pageSize={DEFAULT_PAGE_SIZE}
+        navigate={pageNumber => handlePageNavigation(pageNumber)}
+        pageNo={Number(page)}
+        pageSize={Number(pageSize)}
       />
       <Filter
         closeFilter={() => setIsFilterPaneOpen(false)}
         isOpen={isFilterPaneOpen}
-        setFilterParams={setFilterParams}
       />
     </>
   );
