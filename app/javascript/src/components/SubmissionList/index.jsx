@@ -15,6 +15,7 @@ import { TAB_IDS } from "components/commons/NavBar/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 
 import { SUBMISSION_TABLE_SCHEMA } from "./constants";
+import ReportDownloader from "./ReportDownloader";
 
 const SubmissionList = () => {
   const { t } = useTranslation();
@@ -58,6 +59,7 @@ const SubmissionList = () => {
           </Typography>
         </div>
         <div className="flex gap-2">
+          <ReportDownloader slug={slug} />
           <ColumnFilter
             schema={SUBMISSION_TABLE_SCHEMA}
             setVisibleColumns={setVisibleColumns}

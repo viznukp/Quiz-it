@@ -25,6 +25,11 @@ Rails.application.routes.draw do
 
     resources :submissions, only: %i[show create], param: :slug do
       get :result, on: :member
+      collection do
+        resource :report, only: %i[create], module: :submissions do
+          get :download, on: :collection
+        end
+      end
     end
   end
 
