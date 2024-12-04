@@ -41,3 +41,9 @@ export const useFetchCategories = () =>
     queryKey: ["categories"],
     queryFn: () => quizzesApi.fetchQuizCategories(),
   });
+
+export const useFetchQuizStats = () =>
+  useQuery({
+    queryKey: ["quizStats"],
+    queryFn: () => quizzesApi.fetchQuizStats(),
+  });

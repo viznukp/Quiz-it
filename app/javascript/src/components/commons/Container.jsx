@@ -3,7 +3,7 @@ import React from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 
-import Sidebar from "./Sidebar";
+import Sidebar from "components/Sidebar";
 
 const Container = ({ children, navbar, className = "" }) => (
   <div className="flex h-screen w-full overflow-hidden">
