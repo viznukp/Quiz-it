@@ -67,7 +67,12 @@
     "incorrect": "Incorrect",
     "nthQuestion": "Question {{count}}",
     "download": "Download",
-    "all": "All"
+    "all": "All",
+    "quizTitle": "Quiz title",
+    "enterQuizTitle": "Enter quiz title",
+    "saveChanges": "Save changes",
+    "settings": "Settings",
+    "generalSettings": "General Settings"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes",
@@ -91,7 +96,8 @@
       "availableQuizzes_other": "{{count}} quizzes",
       "selectedRows": "{{selected}} {{entity}} selected of {{total}}",
       "correctAnswer": "Your answer is correct",
-      "incorrectAnswer": "Your answer is incorrect"
+      "incorrectAnswer": "Your answer is incorrect",
+      "customizeQuizSiteName": "Customize the quiz site name"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
