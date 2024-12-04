@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         post :bulk_update
         get :index_public
         get :categories
+        get :stats
       end
     end
     resources :users, only: :create do

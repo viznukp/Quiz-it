@@ -37,6 +37,8 @@ const updateMultiple = (slugs, updateFields) =>
 
 const fetchQuizCategories = () => axios.get("/quizzes/categories");
 
+const fetchQuizStats = () => axios.get("quizzes/stats");
+
 const quizzesApi = {
   fetch,
   show,
@@ -51,6 +53,7 @@ const quizzesApi = {
   fetchPublic,
   showWithoutAnswer,
   fetchQuizCategories,
+  fetchQuizStats,
 };
 
 export default quizzesApi;

@@ -24,7 +24,16 @@ class FilterService
       quizzes = quizzes.where("LOWER(name) LIKE ?", "%#{filter_params[:quiz_name].downcase}%")
     end
 
-    pagy(quizzes, limit: filter_params[:page_size], page: filter_params[:page])
+    current_page = filter_params[:page]
+    page_size = filter_params[:page_size]
+    if current_page && page_size
+      current_page = current_page.to_i
+      page_size = page_size.to_i
+      available_quizzes = quizzes.count
+      current_page = 1 if available_quizzes < page_size * (current_page - 1)
+    end
+
+    pagy(quizzes, limit: page_size, page: current_page)
   end
 
   def filter_params

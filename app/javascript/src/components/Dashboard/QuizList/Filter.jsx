@@ -1,28 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Typography, Pane, Button } from "neetoui";
 import { Form as NeetoUIForm, Input, Select } from "neetoui/formik";
+import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 import { QUIZ_STATUSES } from "components/constants";
 import { useFetchCategories } from "hooks/reactQuery/useQuizzesApi";
+import useQueryParams from "hooks/useQueryParams";
+import { buildUrl } from "utils/url";
 
 import { FILTER_INITIAL_VALUES } from "./constants";
 
-const Filter = ({ isOpen, closeFilter, setFilterParams }) => {
+const Filter = ({ isOpen, closeFilter }) => {
   const { t } = useTranslation();
-  const [filterValues, setFilterValues] = useState(FILTER_INITIAL_VALUES);
+  const queryParams = useQueryParams();
+  const { category = "", quizName = "", status = "" } = queryParams;
 
   const { data: { categories = [] } = {} } = useFetchCategories();
+  const history = useHistory();
 
   const handleFilterSubmit = formData => {
-    const filter = {
-      ...formData,
-      category: formData.category?.value,
-      status: formData.status?.value,
-    };
-    setFilterParams(filter);
-    setFilterValues(filter);
+    history.replace(
+      buildUrl(
+        "",
+        mergeLeft(
+          {
+            ...formData,
+            category: formData.category?.value,
+            status: formData.status?.value,
+          },
+          queryParams
+        )
+      )
+    );
     closeFilter();
   };
 
@@ -32,7 +44,7 @@ const Filter = ({ isOpen, closeFilter, setFilterParams }) => {
       <NeetoUIForm
         className="mt-4 flex flex-col gap-3"
         formikProps={{
-          initialValues: filterValues,
+          initialValues: { quizName, category, status },
           onSubmit: handleFilterSubmit,
         }}
       >

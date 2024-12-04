@@ -5,6 +5,7 @@ import { List, RightArrow, LeftArrow, Globe } from "neetoicons";
 import { useTranslation } from "react-i18next";
 import routes from "src/routes";
 
+import QuizFilter from "./QuizFilter";
 import QuizItLogo from "./QuizItLogo";
 import SidebarNavItem from "./SidebarNavItem";
 import SidebarUserProfile from "./SidebarUserProfile";
@@ -45,6 +46,7 @@ const Sidebar = () => {
             label={t("labels.quizzes")}
             onClickRoute={routes.dashboard}
           />
+          <QuizFilter isVisible={isExpanded} />
           <SidebarNavItem
             toolTipEnabled
             expanded={isExpanded}
