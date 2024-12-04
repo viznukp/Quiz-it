@@ -6,7 +6,15 @@ const webpack = require("webpack");
 
 const customizeWebpackDefaultRules = require("./helpers/customize-default-rules");
 const resolve = require("./resolve");
-const rules = require("./rules");
+const rules = [
+  ...require("./rules"),
+  {
+    test: /\.mjs/,
+    resolve: {
+      fullySpecified: false,
+    },
+  },
+];
 
 const dotEnvFileSuffix =
   process.env.NODE_ENV === "production" ? "" : `.${process.env.NODE_ENV}`;

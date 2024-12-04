@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import FileSaver from "file-saver";
 import { Download as DownloadIcon } from "neetoicons";
 import { Button, Modal } from "neetoui";
 import { useTranslation } from "react-i18next";
@@ -7,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import submissionsApi from "apis/submissions";
 import createConsumer from "channels/consumer";
 import { subscribeToReportDownloadChannel } from "channels/reportDownloadChannel";
+import { ProgressBar } from "components/commons";
 
 const ReportDownloader = ({ slug }) => {
   const { t } = useTranslation();
@@ -25,22 +27,10 @@ const ReportDownloader = ({ slug }) => {
     }
   };
 
-  const saveAs = ({ blob, fileName }) => {
-    const objectUrl = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = objectUrl;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
-    setTimeout(() => window.URL.revokeObjectURL(objectUrl), 150);
-    consumer.disconnect();
-  };
-
   const downloadPdf = async () => {
     try {
       const data = await submissionsApi.download();
-      saveAs({ blob: data, fileName: "granite_task_report.pdf" });
+      FileSaver.saveAs(data, "quiz_submissions_report.pdf");
     } catch (error) {
       logger.error(error);
     }
@@ -72,7 +62,10 @@ const ReportDownloader = ({ slug }) => {
         }}
       />
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="px-12 py-16">{message}</div>
+        <div className="space-y-2 p-6">
+          <p className="text-xl font-semibold">{message}</p>
+          <ProgressBar progress={progress} />
+        </div>
       </Modal>
     </div>
   );
