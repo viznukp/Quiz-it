@@ -19,6 +19,8 @@ const ReportDownloader = ({ slug }) => {
 
   const consumer = createConsumer();
 
+  const closeModal = () => setIsModalOpen(false);
+
   const generatePdf = async () => {
     try {
       await submissionsApi.generatePdf(slug);
@@ -31,6 +33,7 @@ const ReportDownloader = ({ slug }) => {
     try {
       const data = await submissionsApi.download();
       FileSaver.saveAs(data, "quiz_submissions_report.pdf");
+      closeModal();
     } catch (error) {
       logger.error(error);
     }
@@ -61,7 +64,7 @@ const ReportDownloader = ({ slug }) => {
           });
         }}
       />
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div className="space-y-2 p-6">
           <p className="text-xl font-semibold">{message}</p>
           <ProgressBar progress={progress} />
