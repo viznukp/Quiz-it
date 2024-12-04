@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :organization, only: :show
+    resource :organization, only: %i[show update]
   end
 
   root "home#index"
