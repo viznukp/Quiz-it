@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Typography, Button, Input } from "neetoui";
 import { useTranslation } from "react-i18next";
 
 import { Container } from "components/commons";
+import { useShowOrganization } from "hooks/reactQuery/useOrganizationApi";
 
 const Settings = () => {
   const { t } = useTranslation();
-  const [siteName, setSiteName] = useState("Placeholder site name");
+  const [siteName, setSiteName] = useState("");
+
+  const { data: { organization = "" } = {}, isLoading } = useShowOrganization();
+
+  useEffect(() => {
+    if (organization) setSiteName(organization);
+  }, [isLoading]);
 
   return (
     <Container>
