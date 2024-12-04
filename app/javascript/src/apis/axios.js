@@ -19,7 +19,9 @@ const AXIOS_HEADER_AUTH_KEY_TOKEN = "X-Auth-Token";
 axios.defaults.baseURL = "/";
 
 const transformResponseKeysToCamelCase = response => {
-  response.data = keysToCamelCase(response.data);
+  if (response.data && !(response.data instanceof Blob)) {
+    response.data = keysToCamelCase(response.data);
+  }
 };
 
 const setAuthHeaders = () => {

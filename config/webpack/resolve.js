@@ -17,6 +17,7 @@ module.exports = {
     utils: absolutePath("src/utils"),
     hooks: absolutePath("src/hooks"),
     translations: absolutePath("src/translations"),
+    channels: absolutePath("src/channels"),
   },
   extensions: [
     ".ts",

@@ -111,3 +111,10 @@ gem "bcrypt", "~> 3.1.13"
 gem "deep_cloneable", "~> 3.2.1"
 
 gem "pagy"
+
+# PDF generation gem
+gem "wicked_pdf"
+# wicked_pdf uses the following binary
+gem "wkhtmltopdf-binary"
+
+gem "redis", "~> 4.0"

@@ -21,3 +21,7 @@ en:
   quiz:
     slug:
      immutable: "is immutable"
+  report:
+    render: "Rendering the report"
+    generate: "Generating the PDF report"
+    ready: "Report ready to download"

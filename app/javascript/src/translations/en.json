@@ -65,7 +65,8 @@
     "score": "Score",
     "correct": "Correct",
     "incorrect": "Incorrect",
-    "nthQuestion": "Question {{count}}"
+    "nthQuestion": "Question {{count}}",
+    "download": "Download"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes",
