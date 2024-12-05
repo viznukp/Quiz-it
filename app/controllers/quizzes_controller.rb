@@ -8,7 +8,8 @@ class QuizzesController < ApplicationController
   after_action :verify_authorized, except: %i[index categories index_public show show_quiz_without_answer stats]
 
   def index
-    @pagination_metadata, @paginated_quizzes = QuizFilterService.new(params).filter_quizzes
+    filtered_quizzes = QuizFilterService.new(params).filter_quizzes
+    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).paginate
   end
 
   def index_public
@@ -77,7 +78,6 @@ class QuizzesController < ApplicationController
     @stats[:total_quizzes] = Quiz.count
     @stats[:published_quizzes] = Quiz.where(status: "published").count
     @stats[:draft_quizzes] = Quiz.where(status: "draft").count
-    # authorize OpenStruct.new(@stats)
   end
 
   private

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class QuizFilterService
-  include Pagy::Backend
-
   attr_reader :params
 
   def initialize(params)
@@ -24,14 +22,7 @@ class QuizFilterService
       quizzes = quizzes.where("LOWER(name) LIKE ?", "%#{filter_params[:quiz_name].downcase}%")
     end
 
-    page_size = filter_params[:page_size]
-    page = PaginationService.new(
-      filter_params[:page],
-      page_size,
-      quizzes.count
-    ).calculate_page_number
-
-    pagy(quizzes, limit: page_size, page:)
+    quizzes
   end
 
   def filter_params
