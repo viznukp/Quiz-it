@@ -13,7 +13,7 @@ class QuizzesController < ApplicationController
   end
 
   def index_public
-    @quizzes = Quiz.all
+    @quizzes = QuizFilterService.new(params).filter_quizzes
   end
 
   def create

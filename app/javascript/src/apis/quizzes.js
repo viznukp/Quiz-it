@@ -8,7 +8,8 @@ const fetch = filters =>
       qs.stringify(params, { arrayFormat: "brackets" }),
   });
 
-const fetchPublic = () => axios.get("/quizzes/index_public");
+const fetchPublic = filters =>
+  axios.get("/quizzes/index_public", { params: filters });
 
 const create = payload => axios.post("/quizzes", { quiz: payload });
 
