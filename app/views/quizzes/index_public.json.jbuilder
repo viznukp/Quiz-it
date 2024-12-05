@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.quiz_data do
-  json.organization @quizzes.first.organization&.name
+  json.organization @quizzes.first&.organization&.name || ""
 
   json.quizzes do
     json.array! @quizzes do |quiz|

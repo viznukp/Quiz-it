@@ -3,17 +3,26 @@
 class PaginationService
   DEFAULT_PAGE_SIZE = 10
 
-  attr_reader :current_page, :page_size, :total_records
+  include Pagy::Backend
 
-  def initialize(current_page, page_size, total_records)
-    @current_page = (current_page || 1).to_i
-    @page_size = (page_size || DEFAULT_PAGE_SIZE).to_i
-    @total_records = total_records.to_i
+  def initialize(params, entity)
+    @entity = entity
+    @params = params
   end
 
-  def calculate_page_number
+  def paginate
+    current_page = (pagination_params[:page] || 1).to_i
+    page_size = (pagination_params[:page_size] || DEFAULT_PAGE_SIZE).to_i
+    total_records = @entity.count
     valid_page_size = page_size > 0 ? page_size : DEFAULT_PAGE_SIZE
     max_page = (total_records.to_f / valid_page_size).ceil
-    [[current_page, max_page].min, 1].max
+    page = [[current_page, max_page].min, 1].max
+    pagy(@entity, limit: page_size, page:)
   end
+
+  private
+
+    def pagination_params
+      @params.fetch(:filters, {}).permit(:page_size, :page)
+    end
 end

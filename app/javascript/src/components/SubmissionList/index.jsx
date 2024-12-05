@@ -29,10 +29,12 @@ const SubmissionList = () => {
   const queryParams = useQueryParams();
   const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
 
   const history = useHistory();
 
   const updateSearchTerm = searchTerm => {
+    setSearchTerm(searchTerm);
     history.replace(buildUrl("", mergeLeft({ name: searchTerm }, queryParams)));
   };
 
@@ -69,6 +71,7 @@ const SubmissionList = () => {
         <Typography style="h3">{t("labels.allSubmissions")}</Typography>
         <SearchBar
           placeholder={t("messages.info.searchName")}
+          searchTerm={searchTerm}
           setSearchTerm={updateSearchTerm}
         />
       </div>

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class SubmissionFilterService
-  include Pagy::Backend
-
   attr_reader :params
 
   def initialize(params)
@@ -31,14 +29,7 @@ class SubmissionFilterService
       submissions = submissions.where(status: filter_params[:status])
     end
 
-    page_size = filter_params[:page_size]
-    page = PaginationService.new(
-      filter_params[:page],
-      page_size,
-      submissions.count
-    ).calculate_page_number
-
-    pagy(submissions, limit: page_size, page:)
+    submissions
   end
 
   def filter_params

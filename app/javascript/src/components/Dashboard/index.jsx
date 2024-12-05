@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
@@ -15,8 +15,10 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
   const history = useHistory();
+  const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
 
   const updateSearchTerm = searchTerm => {
+    setSearchTerm(searchTerm);
     history.replace(
       buildUrl("", mergeLeft({ quizName: searchTerm }, queryParams))
     );
@@ -27,6 +29,7 @@ const Dashboard = () => {
       navbar={
         <NavBar title={t("pageTitles.allQuizzes")}>
           <SearchBar
+            searchTerm={searchTerm}
             setSearchTerm={updateSearchTerm}
             placeholder={t("messages.info.searchFor", {
               entity: t("labels.quizzesLower"),
