@@ -6,8 +6,7 @@ import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-import { QUIZ_STATUSES } from "components/constants";
-import { useFetchCategories } from "hooks/reactQuery/useQuizzesApi";
+import { SUBMISSION_STATUSES } from "components/constants";
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
 
@@ -16,9 +15,8 @@ import { FILTER_INITIAL_VALUES } from "./constants";
 const Filter = ({ isOpen, closeFilter }) => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
-  const { category, quizName, status } = queryParams;
+  const { name, status, email } = queryParams;
 
-  const { data: { categories = [] } = {} } = useFetchCategories();
   const history = useHistory();
 
   const handleFilterSubmit = formData => {
@@ -28,7 +26,6 @@ const Filter = ({ isOpen, closeFilter }) => {
         mergeLeft(
           {
             ...formData,
-            category: formData.category?.value,
             status: formData.status?.value,
           },
           queryParams
@@ -45,33 +42,27 @@ const Filter = ({ isOpen, closeFilter }) => {
         className="mt-4 flex flex-col gap-3"
         formikProps={{
           initialValues: {
-            quizName,
-            category: { label: category, value: category },
+            name,
+            email,
             status: { label: status, value: status },
           },
           onSubmit: handleFilterSubmit,
         }}
       >
-        <Input label={t("labels.name")} name="quizName" />
-        <Select
-          isClearable
-          isSearchable
-          label={t("labels.category")}
-          name="category"
-          options={categories?.map(category => ({
-            label: category,
-            value: category,
-          }))}
-        />
+        <Input label={t("labels.name")} name="name" />
+        <Input label={t("labels.email")} name="email" />
         <Select
           isClearable
           label={t("labels.status")}
           name="status"
           options={[
-            { label: t("labels.draft"), value: QUIZ_STATUSES.DRAFT.STATUS },
             {
-              label: t("labels.published"),
-              value: QUIZ_STATUSES.PUBLISHED.STATUS,
+              label: t("labels.completed"),
+              value: SUBMISSION_STATUSES.COMPLETED.STATUS,
+            },
+            {
+              label: t("labels.incomplete"),
+              value: SUBMISSION_STATUSES.INCOMPLETE.STATUS,
             },
           ]}
         />

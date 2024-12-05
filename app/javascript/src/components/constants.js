@@ -3,5 +3,10 @@ export const QUIZ_STATUSES = {
   DRAFT: { STATUS: "draft" },
 };
 
+export const SUBMISSION_STATUSES = {
+  COMPLETED: { STATUS: "completed" },
+  INCOMPLETE: { STATUS: "incomplete" },
+};
+
 export const DEFAULT_PAGE_SIZE = 2;
 export const DEFAULT_PAGE_INDEX = 1;

@@ -4,7 +4,7 @@ import submissionsApi from "apis/submissions";
 
 export const useFetchSubmissions = (slug, filters) =>
   useQuery({
-    queryKey: ["quizzes", slug],
+    queryKey: ["quizzes", slug, filters],
     queryFn: () => submissionsApi.fetch(slug, filters),
   });
 
