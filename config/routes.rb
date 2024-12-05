@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    resource :organization, only: %i[show update]
   end
 
   root "home#index"
