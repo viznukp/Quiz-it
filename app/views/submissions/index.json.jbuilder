@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.submissions do
-  json.array! @submissions do |submission|
+  json.array! @paginated_submissions do |submission|
     json.user do
       json.extract! submission.user,
         :name,

@@ -73,7 +73,9 @@
     "enterQuizTitle": "Enter quiz title",
     "saveChanges": "Save changes",
     "settings": "Settings",
-    "generalSettings": "General Settings"
+    "generalSettings": "General Settings",
+    "completed": "Completed",
+    "incomplete": "Incomplete"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes",

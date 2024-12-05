@@ -1,10 +1,14 @@
 import { keysToSnakeCase } from "neetocist";
 import { stringify } from "qs";
-import { isEmpty, toPairs, pipe, omit } from "ramda";
+import { toPairs, pipe, omit, reject, isNil } from "ramda";
 
 export const buildUrl = (route, params) => {
+  const paramsExcludingEmpty = reject(
+    value => isNil(value) || value === "",
+    params
+  );
   const placeHolders = [];
-  toPairs(params).forEach(([key, value]) => {
+  toPairs(paramsExcludingEmpty).forEach(([key, value]) => {
     if (route.includes(`:${key}`)) {
       placeHolders.push(key);
       route = route.replace(`:${key}`, encodeURIComponent(value));
@@ -15,7 +19,7 @@ export const buildUrl = (route, params) => {
     omit(placeHolders),
     keysToSnakeCase,
     stringify
-  )(params);
+  )(paramsExcludingEmpty);
 
-  return isEmpty(queryParams) ? route : `${route}?${queryParams}`;
+  return `${route}?${queryParams}`;
 };

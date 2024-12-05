@@ -22,7 +22,7 @@ export const SUBMISSION_TABLE_SCHEMA = columnsToTableSchema(
 );
 
 export const FILTER_INITIAL_VALUES = {
-  name: "",
-  category: [],
-  status: "",
+  name: null,
+  email: null,
+  status: null,
 };

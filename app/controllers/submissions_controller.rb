@@ -12,8 +12,8 @@ class SubmissionsController < ApplicationController
     render_notice(t("submission_successfully_saved"))
   end
 
-  def show
-    @submissions = Submission.includes(:user).joins(:quiz).where(quizzes: { slug: params[:slug] })
+  def index
+    @pagination_metadata, @paginated_submissions = SubmissionFilterService.new(params).filter_submissions
   end
 
   def result
