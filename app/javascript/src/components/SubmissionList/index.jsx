@@ -2,8 +2,9 @@ import React, { useState } from "react";
 
 import { Filter as FilterIcon } from "neetoicons";
 import { Table, Typography, Button } from "neetoui";
+import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom/cjs/react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import {
   Container,
@@ -11,10 +12,12 @@ import {
   PageLoader,
   StatusTag,
   ColumnFilter,
+  SearchBar,
 } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 import useQueryParams from "hooks/useQueryParams";
+import { buildUrl } from "utils/url";
 
 import { SUBMISSION_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
@@ -27,7 +30,13 @@ const SubmissionList = () => {
   const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
 
-  const { data, isLoading } = useFetchSubmissions(slug, queryParams);
+  const history = useHistory();
+
+  const updateSearchTerm = searchTerm => {
+    history.replace(buildUrl("", mergeLeft({ name: searchTerm }, queryParams)));
+  };
+
+  const { data = {}, isLoading } = useFetchSubmissions(slug, queryParams);
 
   const transformSubmissionDataForTableDisplay = data =>
     data?.map(({ submission, user }) => ({
@@ -48,13 +57,21 @@ const SubmissionList = () => {
     <Container
       navbar={
         <NavBar
+          backButtonVisible
           isTabsEnabled
           activeTab={TAB_IDS.submissions}
           quizSlug={slug}
-          title={t("pageTitles.allSubmissions")}
+          title={data?.quiz}
         />
       }
     >
+      <div className="mb-3 flex justify-between gap-3">
+        <Typography style="h3">{t("labels.allSubmissions")}</Typography>
+        <SearchBar
+          placeholder={t("messages.info.searchName")}
+          setSearchTerm={updateSearchTerm}
+        />
+      </div>
       <div className="mb-3 flex justify-between gap-3">
         <div className="mb-3 flex gap-3">
           <Typography style="h4">

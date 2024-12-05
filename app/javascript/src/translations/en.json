@@ -75,11 +75,11 @@
     "settings": "Settings",
     "generalSettings": "General Settings",
     "completed": "Completed",
-    "incomplete": "Incomplete"
+    "incomplete": "Incomplete",
+    "allSubmissions": "All Submissions"
   },
   "pageTitles": {
-    "allQuizzes": "All Quizzes",
-    "allSubmissions": "All Submissions"
+    "allQuizzes": "All Quizzes"
   },
   "messages": {
     "error": {
@@ -101,7 +101,8 @@
       "correctAnswer": "Your answer is correct",
       "incorrectAnswer": "Your answer is incorrect",
       "customizeQuizSiteName": "Customize the quiz site name",
-      "searchFor": "Search for {{entity}}"
+      "searchFor": "Search for {{entity}}",
+      "searchName": "Search name"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
