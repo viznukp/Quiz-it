@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       get :clone
     end
 
-    resources :submissions, only: %i[show create], param: :slug do
+    resources :submissions, only: %i[index create], param: :slug do
       get :result, on: :member
       collection do
         resource :report, only: %i[create], module: :submissions do

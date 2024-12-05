@@ -21,8 +21,12 @@ const SubmissionList = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
+  const filters = {
+    // name: "Oliver Smith",
+    email: "oliver",
+  };
 
-  const { data, isLoading } = useFetchSubmissions(slug);
+  const { data, isLoading } = useFetchSubmissions(slug, filters);
 
   const transformSubmissionDataForTableDisplay = data =>
     data?.map(({ submission, user }) => ({
