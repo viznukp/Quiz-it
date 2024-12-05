@@ -6,6 +6,7 @@ import Option from "./Option";
 import PageLoader from "./PageLoader";
 import PrivateRoute from "./PrivateRoute";
 import ProgressBar from "./ProgressBar";
+import SearchBar from "./SearchBar";
 import StatusTag from "./StatusTag";
 
 export {
@@ -18,4 +19,5 @@ export {
   ColumnFilter,
   StatusTag,
   ProgressBar,
+  SearchBar,
 };

@@ -1,6 +1,7 @@
 {
   "labels": {
     "quizzes": "Quizzes",
+    "quizzesLower": "quizzes",
     "name": "Name",
     "category": "Category",
     "status": "Status",
@@ -97,7 +98,8 @@
       "selectedRows": "{{selected}} {{entity}} selected of {{total}}",
       "correctAnswer": "Your answer is correct",
       "incorrectAnswer": "Your answer is incorrect",
-      "customizeQuizSiteName": "Customize the quiz site name"
+      "customizeQuizSiteName": "Customize the quiz site name",
+      "searchFor": "Search for {{entity}}"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",

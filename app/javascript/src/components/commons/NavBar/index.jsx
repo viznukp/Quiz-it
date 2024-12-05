@@ -39,7 +39,7 @@ const NavBar = ({
           </Tab>
         )}
       </div>
-      <div className="flex justify-end">{children}</div>
+      <div className="flex justify-end gap-3">{children}</div>
     </div>
   );
 };
