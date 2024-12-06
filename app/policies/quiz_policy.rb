@@ -8,41 +8,31 @@ class QuizPolicy
     @quiz = quiz
   end
 
-  def create?
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
-  end
-
-  def show?
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
-  end
-
-  def show_question?
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
-  end
-
-  def destroy?
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
-  end
-
-  def update?
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
-  end
-
-  def clone?
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
-  end
-
-  def bulk_action?
-    authorize_if_user_is_admin_and_quiz_creator_is_current_user
+  def admin_and_creator?
+    user.admin? && quiz.creator_id == user.id
   end
 
   def stats?
     user.admin?
   end
 
-  private
+  class Scope
+    attr_reader :user, :scope
 
-    def authorize_if_user_is_admin_and_quiz_creator_is_current_user
-      user.admin? && quiz.creator_id == user.id
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
     end
+
+    def resolve
+      scope.includes(:creator)
+        .where(user_is_admin_and_creator_of_quiz)
+    end
+
+    private
+
+      def user_is_admin_and_creator_of_quiz
+        { creator_id: user.id, users: { user_type: :admin } }
+      end
+  end
 end
