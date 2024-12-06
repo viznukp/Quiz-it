@@ -78,7 +78,9 @@
     "incomplete": "Incomplete",
     "allSubmissions": "All Submissions",
     "selectCategory": "Select category",
-    "filterByCategory": "Filter by category"
+    "filterByCategory": "Filter by category",
+    "draftSavedAt": "Draft saved at {{dateAndTime}}",
+    "copyQuizLink": "Copy quiz link"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
@@ -93,7 +95,8 @@
       "nonEmptyOption": "Option cannot be empty!",
       "minRequiredOptions": "At least {{count}} options are required!",
       "maxAllowedOptions": "No more than {{count}} options are allowed!",
-      "uniqueOptions": "Duplicate options are not permitted!"
+      "uniqueOptions": "Duplicate options are not permitted!",
+      "failedToCopyLink": "Failed to copy the quiz link: {{error}}"
     },
     "info": {
       "noQuestionsToShow": "There are no questions to show",
@@ -104,7 +107,8 @@
       "incorrectAnswer": "Your answer is incorrect",
       "customizeQuizSiteName": "Customize the quiz site name",
       "searchFor": "Search for {{entity}}",
-      "searchName": "Search name"
+      "searchName": "Search name",
+      "linkCopied": "Quiz link copied to clipboard!"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
