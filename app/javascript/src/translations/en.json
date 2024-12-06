@@ -83,7 +83,9 @@
     "copyQuizLink": "Copy quiz link"
   },
   "pageTitles": {
-    "allQuizzes": "All Quizzes"
+    "allQuizzes": "All Quizzes",
+    "publishedQuizzes": "Published Quizzes",
+    "draftQuizzes": "Draft Quizzes"
   },
   "messages": {
     "error": {

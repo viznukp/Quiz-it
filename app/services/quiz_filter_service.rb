@@ -22,7 +22,8 @@ class QuizFilterService
       quizzes = quizzes.where("LOWER(name) LIKE ?", "%#{filter_params[:quiz_name].downcase}%")
     end
 
-    quizzes
+    result_type = filter_params[:status] || "all"
+    [quizzes, result_type]
   end
 
   def filter_params

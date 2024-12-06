@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 
 import { Container, NavBar, SearchBar } from "components/commons";
 import useQueryParams from "hooks/useQueryParams";
+import useQuizzesStore from "stores/useQuizzesStore";
 import { buildUrl } from "utils/url";
 
 import NewQuizPane from "./NewQuizPane";
@@ -15,7 +16,13 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
   const history = useHistory();
+  const { resultType } = useQuizzesStore();
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
+  const pageTitles = {
+    all: t("pageTitles.allQuizzes"),
+    published: t("pageTitles.publishedQuizzes"),
+    draft: t("pageTitles.draftQuizzes"),
+  };
 
   const updateSearchTerm = searchTerm => {
     setSearchTerm(searchTerm);
@@ -27,7 +34,7 @@ const Dashboard = () => {
   return (
     <Container
       navbar={
-        <NavBar title={t("pageTitles.allQuizzes")}>
+        <NavBar title={pageTitles[resultType]}>
           <SearchBar
             searchTerm={searchTerm}
             setSearchTerm={updateSearchTerm}

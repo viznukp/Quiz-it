@@ -1,3 +1,4 @@
+json.result_type @result_type
 json.quizzes @paginated_quizzes do |quiz|
   json.extract! quiz,
     :id,

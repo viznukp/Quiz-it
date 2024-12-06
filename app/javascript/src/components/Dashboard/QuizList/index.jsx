@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Delete, Filter as FilterIcon } from "neetoicons";
 import { Table, Button, Dropdown, Typography, Pagination } from "neetoui";
@@ -21,6 +21,7 @@ import {
 } from "components/constants";
 import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
+import useQuizzesStore from "stores/useQuizzesStore";
 import { dateFromTimeStamp } from "utils/dateTime";
 import { buildUrl } from "utils/url";
 
@@ -33,6 +34,7 @@ const QuizList = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const queryParams = useQueryParams();
+  const { setResultType } = useQuizzesStore();
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
@@ -106,10 +108,14 @@ const QuizList = () => {
   };
 
   const {
-    data: { quizzes = [], paginationData = {} } = {},
+    data: { quizzes, paginationData = {}, resultType = "all" } = {},
     isLoading,
     refetch: reloadQuizzes,
   } = useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
+
+  useEffect(() => {
+    setResultType(resultType);
+  }, [quizzes]);
 
   if (isLoading) return <PageLoader className="h-64" />;
 
