@@ -13,7 +13,10 @@ class QuizzesController < ApplicationController
   end
 
   def index_public
-    @quizzes = QuizFilterService.new(params).filter_quizzes
+    params[:filters] ||= {}
+    params[:filters] = params[:filters].merge(status: "published")
+    @quizzes, = QuizFilterService.new(params).filter_quizzes
+    @organization = Organization.first
   end
 
   def create
