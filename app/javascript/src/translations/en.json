@@ -76,7 +76,9 @@
     "generalSettings": "General Settings",
     "completed": "Completed",
     "incomplete": "Incomplete",
-    "allSubmissions": "All Submissions"
+    "allSubmissions": "All Submissions",
+    "selectCategory": "Select category",
+    "filterByCategory": "Filter by category"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"

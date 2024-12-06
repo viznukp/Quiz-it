@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "neetoui";
 import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 import { useFetchQuizzesPublic } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
@@ -12,11 +12,11 @@ import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
 
 import Card from "./Card";
+import Filter from "./Filter";
 
 const PublicPage = () => {
   const history = useHistory();
   const { t } = useTranslation();
-
   const queryParams = useQueryParams();
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
 
@@ -45,14 +45,17 @@ const PublicPage = () => {
         </NavBar>
       }
     >
-      <div className="mx-auto mb-8 mt-12 max-w-xl">
-        <SearchBar
-          searchTerm={searchTerm}
-          setSearchTerm={updateSearchTerm}
-          placeholder={t("messages.info.searchFor", {
-            entity: t("labels.quizzesLower"),
-          })}
-        />
+      <div className="mb-8 mt-12 flex w-full justify-center">
+        <div className="flex gap-3">
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={updateSearchTerm}
+            placeholder={t("messages.info.searchFor", {
+              entity: t("labels.quizzesLower"),
+            })}
+          />
+          <Filter />
+        </div>
       </div>
       <div className="grid grid-cols-3 gap-3">
         {quizzes?.map(quiz => (
