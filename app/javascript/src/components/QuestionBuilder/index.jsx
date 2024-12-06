@@ -31,12 +31,17 @@ const QuestionBuilder = () => {
   const handleQuizSave = async () => {
     try {
       await quizzesApi.update(slug, { status: saveType });
+      refetchQuizzes();
     } catch (error) {
       logger.error(error);
     }
   };
 
-  const { data: { quiz } = {}, isLoading, refetch } = useShowQuiz(slug);
+  const {
+    data: { quiz } = {},
+    isLoading,
+    refetch: refetchQuizzes,
+  } = useShowQuiz(slug);
 
   useEffect(() => {
     if (quiz?.status) {
@@ -58,6 +63,11 @@ const QuestionBuilder = () => {
           quizSlug={slug}
           title={quiz?.name}
         >
+          {quiz?.status === STATUS_DRAFT && (
+            <Typography className="italic text-gray-400">
+              {t("labels.draftSavedAt", { dateAndTime: quiz?.lastUpdatedAt })}
+            </Typography>
+          )}
           <SaveAction
             saveAction={handleQuizSave}
             saveType={saveType}
@@ -90,7 +100,7 @@ const QuestionBuilder = () => {
               key={question.id}
               slug={slug}
               {...question}
-              refetchQuizzes={refetch}
+              refetchQuizzes={refetchQuizzes}
             />
           ))}
         </div>

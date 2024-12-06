@@ -78,7 +78,8 @@
     "incomplete": "Incomplete",
     "allSubmissions": "All Submissions",
     "selectCategory": "Select category",
-    "filterByCategory": "Filter by category"
+    "filterByCategory": "Filter by category",
+    "draftSavedAt": "Draft saved at {{dateAndTime}}"
   },
   "pageTitles": {
     "allQuizzes": "All Quizzes"
