@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import classNames from "classnames";
 import { Tooltip, Typography } from "neetoui";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom/cjs/react-router-dom";
+import { isEmpty } from "ramda";
+import { Link, useLocation } from "react-router-dom";
+
+import SidebarContext from "contexts/SidebarContext";
 
 const SidebarNavItem = ({
   label,
@@ -12,28 +15,29 @@ const SidebarNavItem = ({
   icon,
   onClickRoute = "",
   onClickAction,
-  expanded = false,
-  active = false,
   style = "link",
 }) => {
+  const { pathname: currentRoute } = useLocation();
+  const [isExpanded] = useContext(SidebarContext);
+  const isActive = currentRoute === onClickRoute && !isEmpty(onClickRoute);
   const renderContent = (
     <div
       className={classNames(
-        "flex h-10 items-center gap-3 rounded-md hover:bg-gray-200",
-        { "justify-start border-b px-2": expanded },
-        { "w-10 justify-center": !expanded },
-        { "bg-blue-500": active }
+        "flex h-10 items-center gap-3 rounded-md hover:bg-gray-300",
+        { "justify-start border-b px-2": isExpanded },
+        { "w-10 justify-center": !isExpanded },
+        { "bg-blue-500": isActive }
       )}
     >
       {icon}
-      {expanded && <Typography>{label}</Typography>}
+      {isExpanded && <Typography>{label}</Typography>}
     </div>
   );
 
   return (
     <Tooltip
       content={toolTipLabel || label}
-      disabled={!toolTipEnabled || expanded}
+      disabled={!toolTipEnabled || isExpanded}
     >
       {style === "link" ? (
         <Link to={onClickRoute}>{renderContent}</Link>
@@ -52,8 +56,6 @@ SidebarNavItem.propTypes = {
   toolTipEnabled: PropTypes.bool,
   icon: PropTypes.node,
   style: PropTypes.oneOf(["link", "button"]),
-  expanded: PropTypes.bool,
-  active: PropTypes.bool,
   onClickRoute: PropTypes.string,
   onClickAction: PropTypes.func,
 };

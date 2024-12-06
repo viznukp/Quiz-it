@@ -1,6 +1,6 @@
 const routes = {
   base: "localhost:3000",
-  root: "/",
+  root: "/dashboard",
   signup: "/signup",
   login: "/login",
   quiz: {
