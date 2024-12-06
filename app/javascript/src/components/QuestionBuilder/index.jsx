@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Button, Typography } from "neetoui";
 import { isEmpty } from "ramda";
@@ -10,17 +10,41 @@ import {
 import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
+import quizzesApi from "apis/quizzes";
 import { Container, NavBar, PageLoader } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
+import { QUIZ_STATUSES } from "components/constants";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
+import SaveAction from "./SaveAction";
 
 const QuestionBuilder = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const history = useHistory();
+  const {
+    DRAFT: { STATUS: STATUS_DRAFT },
+    PUBLISHED: { STATUS: STATUS_PUBLISHED },
+  } = QUIZ_STATUSES;
+  const [saveType, setSaveType] = useState(STATUS_DRAFT);
+
+  const handleQuizSave = async () => {
+    try {
+      await quizzesApi.update(slug, { status: saveType });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const { data: { quiz } = {}, isLoading, refetch } = useShowQuiz(slug);
+
+  useEffect(() => {
+    if (quiz?.status) {
+      setSaveType(
+        quiz.status === STATUS_DRAFT ? STATUS_PUBLISHED : STATUS_DRAFT
+      );
+    }
+  }, [quiz]);
 
   if (isLoading) return <PageLoader fullScreen />;
 
@@ -33,7 +57,13 @@ const QuestionBuilder = () => {
           activeTab={TAB_IDS.questions}
           quizSlug={slug}
           title={quiz?.name}
-        />
+        >
+          <SaveAction
+            saveAction={handleQuizSave}
+            saveType={saveType}
+            setSaveType={setSaveType}
+          />
+        </NavBar>
       }
     >
       <div className="flex justify-end">
