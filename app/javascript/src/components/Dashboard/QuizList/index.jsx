@@ -13,6 +13,7 @@ import {
   PageLoader,
   ColumnFilter,
   StatusTag,
+  NoData,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -119,7 +120,13 @@ const QuizList = () => {
 
   if (isLoading) return <PageLoader className="h-64" />;
 
-  return (
+  return isEmpty(quizzes) ? (
+    <NoData
+      message={t("messages.info.noEntityToShow", {
+        entity: t("labels.quizzesLower"),
+      })}
+    />
+  ) : (
     <>
       <div className="mb-3 flex justify-between gap-3">
         <div className="mb-3 flex gap-3">

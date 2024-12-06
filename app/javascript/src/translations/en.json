@@ -57,7 +57,9 @@
     "wrongAnswers": "Wrong answers",
     "unanswered": "Unanswered",
     "questions": "Questions",
+    "questionsLower": "questions",
     "submissions": "Submissions",
+    "submissionsLower": "submissions",
     "availableSubmissions": "{{count}} Submission",
     "availableSubmissions_other": "{{count}} Submissions",
     "yourResult": "Your result",
@@ -101,7 +103,7 @@
       "failedToCopyLink": "Failed to copy the quiz link: {{error}}"
     },
     "info": {
-      "noQuestionsToShow": "There are no questions to show",
+      "noEntityToShow": "There are no {{entity}} to show",
       "availableQuizzes": "{{count}} quiz",
       "availableQuizzes_other": "{{count}} quizzes",
       "selectedRows": "{{selected}} {{entity}} selected of {{total}}",

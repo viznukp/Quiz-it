@@ -2,6 +2,7 @@ import ColumnFilter from "./ColumnFilter";
 import Container from "./Container";
 import LabelToLink from "./LabelToLink";
 import NavBar from "./NavBar";
+import NoData from "./NoData";
 import Option from "./Option";
 import PageLoader from "./PageLoader";
 import PrivateRoute from "./PrivateRoute";
@@ -20,4 +21,5 @@ export {
   StatusTag,
   ProgressBar,
   SearchBar,
+  NoData,
 };
