@@ -9,6 +9,7 @@ class Quiz < ApplicationRecord
   belongs_to :creator, foreign_key: "creator_id", class_name: "User"
   has_one :organization, through: :creator
   has_many :questions, dependent: :delete_all
+  has_many :submissions, dependent: :delete_all
 
   validates :name,
     presence: true,
