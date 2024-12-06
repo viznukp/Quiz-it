@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import { Button, Typography } from "neetoui";
+import { Link as LinkIcon } from "neetoicons";
+import { Button, Typography, Toastr } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
-import {
-  useParams,
-  useHistory,
-} from "react-router-dom/cjs/react-router-dom.min";
+import { useParams, useHistory } from "react-router-dom";
 import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
@@ -34,6 +32,16 @@ const QuestionBuilder = () => {
       refetchQuizzes();
     } catch (error) {
       logger.error(error);
+    }
+  };
+
+  const copyQuizLink = async () => {
+    const link = `${routes.base}${routes.attemptQuiz.replace(":slug", slug)}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      Toastr.info(t("messages.info.linkCopied"));
+    } catch (error) {
+      Toastr.error(t("messages.error.failedToCopyLink", { error }));
     }
   };
 
@@ -72,6 +80,15 @@ const QuestionBuilder = () => {
             saveAction={handleQuizSave}
             saveType={saveType}
             setSaveType={setSaveType}
+          />
+          <Button
+            icon={LinkIcon}
+            style="text"
+            tooltipProps={{
+              content: t("labels.copyQuizLink"),
+              position: "bottom",
+            }}
+            onClick={copyQuizLink}
           />
         </NavBar>
       }
