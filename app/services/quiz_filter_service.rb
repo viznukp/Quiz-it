@@ -11,7 +11,7 @@ class QuizFilterService
     quizzes = Quiz.all
 
     if filter_params[:category].present?
-      quizzes = quizzes.where(category: filter_params[:category])
+      quizzes = quizzes.where("LOWER(category) LIKE ?", "%#{filter_params[:category].downcase}%")
     end
 
     if filter_params[:status].present?

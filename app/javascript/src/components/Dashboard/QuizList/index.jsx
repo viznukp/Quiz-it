@@ -134,11 +134,11 @@ const QuizList = () => {
             {selectedQuizzesIds.length > 0
               ? t("messages.info.selectedRows", {
                   selected: selectedQuizzesIds.length,
-                  total: quizzes.length,
+                  total: quizzes?.length,
                   entity: "quizzes",
                 })
               : t("messages.info.availableQuizzes", {
-                  count: quizzes.length,
+                  count: quizzes?.length,
                 })}
           </Typography>
           {!isEmpty(selectedQuizzesSlugs) && (
