@@ -1,17 +1,29 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-import { Link } from "react-router-dom/cjs/react-router-dom";
+import { Tooltip } from "neetoui";
+import { Link } from "react-router-dom";
 
-const LabelToLink = ({ label, pathTo, truncateAfter }) => {
-  const truncatedLabel =
-    truncateAfter && label.length > truncateAfter
-      ? `${label.slice(0, truncateAfter)}...`
-      : label;
+const LabelToLink = ({ label, pathTo }) => {
+  const [isTruncated, setIsTruncated] = useState(false);
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    if (textRef.current) {
+      setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth);
+    }
+  }, [label]);
 
   return (
-    <Link className="text-black hover:text-blue-600" to={pathTo}>
-      {truncatedLabel}
-    </Link>
+    <Tooltip content={label} disabled={!isTruncated} position="top">
+      <Link
+        className="block truncate text-black hover:text-blue-600"
+        ref={textRef}
+        style={{ maxWidth: "100%" }}
+        to={pathTo}
+      >
+        {label}
+      </Link>
+    </Tooltip>
   );
 };
 

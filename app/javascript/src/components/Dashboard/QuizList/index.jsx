@@ -63,7 +63,6 @@ const QuizList = () => {
         <LabelToLink
           label={name}
           pathTo={routes.quiz.questions.replace(":slug", slug)}
-          truncateAfter={20}
         />
       ),
       status: <StatusTag label={status} primaryLabel="published" />,
