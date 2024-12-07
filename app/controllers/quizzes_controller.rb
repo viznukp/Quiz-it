@@ -1,49 +1,48 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  skip_before_action :authenticate_user_using_x_auth_token, only: :index_public
-  before_action :load_quiz, only: %i[update destroy clone show_question]
+  skip_before_action :authenticate_user_using_x_auth_token, only: %i[index_public stats categories]
+  before_action :load_quiz, only: %i[update destroy clone]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
   before_action :load_quiz_with_questions, only: %i[show show_quiz_without_answer]
   after_action :verify_authorized, except: %i[index categories index_public show show_quiz_without_answer stats]
+  after_action :verify_policy_scoped, only: :index
+  before_action :authorize_if_user_is_admin_and_creator_of_quiz, only: %i[update show destroy]
 
   def index
-    filtered_quizzes = QuizFilterService.new(params).filter_quizzes
+    filtered_quizzes, @result_type = QuizFilterService.new(params).filter_quizzes
+    filtered_quizzes = policy_scope(filtered_quizzes)
     @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).paginate
   end
 
   def index_public
-    @quizzes = QuizFilterService.new(params).filter_quizzes
+    params[:filters] ||= {}
+    params[:filters] = params[:filters].merge(status: "published")
+    @quizzes, = QuizFilterService.new(params).filter_quizzes
+    @organization = Organization.first
   end
 
   def create
     quiz = Quiz.new(quiz_params.merge(creator: current_user))
-    authorize quiz
+    authorize quiz, :admin_and_creator?
     quiz.save!
     render_notice(t("successfully_created", entity: "Quiz"))
   end
 
   def show
-    authorize @quiz
+    render
   end
 
   def show_quiz_without_answer
     render
   end
 
-  def show_question
-    authorize @quiz
-    @question = @quiz.questions.find_by!(id: params[:id])
-  end
-
   def update
-    authorize @quiz
     @quiz.update!(quiz_params)
     render_notice(t("successfully_updated", entity: "Quiz"))
   end
 
   def destroy
-    authorize @quiz
     @quiz.destroy!
     render_notice(t("successfully_deleted", entity: "Quiz"))
   end
@@ -63,8 +62,8 @@ class QuizzesController < ApplicationController
   def clone
     cloned_quiz = @quiz.deep_clone include: :questions
     cloned_quiz.questions_count = 0
-    cloned_quiz.set_slug
-    authorize cloned_quiz
+    cloned_quiz.name = quiz_params[:name]
+    authorize cloned_quiz, :admin_and_creator?
     cloned_quiz.save!
     render_notice(t("successfully_cloned", entity: "Quiz"))
   end
@@ -74,10 +73,11 @@ class QuizzesController < ApplicationController
   end
 
   def stats
-    @stats = {}
+    @stats = Quiz.group(:status).count
+
     @stats[:total_quizzes] = Quiz.count
-    @stats[:published_quizzes] = Quiz.where(status: "published").count
-    @stats[:draft_quizzes] = Quiz.where(status: "draft").count
+    @stats[:published_quizzes] = @stats["published"] || 0
+    @stats[:draft_quizzes] = @stats["draft"] || 0
   end
 
   private
@@ -108,7 +108,11 @@ class QuizzesController < ApplicationController
 
     def authorize_quizzes
       @quizzes.each do |quiz|
-        authorize quiz, :bulk_action?
+        authorize quiz, :admin_and_creator?
       end
+    end
+
+    def authorize_if_user_is_admin_and_creator_of_quiz
+      authorize @quiz, :admin_and_creator?
     end
 end

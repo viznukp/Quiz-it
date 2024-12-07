@@ -7,6 +7,9 @@ const destroy = id => axios.delete(`questions/${id}`);
 
 const clone = id => axios.get(`questions/${id}/clone`);
 
-const questionsApi = { update, destroy, clone };
+const show = ({ slug, id }) =>
+  axios.get(`/questions/${id}`, { params: { slug } });
+
+const questionsApi = { show, update, destroy, clone };
 
 export default questionsApi;

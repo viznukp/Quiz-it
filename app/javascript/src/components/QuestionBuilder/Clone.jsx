@@ -4,7 +4,7 @@ import {
   useHistory,
   useParams,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { useCloneQuizzes } from "src/hooks/reactQuery/useQuestionsApi";
+import { useCloneQuestion } from "src/hooks/reactQuery/useQuestionsApi";
 import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
@@ -18,7 +18,7 @@ const Clone = () => {
   const { slug, id } = useParams();
 
   const { data: { question = {}, quiz = "" } = {}, isLoading } =
-    useCloneQuizzes(id);
+    useCloneQuestion(id);
   const { refetch } = useShowQuiz(slug);
 
   const handleSubmit = async ({ formData, submissionSource }) => {

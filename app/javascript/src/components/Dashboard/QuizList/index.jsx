@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Delete, Filter as FilterIcon } from "neetoicons";
 import { Table, Button, Dropdown, Typography, Pagination } from "neetoui";
@@ -13,6 +13,7 @@ import {
   PageLoader,
   ColumnFilter,
   StatusTag,
+  NoData,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -21,6 +22,7 @@ import {
 } from "components/constants";
 import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
+import useQuizzesStore from "stores/useQuizzesStore";
 import { dateFromTimeStamp } from "utils/dateTime";
 import { buildUrl } from "utils/url";
 
@@ -33,6 +35,7 @@ const QuizList = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const queryParams = useQueryParams();
+  const { setResultType } = useQuizzesStore();
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
@@ -60,7 +63,6 @@ const QuizList = () => {
         <LabelToLink
           label={name}
           pathTo={routes.quiz.questions.replace(":slug", slug)}
-          truncateAfter={20}
         />
       ),
       status: <StatusTag label={status} primaryLabel="published" />,
@@ -106,14 +108,24 @@ const QuizList = () => {
   };
 
   const {
-    data: { quizzes = [], paginationData = {} } = {},
+    data: { quizzes, paginationData = {}, resultType = "all" } = {},
     isLoading,
     refetch: reloadQuizzes,
   } = useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
 
+  useEffect(() => {
+    setResultType(resultType);
+  }, [quizzes]);
+
   if (isLoading) return <PageLoader className="h-64" />;
 
-  return (
+  return isEmpty(quizzes) ? (
+    <NoData
+      message={t("messages.info.noEntityToShow", {
+        entity: t("labels.quizzesLower"),
+      })}
+    />
+  ) : (
     <>
       <div className="mb-3 flex justify-between gap-3">
         <div className="mb-3 flex gap-3">
@@ -121,11 +133,11 @@ const QuizList = () => {
             {selectedQuizzesIds.length > 0
               ? t("messages.info.selectedRows", {
                   selected: selectedQuizzesIds.length,
-                  total: quizzes.length,
+                  total: quizzes?.length,
                   entity: "quizzes",
                 })
               : t("messages.info.availableQuizzes", {
-                  count: quizzes.length,
+                  count: quizzes?.length,
                 })}
           </Typography>
           {!isEmpty(selectedQuizzesSlugs) && (

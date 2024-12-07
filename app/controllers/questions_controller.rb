@@ -11,6 +11,11 @@ class QuestionsController < ApplicationController
     render_notice(t("successfully_created", entity: "Question"))
   end
 
+  def show
+    @quiz = Quiz.find_by!(slug: params[:slug])
+    @question = @quiz.questions.find_by!(id: params[:id])
+  end
+
   def update
     @question.update!(question_params)
     render_notice(t("successfully_updated", entity: "Question"))

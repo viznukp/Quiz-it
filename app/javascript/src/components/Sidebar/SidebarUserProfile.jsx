@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import classNames from "classnames";
 import { LeftArrow } from "neetoicons";
@@ -15,7 +15,7 @@ import {
 
 const SidebarUserProfile = ({ isExpanded = false }) => {
   const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
-
+  const profileRef = useRef(null);
   const userName = getFromLocalStorage(STORAGE_KEYS.USERNAME);
   const userEmail = getFromLocalStorage(STORAGE_KEYS.EMAIL);
   const authToken = getFromLocalStorage(STORAGE_KEYS.TOKEN);
@@ -37,10 +37,23 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setIsUserProfileVisible(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   if (!isLoggedIn) return false;
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={profileRef}>
       {!isExpanded && (
         <Avatar
           className="cursor-pointer"
@@ -52,7 +65,7 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
       {(isUserProfileVisible || isExpanded) && (
         <div
           className={classNames({
-            "absolute bottom-0 left-full z-10 ml-4 rounded-md border bg-white px-6 py-4 shadow-xl ":
+            "absolute bottom-0 left-full z-10 ml-4 rounded-md border bg-white px-6 py-4 shadow-xl":
               !isExpanded,
           })}
         >

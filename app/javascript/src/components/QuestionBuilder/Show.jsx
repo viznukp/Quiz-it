@@ -9,14 +9,14 @@ import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
-import { Container, NavBar, PageLoader } from "components/commons";
+import { Container, NavBar, PageLoader, NoData } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { QUIZ_STATUSES } from "components/constants";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
 import SaveAction from "./SaveAction";
 
-const QuestionBuilder = () => {
+const Show = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const history = useHistory();
@@ -81,15 +81,17 @@ const QuestionBuilder = () => {
             saveType={saveType}
             setSaveType={setSaveType}
           />
-          <Button
-            icon={LinkIcon}
-            style="text"
-            tooltipProps={{
-              content: t("labels.copyQuizLink"),
-              position: "bottom",
-            }}
-            onClick={copyQuizLink}
-          />
+          {quiz?.status === STATUS_PUBLISHED && (
+            <Button
+              icon={LinkIcon}
+              style="text"
+              tooltipProps={{
+                content: t("labels.copyQuizLink"),
+                position: "bottom",
+              }}
+              onClick={copyQuizLink}
+            />
+          )}
         </NavBar>
       }
     >
@@ -102,11 +104,11 @@ const QuestionBuilder = () => {
         />
       </div>
       {isEmpty(quiz.questions) ? (
-        <div className="flex h-64 items-center justify-center">
-          <Typography style="h3" weight="semibold">
-            {t("messages.info.noQuestionsToShow")}
-          </Typography>
-        </div>
+        <NoData
+          message={t("messages.info.noEntityToShow", {
+            entity: t("labels.questionsLower"),
+          })}
+        />
       ) : (
         <div className="mb-12 mt-4 flex flex-col gap-4">
           <Typography>
@@ -126,4 +128,4 @@ const QuestionBuilder = () => {
   );
 };
 
-export default QuestionBuilder;
+export default Show;

@@ -52,7 +52,7 @@ const Form = ({
           <FormikForm>
             <Input
               nakedInput
-              className="border-b"
+              className="border-b font-bold  text-gray-700 focus:outline-none"
               name="question"
               placeholder={t("labels.enterQuestion")}
             />
@@ -63,7 +63,6 @@ const Form = ({
                     {values.options.map((_, index) => (
                       <div key={index}>
                         <Option
-                          key={index}
                           number={index + 1}
                           style={correctAnswerIndex === index ? "correct" : ""}
                           deleteSelf={() => {
@@ -76,10 +75,17 @@ const Form = ({
                           }
                           onSelectCorrect={() => setCorrectAnswerIndex(index)}
                         />
+                        {Array.isArray(errors.options) &&
+                          errors.options[index] &&
+                          touched.options?.[index] && (
+                            <p className="mt-1 text-xs text-red-700">
+                              {errors.options[index]}{" "}
+                            </p>
+                          )}
                       </div>
                     ))}
-                    {touched.options && errors.options && (
-                      <p className="mt-0 text-xs leading-tight text-red-700">
+                    {typeof errors.options === "string" && touched.options && (
+                      <p className="mt-1 text-xs text-red-700">
                         {errors.options}
                       </p>
                     )}

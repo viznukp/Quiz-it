@@ -57,7 +57,9 @@
     "wrongAnswers": "Wrong answers",
     "unanswered": "Unanswered",
     "questions": "Questions",
+    "questionsLower": "questions",
     "submissions": "Submissions",
+    "submissionsLower": "submissions",
     "availableSubmissions": "{{count}} Submission",
     "availableSubmissions_other": "{{count}} Submissions",
     "yourResult": "Your result",
@@ -80,10 +82,13 @@
     "selectCategory": "Select category",
     "filterByCategory": "Filter by category",
     "draftSavedAt": "Draft saved at {{dateAndTime}}",
-    "copyQuizLink": "Copy quiz link"
+    "copyQuizLink": "Copy quiz link",
+    "newNameForQuiz": "Select new name for quiz"
   },
   "pageTitles": {
-    "allQuizzes": "All Quizzes"
+    "allQuizzes": "All Quizzes",
+    "publishedQuizzes": "Published Quizzes",
+    "draftQuizzes": "Draft Quizzes"
   },
   "messages": {
     "error": {
@@ -99,7 +104,7 @@
       "failedToCopyLink": "Failed to copy the quiz link: {{error}}"
     },
     "info": {
-      "noQuestionsToShow": "There are no questions to show",
+      "noEntityToShow": "There are no {{entity}} to show!",
       "availableQuizzes": "{{count}} quiz",
       "availableQuizzes_other": "{{count}} quizzes",
       "selectedRows": "{{selected}} {{entity}} selected of {{total}}",

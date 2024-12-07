@@ -8,8 +8,7 @@ class OrganizationsController < ApplicationController
   end
 
   def update
-    organization = Organization.first
-    organization.update!(organization_params)
+    organization = Organization.first.update!(organization_params)
     render_notice(t("successfully_updated", entity: "Organization"))
   end
 

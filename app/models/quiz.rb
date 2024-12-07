@@ -7,8 +7,8 @@ class Quiz < ApplicationRecord
   enum :status, { draft: "draft", published: "published" }, default: :draft
 
   belongs_to :creator, foreign_key: "creator_id", class_name: "User"
-  has_one :organization, through: :creator
   has_many :questions, dependent: :delete_all
+  has_many :submissions, dependent: :delete_all
 
   validates :name,
     presence: true,
@@ -25,8 +25,7 @@ class Quiz < ApplicationRecord
   before_validation :set_slug, on: :create
 
   def set_slug
-    slug_service = SlugGeneratorService.new(self, :name, :slug)
-    self.slug = slug_service.generate_slug
+    self.slug = SlugGeneratorService.new(self, :name, :slug).generate_slug
   end
 
   private

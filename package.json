@@ -120,7 +120,8 @@
     "webpack-cli": "^4.10.0",
     "webpack-merge": "^5.8.0",
     "webpack-sources": "^3.2.3",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zustand": "4.3.2"
   },
   "resolutions": {
     "strip-ansi": "^6.0.1",
