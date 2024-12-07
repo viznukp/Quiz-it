@@ -4,7 +4,7 @@ import { Search } from "neetoicons";
 import { Input } from "neetoui";
 import { useTranslation } from "react-i18next";
 
-import { useFetchCategories } from "hooks/reactQuery/useQuizzesApi";
+import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 
 const CategorySelector = ({ onSelect }) => {
   const { t } = useTranslation();

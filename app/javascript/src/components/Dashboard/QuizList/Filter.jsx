@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 import { QUIZ_STATUSES } from "components/constants";
-import { useFetchCategories } from "hooks/reactQuery/useQuizzesApi";
+import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
 
