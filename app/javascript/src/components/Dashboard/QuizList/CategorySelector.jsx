@@ -16,7 +16,7 @@ const CategorySelector = ({ onSelect }) => {
 
   const findMatchingStrings = (categories, substring) =>
     categories.filter(category =>
-      category.toLowerCase().includes(substring.toLowerCase())
+      category.name.toLowerCase().includes(substring.toLowerCase())
     );
 
   const highlightMatchingSubstring = (string, substring) => {
@@ -56,13 +56,13 @@ const CategorySelector = ({ onSelect }) => {
         onChange={event => setSearchTerm(event.target.value)}
       />
       <div className="relative mt-2 max-h-64">
-        {matches.map(match => (
+        {matches.map(({ id, name }) => (
           <div
             className="cursor-pointer rounded p-1 text-base hover:bg-gray-200"
-            key={match}
-            onClick={() => onSelect(match)}
+            key={id}
+            onClick={() => onSelect(id)}
           >
-            {highlightMatchingSubstring(match, searchTerm)}
+            {highlightMatchingSubstring(name, searchTerm)}
           </div>
         ))}
       </div>

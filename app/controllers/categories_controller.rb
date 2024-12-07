@@ -2,6 +2,6 @@
 
 class CategoriesController < ApplicationController
   def index
-    @categories = Category.all.pluck(:name)
+    @categories = Category.all
   end
 end

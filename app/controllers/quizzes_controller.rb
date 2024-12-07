@@ -79,12 +79,12 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:name, :category, :status)
+      params.require(:quiz).permit(:name, :category_id, :status)
     end
 
     def bulk_update_params
       params.require(:quizzes)
-        .permit(update_fields: [:status, :category], slugs: [])
+        .permit(update_fields: [:status, :category_id], slugs: [])
     end
 
     def load_quiz

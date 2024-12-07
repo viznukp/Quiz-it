@@ -1,3 +1,4 @@
+import CategorySelector from "./CategorySelector";
 import ColumnFilter from "./ColumnFilter";
 import Container from "./Container";
 import LabelToLink from "./LabelToLink";
@@ -11,6 +12,7 @@ import SearchBar from "./SearchBar";
 import StatusTag from "./StatusTag";
 
 export {
+  CategorySelector,
   Container,
   NavBar,
   LabelToLink,

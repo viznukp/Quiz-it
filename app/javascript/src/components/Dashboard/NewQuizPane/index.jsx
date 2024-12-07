@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
 
 import quizzesApi from "apis/quizzes";
+import { CategorySelector } from "components/commons";
+import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 
 import { CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA } from "./constants";
 
@@ -17,10 +19,14 @@ const NewQuizPane = () => {
   const closePane = () => setIsPaneOpen(false);
 
   const { refetch: refetchQuizzes } = useFetchQuizzes();
+  const { data: { categories = [] } = {} } = useFetchCategories();
 
   const handleCreateNewQuiz = async formData => {
     try {
-      await quizzesApi.create(formData);
+      await quizzesApi.create({
+        name: formData.name,
+        categoryId: formData.category.value.id,
+      });
       closePane();
       refetchQuizzes();
     } catch (error) {
@@ -52,12 +58,7 @@ const NewQuizPane = () => {
                     name="name"
                     placeholder={t("labels.exampleQuizName")}
                   />
-                  <Input
-                    required
-                    label={t("labels.category")}
-                    name="category"
-                    placeholder={t("labels.exampleCategoryName")}
-                  />
+                  <CategorySelector categories={categories} />
                 </div>
                 <div className="flex gap-3">
                   <Button

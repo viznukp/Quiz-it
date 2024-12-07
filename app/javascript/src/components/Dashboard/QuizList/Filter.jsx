@@ -6,6 +6,7 @@ import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
+import { CategorySelector } from "components/commons";
 import { QUIZ_STATUSES } from "components/constants";
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import useQueryParams from "hooks/useQueryParams";
@@ -16,10 +17,14 @@ import { FILTER_INITIAL_VALUES } from "./constants";
 const Filter = ({ isOpen, closeFilter }) => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
-  const { category, quizName, status } = queryParams;
+  const { category: queryCategory, quizName, status } = queryParams;
 
   const { data: { categories = [] } = {} } = useFetchCategories();
   const history = useHistory();
+
+  const selectedCategory = categories.find(
+    category => category.name.toLowerCase() === queryCategory?.toLowerCase()
+  );
 
   const handleFilterSubmit = formData => {
     history.replace(
@@ -27,8 +32,8 @@ const Filter = ({ isOpen, closeFilter }) => {
         "",
         mergeLeft(
           {
-            ...formData,
-            category: formData.category?.value,
+            quizName: formData.quizName,
+            category: formData.category?.value?.name,
             status: formData.status?.value,
           },
           queryParams
@@ -46,23 +51,16 @@ const Filter = ({ isOpen, closeFilter }) => {
         formikProps={{
           initialValues: {
             quizName,
-            category: { label: category, value: category },
-            status: { label: status, value: status },
+            category: selectedCategory
+              ? { label: selectedCategory.name, value: selectedCategory }
+              : null,
+            status: status ? { label: status, value: status } : null,
           },
           onSubmit: handleFilterSubmit,
         }}
       >
         <Input label={t("labels.name")} name="quizName" />
-        <Select
-          isClearable
-          isSearchable
-          label={t("labels.category")}
-          name="category"
-          options={categories?.map(category => ({
-            label: category,
-            value: category,
-          }))}
-        />
+        <CategorySelector categories={categories} />
         <Select
           isClearable
           label={t("labels.status")}

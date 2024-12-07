@@ -20,6 +20,6 @@ export const QUIZ_TABLE_SCHEMA = columnsToTableSchema(
 
 export const FILTER_INITIAL_VALUES = {
   quizName: "",
-  category: [],
+  category: { label: "", value: "" },
   status: "",
 };
