@@ -33,33 +33,35 @@ const QuestionDisplayCard = ({
       <div className="relative flex justify-between">
         <Typography weight="semibold">{question}</Typography>
         <Dropdown buttonStyle="text" icon={MenuHorizontal}>
-          <Button
-            label={t("labels.edit")}
-            style="text"
-            onClick={() =>
-              history.push(
-                routes.quiz.question.edit
-                  .replace(":slug", slug)
-                  .replace(":id", id)
-              )
-            }
-          />
-          <Button
-            label={t("labels.clone")}
-            style="text"
-            onClick={() =>
-              history.push(
-                routes.quiz.question.clone
-                  .replace(":slug", slug)
-                  .replace(":id", id)
-              )
-            }
-          />
-          <Button
-            label={t("labels.delete")}
-            style="danger-text"
-            onClick={handleQuestionDelete}
-          />
+          <div className="flex flex-col">
+            <Button
+              label={t("labels.edit")}
+              style="text"
+              onClick={() =>
+                history.push(
+                  routes.quiz.question.edit
+                    .replace(":slug", slug)
+                    .replace(":id", id)
+                )
+              }
+            />
+            <Button
+              label={t("labels.clone")}
+              style="text"
+              onClick={() =>
+                history.push(
+                  routes.quiz.question.clone
+                    .replace(":slug", slug)
+                    .replace(":id", id)
+                )
+              }
+            />
+            <Button
+              label={t("labels.delete")}
+              style="danger-text"
+              onClick={handleQuestionDelete}
+            />
+          </div>
         </Dropdown>
       </div>
       <Radio stacked>

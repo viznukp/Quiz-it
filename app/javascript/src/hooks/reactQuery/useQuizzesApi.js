@@ -28,14 +28,6 @@ export const useShowQuizWithoutAnswer = queryParams =>
     queryFn: () => quizzesApi.showWithoutAnswer(queryParams),
   });
 
-export const useFetchQuestion = (slug, id) =>
-  useQuery({
-    queryKey: ["question", slug, id],
-    queryFn: () => quizzesApi.fetchQuestion(slug, id),
-    staleTime: 0,
-    cacheTime: 0,
-  });
-
 export const useFetchCategories = () =>
   useQuery({
     queryKey: ["categories"],

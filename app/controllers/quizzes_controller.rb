@@ -2,12 +2,12 @@
 
 class QuizzesController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token, only: %i[index_public stats categories]
-  before_action :load_quiz, only: %i[update destroy clone show_question]
+  before_action :load_quiz, only: %i[update destroy clone]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
   before_action :load_quiz_with_questions, only: %i[show show_quiz_without_answer]
   after_action :verify_authorized, except: %i[index categories index_public show show_quiz_without_answer stats]
   after_action :verify_policy_scoped, only: :index
-  before_action :authorize_if_user_is_admin_and_creator_of_quiz, only: %i[update show show_question destroy]
+  before_action :authorize_if_user_is_admin_and_creator_of_quiz, only: %i[update show destroy]
 
   def index
     filtered_quizzes, @result_type = QuizFilterService.new(params).filter_quizzes
@@ -35,10 +35,6 @@ class QuizzesController < ApplicationController
 
   def show_quiz_without_answer
     render
-  end
-
-  def show_question
-    @question = @quiz.questions.find_by!(id: params[:id])
   end
 
   def update

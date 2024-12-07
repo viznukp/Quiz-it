@@ -5,7 +5,6 @@ Rails.application.routes.draw do
     resources :quizzes, except: %i[new edit], param: :slug do
       member do
         post :clone
-        get "question/:id", to: "quizzes#show_question", as: :show_question
         get :show_quiz_without_answer
       end
       collection do
@@ -20,7 +19,7 @@ Rails.application.routes.draw do
       post :create_standard_user, on: :collection
     end
     resource :session, only: %i[create destroy]
-    resources :questions, only: %i[create update destroy] do
+    resources :questions, only: %i[create show update destroy] do
       get :clone
     end
 

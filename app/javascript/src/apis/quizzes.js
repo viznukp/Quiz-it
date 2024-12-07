@@ -25,9 +25,6 @@ const destroy = slug => axios.delete(`/quizzes/${slug}`);
 
 const addQuestion = payload => axios.post("/questions", { question: payload });
 
-const fetchQuestion = (slug, id) =>
-  axios.get(`/quizzes/${slug}/question/${id}`);
-
 const clone = (slug, newName) =>
   axios.post(`/quizzes/${slug}/clone`, { quiz: { name: newName } });
 
@@ -49,7 +46,6 @@ const quizzesApi = {
   update,
   destroy,
   addQuestion,
-  fetchQuestion,
   deleteMultiple,
   updateMultiple,
   fetchPublic,

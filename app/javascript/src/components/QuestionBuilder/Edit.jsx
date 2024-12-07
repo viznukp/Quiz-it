@@ -5,10 +5,8 @@ import {
   useHistory,
   useParams,
 } from "react-router-dom/cjs/react-router-dom.min";
-import {
-  useFetchQuestion,
-  useShowQuiz,
-} from "src/hooks/reactQuery/useQuizzesApi";
+import { useShowQuestion } from "src/hooks/reactQuery/useQuestionsApi";
+import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
 import questionsApi from "apis/questions";
@@ -21,14 +19,14 @@ const Edit = () => {
   const { slug, id } = useParams();
   const { t } = useTranslation();
 
-  const { data: { quiz } = {}, isLoading } = useFetchQuestion(slug, id);
+  const { data: { quiz } = {}, isLoading } = useShowQuestion(slug, id);
 
-  const { refetch } = useShowQuiz(slug);
+  const { refetch: reloadQuizzes } = useShowQuiz(slug);
 
   const handleSubmit = async ({ formData }) => {
     try {
       await questionsApi.update(id, formData);
-      refetch();
+      reloadQuizzes();
       history.push(routes.quiz.questions.replace(":slug", slug));
     } catch (error) {
       logger.error(error);
@@ -38,7 +36,7 @@ const Edit = () => {
   if (isLoading) return <PageLoader fullScreen />;
 
   return (
-    <Container navbar={<NavBar backButtonVisible title={quiz.name} />}>
+    <Container navbar={<NavBar backButtonVisible title={quiz?.name} />}>
       <Form
         handleSubmit={handleSubmit}
         initialValues={quiz.question || {}}
