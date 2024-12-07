@@ -81,15 +81,17 @@ const Show = () => {
             saveType={saveType}
             setSaveType={setSaveType}
           />
-          <Button
-            icon={LinkIcon}
-            style="text"
-            tooltipProps={{
-              content: t("labels.copyQuizLink"),
-              position: "bottom",
-            }}
-            onClick={copyQuizLink}
-          />
+          {quiz?.status === STATUS_PUBLISHED && (
+            <Button
+              icon={LinkIcon}
+              style="text"
+              tooltipProps={{
+                content: t("labels.copyQuizLink"),
+                position: "bottom",
+              }}
+              onClick={copyQuizLink}
+            />
+          )}
         </NavBar>
       }
     >
