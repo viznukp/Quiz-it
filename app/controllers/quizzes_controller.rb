@@ -66,7 +66,7 @@ class QuizzesController < ApplicationController
   def clone
     cloned_quiz = @quiz.deep_clone include: :questions
     cloned_quiz.questions_count = 0
-    cloned_quiz.set_slug
+    cloned_quiz.name = quiz_params[:name]
     authorize cloned_quiz, :admin_and_creator?
     cloned_quiz.save!
     render_notice(t("successfully_cloned", entity: "Quiz"))

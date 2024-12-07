@@ -25,8 +25,7 @@ class Quiz < ApplicationRecord
   before_validation :set_slug, on: :create
 
   def set_slug
-    slug_service = SlugGeneratorService.new(self, :name, :slug)
-    self.slug = slug_service.generate_slug
+    self.slug = SlugGeneratorService.new(self, :name, :slug).generate_slug
   end
 
   private

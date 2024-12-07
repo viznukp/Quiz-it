@@ -28,7 +28,8 @@ const addQuestion = payload => axios.post("/questions", { question: payload });
 const fetchQuestion = (slug, id) =>
   axios.get(`/quizzes/${slug}/question/${id}`);
 
-const clone = slug => axios.post(`/quizzes/${slug}/clone`);
+const clone = (slug, newName) =>
+  axios.post(`/quizzes/${slug}/clone`, { quiz: { name: newName } });
 
 const deleteMultiple = slugs =>
   axios.delete("/quizzes/bulk_destroy", { data: { quizzes: { slugs } } });
