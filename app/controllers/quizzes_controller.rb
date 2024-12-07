@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  skip_before_action :authenticate_user_using_x_auth_token, only: %i[index_public stats categories]
+  skip_before_action :authenticate_user_using_x_auth_token, only: %i[index_public stats ]
   before_action :load_quiz, only: %i[update destroy clone]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
   before_action :load_quiz_with_questions, only: %i[show show_quiz_without_answer]
-  after_action :verify_authorized, except: %i[index categories index_public show show_quiz_without_answer stats]
+  after_action :verify_authorized, except: %i[index index_public show show_quiz_without_answer stats]
   after_action :verify_policy_scoped, only: :index
   before_action :authorize_if_user_is_admin_and_creator_of_quiz, only: %i[update show destroy]
 
@@ -68,10 +68,6 @@ class QuizzesController < ApplicationController
     render_notice(t("successfully_cloned", entity: "Quiz"))
   end
 
-  def categories
-    @categories = Quiz.distinct.pluck(:category)
-  end
-
   def stats
     @stats = Quiz.group(:status).count
 
@@ -83,12 +79,12 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:name, :category, :status)
+      params.require(:quiz).permit(:name, :category_id, :status)
     end
 
     def bulk_update_params
       params.require(:quizzes)
-        .permit(update_fields: [:status, :category], slugs: [])
+        .permit(update_fields: [:status, :category_id], slugs: [])
     end
 
     def load_quiz

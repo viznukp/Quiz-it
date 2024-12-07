@@ -7,6 +7,7 @@ class Quiz < ApplicationRecord
   enum :status, { draft: "draft", published: "published" }, default: :draft
 
   belongs_to :creator, foreign_key: "creator_id", class_name: "User"
+  belongs_to :category
   has_many :questions, dependent: :delete_all
   has_many :submissions, dependent: :delete_all
 
@@ -14,11 +15,11 @@ class Quiz < ApplicationRecord
     presence: true,
     length: { maximum: MAX_NAME_LENGTH },
     format: { with: VALID_NAME_REGEX }
-  validates :category, presence: true
   validates :status,
     presence: true,
     inclusion: { in: statuses.keys }
   validates :creator_id, presence: true
+  validates :category_id, presence: true
   validates :slug, presence: true, uniqueness: true
   validate :slug_not_changed
 

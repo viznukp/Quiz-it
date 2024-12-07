@@ -149,7 +149,9 @@ const QuizList = () => {
               >
                 <CategorySelector
                   onSelect={selectedCategory => {
-                    handleUpdateMultipleQuizzes({ category: selectedCategory });
+                    handleUpdateMultipleQuizzes({
+                      categoryId: selectedCategory,
+                    });
                   }}
                 />
               </Dropdown>

@@ -8,11 +8,11 @@ json.quiz_data do
       json.extract! quiz,
         :id,
         :name,
-        :category,
         :status,
         :slug,
         :questions_count,
         :updated_at
+      json.category quiz.category.name
     end
   end
 end
