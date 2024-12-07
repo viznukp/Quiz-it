@@ -16,7 +16,7 @@ import { QUIZ_STATUSES } from "components/constants";
 import QuestionDisplayCard from "./QuestionDisplayCard";
 import SaveAction from "./SaveAction";
 
-const QuestionBuilder = () => {
+const Show = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const history = useHistory();
@@ -126,4 +126,4 @@ const QuestionBuilder = () => {
   );
 };
 
-export default QuestionBuilder;
+export default Show;

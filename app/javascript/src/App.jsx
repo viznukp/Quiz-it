@@ -10,10 +10,12 @@ import { Login, Signup, RegisterStandardUser } from "components/Authentication";
 import { PrivateRoute } from "components/commons";
 import Dashboard from "components/Dashboard";
 import PublicPage from "components/PublicPage";
-import QuestionBuilder from "components/QuestionBuilder";
-import Clone from "components/QuestionBuilder/Clone";
-import Create from "components/QuestionBuilder/Create";
-import Edit from "components/QuestionBuilder/Edit";
+import {
+  ShowQuestions,
+  CreateQuestion,
+  CloneQuestion,
+  EditQuestion,
+} from "components/QuestionBuilder";
 import QuizAttempt from "components/QuizAttempt";
 import Settings from "components/Settings";
 import queryClient from "utils/queryClient";
@@ -33,13 +35,26 @@ const App = () => {
         <Switch>
           <Route exact component={Signup} path={routes.signup} />
           <Route exact component={Login} path={routes.login} />
-          <Route exact component={Create} path={routes.quiz.question.new} />
-          <Route exact component={Edit} path={routes.quiz.question.edit} />
-          <Route exact component={Clone} path={routes.quiz.question.clone} />
           <Route exact component={PublicPage} path={routes.publicPage} />
           <Route exact component={QuizAttempt} path={routes.attemptQuiz} />
           <Route exact component={QuizResult} path={routes.quiz.result} />
           <Route exact component={Settings} path={routes.settings} />
+          <Route exact component={ShowQuestions} path={routes.quiz.questions} />
+          <Route
+            exact
+            component={CreateQuestion}
+            path={routes.quiz.question.new}
+          />
+          <Route
+            exact
+            component={EditQuestion}
+            path={routes.quiz.question.edit}
+          />
+          <Route
+            exact
+            component={CloneQuestion}
+            path={routes.quiz.question.clone}
+          />
           <Route
             exact
             component={SubmissionList}
@@ -49,11 +64,6 @@ const App = () => {
             exact
             component={RegisterStandardUser}
             path={routes.registerStandardUser}
-          />
-          <Route
-            exact
-            component={QuestionBuilder}
-            path={routes.quiz.questions}
           />
           <PrivateRoute
             component={Dashboard}
