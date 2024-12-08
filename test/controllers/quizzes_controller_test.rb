@@ -21,15 +21,15 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   def test_quiz_returned_for_public_page_should_not_contain_draft_quizzes
     draft_quiz_count = 3
     published_quiz_count = 5
-    create_multiple_quizzes(draft_quiz_count, { status: "draft" })
-    create_multiple_quizzes(published_quiz_count, { status: "published" })
+    create_list(:quiz, draft_quiz_count, status: "draft")
+    create_list(:quiz, published_quiz_count, status: "published")
 
     get index_public_quizzes_path, headers: @headers
     assert_response :success
 
     response_json = response.parsed_body
     response_quiz_ids = response_json["quizzes"].pluck("id")
-    expected_response_quizzes_count = response_quiz_count_considering_pagination(published_quiz_count)
+    expected_response_quizzes_count = response_count_considering_pagination(published_quiz_count)
 
     assert_equal Quiz.where(status: "published")
       .order(:id).limit(expected_response_quizzes_count)
@@ -116,7 +116,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     response_quiz_ids = response.parsed_body["quizzes"].pluck("id")
 
-    expected_response_quizzes_count = response_quiz_count_considering_pagination(quiz_count_per_category)
+    expected_response_quizzes_count = response_count_considering_pagination(quiz_count_per_category)
 
     assert_equal Quiz.where(category: category_one)
       .order(:id).limit(expected_response_quizzes_count)
@@ -176,28 +176,16 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   private
 
-    def create_multiple_quizzes(count, options = {})
-      count.times { create(:quiz, { creator: @user, status: "published" }.merge(options)) }
-    end
-
-    def default_page_size
-      PaginationService::DEFAULT_PAGE_SIZE
-    end
-
-    def response_quiz_count_considering_pagination(expected_count)
-      expected_count > default_page_size ? default_page_size : expected_count
-    end
-
     def index_and_public_index_action_test(path)
       quiz_count = 5
-      create_multiple_quizzes(quiz_count, { status: "published" })
+      create_list(:quiz, quiz_count, creator: @user, status: "published")
 
       get path, headers: @headers
       assert_response :success
 
       response_json = response.parsed_body
       response_quiz_ids = response_json["quizzes"].pluck("id")
-      expected_quiz_count = response_quiz_count_considering_pagination(quiz_count)
+      expected_quiz_count = response_count_considering_pagination(quiz_count)
 
       assert_equal Quiz.order(:id).limit(default_page_size).pluck(:id), response_quiz_ids.sort
       assert_equal response_quiz_ids.length, expected_quiz_count
