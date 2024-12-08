@@ -18,7 +18,8 @@ class QuizzesController < ApplicationController
   def index_public
     params[:filters] ||= {}
     params[:filters] = params[:filters].merge(status: "published")
-    @quizzes, = QuizFilterService.new(params).filter_quizzes
+    filtered_quizzes, = QuizFilterService.new(params).filter_quizzes
+    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).paginate
     @organization = Organization.first
   end
 

@@ -36,7 +36,7 @@ const PublicPage = () => {
   const { data = {}, isLoading } = useFetchQuizzesPublic({
     filters: queryParams,
   });
-  const { quizData: { organization, quizzes = [] } = {} } = data;
+  const { organization, quizzes = [] } = data;
 
   if (isLoading) return <PageLoader className="h-64" />;
 
