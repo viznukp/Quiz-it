@@ -105,10 +105,6 @@ class UserTest < ActiveSupport::TestCase
     assert_includes @user.errors.full_messages, "Password confirmation doesn't match Password"
   end
 
-  # puts "=========================="
-  # puts @user.errors.full_messages
-  # puts "=========================="
-
   def test_users_should_have_unique_auth_token
     @user.save!
     second_user = create(:user)
