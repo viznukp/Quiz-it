@@ -1,12 +1,6 @@
 import axios from "axios";
-import qs from "qs";
 
-const fetch = filters =>
-  axios.get("/quizzes", {
-    params: filters,
-    paramsSerializer: params =>
-      qs.stringify(params, { arrayFormat: "brackets" }),
-  });
+const fetch = filters => axios.get("/quizzes", { params: filters });
 
 const fetchPublic = filters =>
   axios.get("/quizzes/index_public", { params: filters });
@@ -32,7 +26,7 @@ const deleteMultiple = slugs =>
   axios.delete("/quizzes/bulk_destroy", { data: { quizzes: { slugs } } });
 
 const updateMultiple = (slugs, updateFields) =>
-  axios.post("/quizzes/bulk_update", { quizzes: { updateFields, slugs } });
+  axios.put("/quizzes/bulk_update", { quizzes: { updateFields, slugs } });
 
 const fetchQuizStats = () => axios.get("quizzes/stats");
 

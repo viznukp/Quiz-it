@@ -7,7 +7,7 @@ const login = payload => axios.post("/session", { session: payload });
 const logout = () => axios.delete("/session");
 
 const authenticateStandardUser = payload =>
-  axios.post("/users/create_standard_user", { session: payload });
+  axios.post("/users/create_standard_user", { user: payload });
 
 const authApi = {
   signup,

@@ -40,6 +40,8 @@ end
 
 def headers(user, options = {})
   {
+    Accept: "application/json",
+    "Content_Type" => "application/json",
     "X-Auth-Token" => user.authentication_token,
     "X-Auth-Email" => user.email
   }.merge(options)
@@ -47,4 +49,12 @@ end
 
 def response_body
   response.parsed_body
+end
+
+def default_page_size
+  PaginationService::DEFAULT_PAGE_SIZE
+end
+
+def response_count_considering_pagination(expected_count)
+  expected_count > default_page_size ? default_page_size : expected_count
 end
