@@ -6,7 +6,6 @@ class UserTest < ActiveSupport::TestCase
   def setup
     @organization = create(:organization)
     @user = build(:user, organization: @organization)
-    puts @user.inspect
   end
 
   def test_user_should_not_be_valid_and_saved_without_first_name
