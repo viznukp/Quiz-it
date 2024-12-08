@@ -5,7 +5,6 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(user_params)
-    user.organization = build_organization_for_user
     user.save!
     render_notice(t("signup_successful"))
   end
@@ -14,7 +13,6 @@ class UsersController < ApplicationController
     @user = User.find_by(email: standard_user_params[:email].downcase)
     if @user.nil?
       @user = User.new(standard_user_params)
-      @user.organization = build_organization_for_user
       @user.save!
     end
   end
@@ -33,16 +31,7 @@ class UsersController < ApplicationController
         )
     end
 
-    def build_organization_for_user
-      organization = Organization.first
-      if organization.nil?
-        organization = Organization.new(name: "Big Binary Academy")
-        organization.save!
-      end
-      organization
-    end
-
     def standard_user_params
-      params.require(:session).permit(:first_name, :last_name, :email)
+      params.require(:user).permit(:first_name, :last_name, :email)
     end
 end
