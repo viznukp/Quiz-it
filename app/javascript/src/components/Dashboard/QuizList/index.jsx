@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import { Delete, Filter as FilterIcon } from "neetoicons";
-import { Table, Button, Dropdown, Typography, Pagination } from "neetoui";
+import {
+  Table,
+  Button,
+  Dropdown,
+  Typography,
+  Pagination,
+  Modal,
+} from "neetoui";
 import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -42,6 +49,11 @@ const QuizList = () => {
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
+  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
+    useState(false);
+
+  const closeDeleteConfirmationModal = () =>
+    setIsDeleteConfirmationModalOpen(false);
 
   const handlePageNavigation = page => {
     history.replace(buildUrl("", mergeLeft({ page }, queryParams)));
@@ -185,7 +197,7 @@ const QuizList = () => {
                 icon={Delete}
                 label={t("labels.delete")}
                 style="danger"
-                onClick={handleDeleteMultipleQuizzes}
+                onClick={() => setIsDeleteConfirmationModalOpen(true)}
               />
             </div>
           )}
@@ -225,6 +237,30 @@ const QuizList = () => {
         closeFilter={() => setIsFilterPaneOpen(false)}
         isOpen={isFilterPaneOpen}
       />
+      <Modal
+        isOpen={isDeleteConfirmationModalOpen}
+        onClose={closeDeleteConfirmationModal}
+      >
+        <div className="mt-3 p-4">
+          <Typography style="h3">
+            {t("messages.warnings.deleteMultiple", {
+              entity: t("labels.quizzesLower"),
+            })}
+          </Typography>
+          <Typography className="mt-4">
+            {t("messages.warnings.confirmDelete", { entity: "They" })}
+          </Typography>
+          <Button
+            className="mt-6"
+            label={t("labels.delete")}
+            style="danger"
+            onClick={() => {
+              closeDeleteConfirmationModal();
+              handleDeleteMultipleQuizzes();
+            }}
+          />
+        </div>
+      </Modal>
     </>
   );
 };
