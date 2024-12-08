@@ -71,26 +71,32 @@ const Show = () => {
           quizSlug={slug}
           title={quiz?.name}
         >
-          {quiz?.status === STATUS_DRAFT && (
-            <Typography className="italic text-gray-400">
-              {t("labels.draftSavedAt", { dateAndTime: quiz?.lastUpdatedAt })}
-            </Typography>
-          )}
-          <SaveAction
-            saveAction={handleQuizSave}
-            saveType={saveType}
-            setSaveType={setSaveType}
-          />
-          {quiz?.status === STATUS_PUBLISHED && (
-            <Button
-              icon={LinkIcon}
-              style="text"
-              tooltipProps={{
-                content: t("labels.copyQuizLink"),
-                position: "bottom",
-              }}
-              onClick={copyQuizLink}
-            />
+          {!isEmpty(quiz.questions) && (
+            <div className="flex gap-3">
+              {quiz?.status === STATUS_DRAFT && (
+                <Typography className="italic text-gray-400">
+                  {t("labels.draftSavedAt", {
+                    dateAndTime: quiz?.lastUpdatedAt,
+                  })}
+                </Typography>
+              )}
+              <SaveAction
+                saveAction={handleQuizSave}
+                saveType={saveType}
+                setSaveType={setSaveType}
+              />
+              {quiz?.status === STATUS_PUBLISHED && (
+                <Button
+                  icon={LinkIcon}
+                  style="text"
+                  tooltipProps={{
+                    content: t("labels.copyQuizLink"),
+                    position: "bottom",
+                  }}
+                  onClick={copyQuizLink}
+                />
+              )}
+            </div>
           )}
         </NavBar>
       }
