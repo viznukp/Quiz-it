@@ -51,6 +51,18 @@ const PublicPage = () => {
         </NavBar>
       }
     >
+      <div className="mb-8 mt-12 flex w-full justify-center">
+        <div className="flex gap-3">
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={updateSearchTerm}
+            placeholder={t("messages.info.searchFor", {
+              entity: t("labels.quizzesLower"),
+            })}
+          />
+          <Filter />
+        </div>
+      </div>
       {isEmpty(quizzes) ? (
         <NoData
           message={t("messages.info.noEntityToShow", {
@@ -58,25 +70,11 @@ const PublicPage = () => {
           })}
         />
       ) : (
-        <>
-          <div className="mb-8 mt-12 flex w-full justify-center">
-            <div className="flex gap-3">
-              <SearchBar
-                searchTerm={searchTerm}
-                setSearchTerm={updateSearchTerm}
-                placeholder={t("messages.info.searchFor", {
-                  entity: t("labels.quizzesLower"),
-                })}
-              />
-              <Filter />
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            {quizzes?.map(quiz => (
-              <Card key={quiz.id} {...quiz} />
-            ))}
-          </div>
-        </>
+        <div className="grid grid-cols-3 gap-3">
+          {quizzes?.map(quiz => (
+            <Card key={quiz.id} {...quiz} />
+          ))}
+        </div>
       )}
     </Container>
   );
