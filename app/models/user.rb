@@ -25,10 +25,8 @@ class User < ApplicationRecord
   validates :user_type, presence: true, inclusion: { in: user_types.keys }
   validates :organization_id, presence: true
 
-  with_options if: :admin? do
-    validates :password, presence: true, length: { minimum: MIN_PASSWORD_LENGTH }
-    validates :password_confirmation, presence: true, on: :create
-  end
+  validates :password, presence: true, length: { minimum: MIN_PASSWORD_LENGTH }
+  validates :password_confirmation, presence: true, on: :create
 
   before_validation :set_default_password_for_standard_user, if: :standard?
   before_save :email_to_lowercase
