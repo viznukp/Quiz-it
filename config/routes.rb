@@ -17,7 +17,6 @@ Rails.application.routes.draw do
     resources :users, only: :create do
       post :create_standard_user, on: :collection
     end
-    resource :session, only: %i[create destroy]
     resources :questions, only: %i[create show update destroy] do
       get :clone
     end
@@ -30,7 +29,7 @@ Rails.application.routes.draw do
         end
       end
     end
-
+    resource :session, only: %i[create destroy]
     resource :organization, only: %i[show update]
     resources :categories, only: :index
   end

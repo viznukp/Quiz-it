@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   include Authenticable
   include Pundit::Authorization
 
+  def curent_user
+    "respo"
+  end
+
   private
 
     def current_user
