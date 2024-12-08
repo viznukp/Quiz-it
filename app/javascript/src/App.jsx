@@ -2,12 +2,12 @@ import React from "react";
 
 import { either, isEmpty, isNil } from "ramda";
 import { QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import routes from "src/routes";
 
 import { Login, Signup, RegisterStandardUser } from "components/Authentication";
-import { PrivateRoute } from "components/commons";
+import { PrivateRoute, PageNotFound } from "components/commons";
 import Dashboard from "components/Dashboard";
 import PublicPage from "components/PublicPage";
 import {
@@ -66,11 +66,14 @@ const App = () => {
             path={routes.registerStandardUser}
           />
           <PrivateRoute
+            exact
             component={Dashboard}
             condition={isLoggedIn}
             path={routes.root}
             redirectRoute={routes.login}
           />
+          <Redirect exact from="/" to={routes.root} />
+          <Route component={PageNotFound} path="*" />
         </Switch>
       </BrowserRouter>
     </QueryClientProvider>

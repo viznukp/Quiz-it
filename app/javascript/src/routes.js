@@ -1,5 +1,4 @@
 const routes = {
-  base: "localhost:3000",
   root: "/dashboard",
   signup: "/signup",
   login: "/login",
