@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Filter as FilterIcon } from "neetoicons";
 import { Table, Typography, Button } from "neetoui";
-import { isEmpty, mergeLeft } from "ramda";
+import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -13,7 +13,6 @@ import {
   StatusTag,
   ColumnFilter,
   SearchBar,
-  NoData,
 } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
@@ -68,59 +67,47 @@ const SubmissionList = () => {
         />
       }
     >
-      {isEmpty(data.submissions) ? (
-        <NoData
-          message={t("messages.info.noEntityToShow", {
-            entity: t("labels.submissionsLower"),
-          })}
+      <div className="mb-3 flex justify-between gap-3">
+        <Typography style="h3">{t("labels.allSubmissions")}</Typography>
+        <SearchBar
+          placeholder={t("messages.info.searchName")}
+          searchTerm={searchTerm}
+          setSearchTerm={updateSearchTerm}
         />
-      ) : (
-        <>
-          <div className="mb-3 flex justify-between gap-3">
-            <Typography style="h3">{t("labels.allSubmissions")}</Typography>
-            <SearchBar
-              placeholder={t("messages.info.searchName")}
-              searchTerm={searchTerm}
-              setSearchTerm={updateSearchTerm}
-            />
-          </div>
-          <div className="mb-3 flex justify-between gap-3">
-            <div className="mb-3 flex gap-3">
-              <Typography style="h4">
-                {t("labels.availableSubmissions", {
-                  count: data?.submissions?.length,
-                })}
-              </Typography>
-            </div>
-            <div className="flex gap-2">
-              <ReportDownloader slug={slug} />
-              <ColumnFilter
-                schema={SUBMISSION_TABLE_SCHEMA}
-                setVisibleColumns={setVisibleColumns}
-              />
-              <Button
-                icon={FilterIcon}
-                style="text"
-                onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
-              />
-            </div>
-          </div>
-          <Table
-            rowSelection
-            columnData={visibleColumns}
-            scroll={{ x: "100%" }}
-            rowData={
-              data
-                ? transformSubmissionDataForTableDisplay(data.submissions)
-                : []
-            }
+      </div>
+      <div className="mb-3 flex justify-between gap-3">
+        <div className="mb-3 flex gap-3">
+          <Typography style="h4">
+            {t("labels.availableSubmissions", {
+              count: data?.submissions?.length,
+            })}
+          </Typography>
+        </div>
+        <div className="flex gap-2">
+          <ReportDownloader slug={slug} />
+          <ColumnFilter
+            schema={SUBMISSION_TABLE_SCHEMA}
+            setVisibleColumns={setVisibleColumns}
           />
-          <Filter
-            closeFilter={() => setIsFilterPaneOpen(false)}
-            isOpen={isFilterPaneOpen}
+          <Button
+            icon={FilterIcon}
+            style="text"
+            onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
           />
-        </>
-      )}
+        </div>
+      </div>
+      <Table
+        rowSelection
+        columnData={visibleColumns}
+        scroll={{ x: "100%" }}
+        rowData={
+          data ? transformSubmissionDataForTableDisplay(data.submissions) : []
+        }
+      />
+      <Filter
+        closeFilter={() => setIsFilterPaneOpen(false)}
+        isOpen={isFilterPaneOpen}
+      />
     </Container>
   );
 };
