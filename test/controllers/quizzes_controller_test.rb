@@ -105,7 +105,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("successfully_deleted", entity: "Quizzes"), response_json["notice"]
   end
 
-  def test_filter_quizzes_by_categories
+  def test_filter_quizzes_by_category
     quiz_count_per_category = 3
     category_one = create(:category)
     category_two = create(:category)
@@ -122,6 +122,18 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
       .order(:id).limit(expected_response_quizzes_count)
       .pluck(:id),
       response_quiz_ids.sort
+  end
+
+  def test_filter_quizzes_by_name
+    create(:quiz, name: "First quiz", creator: @user)
+    quiz_to_search = create(:quiz, name: "Second quiz", creator: @user)
+    create(:quiz, name: "Third quiz", creator: @user)
+
+    quiz_to_search = Quiz.first
+    get quizzes_path(filters: { quiz_name: quiz_to_search.name }), headers: @headers
+    assert_response :success
+    response_quiz_ids = response.parsed_body["quizzes"].pluck("id")
+    assert_equal quiz_to_search.id, response_quiz_ids[0]
   end
 
   def test_should_clone_quiz

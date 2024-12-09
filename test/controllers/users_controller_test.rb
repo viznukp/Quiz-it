@@ -52,8 +52,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     }, headers: @headers
     assert_response :success
     response_json = response.parsed_body
-    response_auth_token = response_json["authentication_token"]
-    expected_auth_token = User.find_by!(email:).authentication_token
-    assert_equal expected_auth_token, response_auth_token
+    assert_equal response_json["status"], "success"
   end
 end

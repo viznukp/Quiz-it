@@ -43,9 +43,11 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_show_result
-    submission = create(:submission, user: @user)
-    result = ResultService.new.generate_result(submission) # Generates the expected result
-    get result_submission_path(slug: submission.quiz.slug), headers: @headers
+    standard_user = create(:user, user_type: "standard")
+    submission = create(:submission, user: standard_user)
+    result = ResultService.new.generate_result(submission)
+    get result_submission_path(slug: submission.quiz.slug),
+      headers: headers(standard_user, { "X-Standard-Email": standard_user.email })
 
     assert_response :success
 
