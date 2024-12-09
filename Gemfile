@@ -118,3 +118,7 @@ gem "wicked_pdf"
 gem "wkhtmltopdf-binary"
 
 gem "redis", "~> 4.0"
+
+group :test do
+  gem "rails-controller-testing"
+end

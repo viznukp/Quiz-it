@@ -47,6 +47,14 @@ def headers(user, options = {})
   }.merge(options)
 end
 
+def standard_user_headers(user, options = {})
+  {
+    Accept: "application/json",
+    "Content_Type" => "application/json",
+    "X-Standard-Email" => user.email
+  }.merge(options)
+end
+
 def response_body
   response.parsed_body
 end
