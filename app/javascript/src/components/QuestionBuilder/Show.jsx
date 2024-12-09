@@ -11,7 +11,7 @@ import routes from "src/routes";
 import quizzesApi from "apis/quizzes";
 import { Container, NavBar, PageLoader, NoData } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
-import { QUIZ_STATUSES } from "components/constants";
+import { QUIZ_STATUSES, BASE_URL } from "components/constants";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
 import SaveAction from "./SaveAction";
@@ -36,7 +36,7 @@ const Show = () => {
   };
 
   const copyQuizLink = async () => {
-    const link = `${routes.base}${routes.attemptQuiz.replace(":slug", slug)}`;
+    const link = `${BASE_URL}${routes.attemptQuiz.replace(":slug", slug)}`;
     try {
       await navigator.clipboard.writeText(link);
       Toastr.info(t("messages.info.linkCopied"));
@@ -71,26 +71,32 @@ const Show = () => {
           quizSlug={slug}
           title={quiz?.name}
         >
-          {quiz?.status === STATUS_DRAFT && (
-            <Typography className="italic text-gray-400">
-              {t("labels.draftSavedAt", { dateAndTime: quiz?.lastUpdatedAt })}
-            </Typography>
-          )}
-          <SaveAction
-            saveAction={handleQuizSave}
-            saveType={saveType}
-            setSaveType={setSaveType}
-          />
-          {quiz?.status === STATUS_PUBLISHED && (
-            <Button
-              icon={LinkIcon}
-              style="text"
-              tooltipProps={{
-                content: t("labels.copyQuizLink"),
-                position: "bottom",
-              }}
-              onClick={copyQuizLink}
-            />
+          {!isEmpty(quiz.questions) && (
+            <div className="flex gap-3">
+              {quiz?.status === STATUS_DRAFT && (
+                <Typography className="italic text-gray-400">
+                  {t("labels.draftSavedAt", {
+                    dateAndTime: quiz?.lastUpdatedAt,
+                  })}
+                </Typography>
+              )}
+              <SaveAction
+                saveAction={handleQuizSave}
+                saveType={saveType}
+                setSaveType={setSaveType}
+              />
+              {quiz?.status === STATUS_PUBLISHED && (
+                <Button
+                  icon={LinkIcon}
+                  style="text"
+                  tooltipProps={{
+                    content: t("labels.copyQuizLink"),
+                    position: "bottom",
+                  }}
+                  onClick={copyQuizLink}
+                />
+              )}
+            </div>
           )}
         </NavBar>
       }

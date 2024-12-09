@@ -3,6 +3,7 @@ const STORAGE_KEYS = {
   EMAIL: "authEmail",
   USERID: "authUserId",
   USERNAME: "authUserName",
+  STANDARD_USER_EMAIL: "standardUserEmail",
 };
 
 const setToLocalStorage = ({ authToken, email, userId, userName }) => {
@@ -12,6 +13,9 @@ const setToLocalStorage = ({ authToken, email, userId, userName }) => {
   localStorage.setItem(STORAGE_KEYS.USERNAME, JSON.stringify(userName));
 };
 
+const setStandardUserEmail = email =>
+  localStorage.setItem(STORAGE_KEYS.STANDARD_USER_EMAIL, JSON.stringify(email));
+
 const getFromLocalStorage = key => {
   try {
     return JSON.parse(localStorage.getItem(key));
@@ -20,4 +24,9 @@ const getFromLocalStorage = key => {
   }
 };
 
-export { STORAGE_KEYS, setToLocalStorage, getFromLocalStorage };
+export {
+  STORAGE_KEYS,
+  setToLocalStorage,
+  getFromLocalStorage,
+  setStandardUserEmail,
+};

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Delete, Filter as FilterIcon } from "neetoicons";
-import { Table, Button, Dropdown, Typography, Pagination } from "neetoui";
+import { Table, Button, Dropdown, Typography, Modal } from "neetoui";
 import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
@@ -14,6 +13,7 @@ import {
   ColumnFilter,
   StatusTag,
   NoData,
+  Pagination,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -24,7 +24,6 @@ import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
 import { dateFromTimeStamp } from "utils/dateTime";
-import { buildUrl } from "utils/url";
 
 import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
@@ -33,7 +32,6 @@ import Filter from "./Filter";
 
 const QuizList = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const queryParams = useQueryParams();
   const { setResultType } = useQuizzesStore();
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
@@ -42,41 +40,38 @@ const QuizList = () => {
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
+  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
+    useState(false);
 
-  const handlePageNavigation = page => {
-    history.replace(buildUrl("", mergeLeft({ page }, queryParams)));
-  };
-
-  const handlePageNumber = () => {
-    const currentPage = Number(page);
-    const pageFromApi = Number(paginationData.page);
-
-    return currentPage !== pageFromApi ? pageFromApi : currentPage;
-  };
+  const closeDeleteConfirmationModal = () =>
+    setIsDeleteConfirmationModalOpen(false);
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
-    quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
-      id,
-      slug,
-      key: id,
-      name: (
-        <LabelToLink
-          label={name}
-          pathTo={routes.quiz.questions.replace(":slug", slug)}
-        />
-      ),
-      status: <StatusTag label={status} primaryLabel="published" />,
-      category,
-      createdOn: dateFromTimeStamp(updatedAt),
-      actions: (
-        <ActionList
-          quizName={name}
-          reloadQuizzes={reloadQuizzes}
-          slug={slug}
-          status={status}
-        />
-      ),
-    }));
+    quizzes?.map(
+      ({ id, name, submissionsCount, status, updatedAt, category, slug }) => ({
+        id,
+        slug,
+        key: id,
+        name: (
+          <LabelToLink
+            label={name}
+            pathTo={routes.quiz.questions.replace(":slug", slug)}
+          />
+        ),
+        submissionsCount,
+        status: <StatusTag label={status} primaryLabel="published" />,
+        category,
+        createdOn: dateFromTimeStamp(updatedAt),
+        actions: (
+          <ActionList
+            quizName={name}
+            reloadQuizzes={reloadQuizzes}
+            slug={slug}
+            status={status}
+          />
+        ),
+      })
+    );
 
   const handleRowSelection = (selectedRowKeys, selectedRows) => {
     setSelectedQuizzesSlugs(selectedRows.map(row => row.slug));
@@ -185,7 +180,7 @@ const QuizList = () => {
                 icon={Delete}
                 label={t("labels.delete")}
                 style="danger"
-                onClick={handleDeleteMultipleQuizzes}
+                onClick={() => setIsDeleteConfirmationModalOpen(true)}
               />
             </div>
           )}
@@ -216,15 +211,39 @@ const QuizList = () => {
       />
       <Pagination
         className="mt-3"
-        count={paginationData.count}
-        navigate={pageNumber => handlePageNavigation(pageNumber)}
-        pageNo={handlePageNumber()}
-        pageSize={Number(pageSize)}
+        page={page}
+        pageCount={paginationData.count}
+        pageNumberFromApi={Number(paginationData.page)}
+        pageSize={pageSize}
       />
       <Filter
         closeFilter={() => setIsFilterPaneOpen(false)}
         isOpen={isFilterPaneOpen}
       />
+      <Modal
+        isOpen={isDeleteConfirmationModalOpen}
+        onClose={closeDeleteConfirmationModal}
+      >
+        <div className="mt-3 p-4">
+          <Typography style="h3">
+            {t("messages.warnings.deleteMultiple", {
+              entity: t("labels.quizzesLower"),
+            })}
+          </Typography>
+          <Typography className="mt-4">
+            {t("messages.warnings.confirmDelete", { entity: "They" })}
+          </Typography>
+          <Button
+            className="mt-6"
+            label={t("labels.delete")}
+            style="danger"
+            onClick={() => {
+              closeDeleteConfirmationModal();
+              handleDeleteMultipleQuizzes();
+            }}
+          />
+        </div>
+      </Modal>
     </>
   );
 };

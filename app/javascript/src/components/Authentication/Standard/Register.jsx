@@ -6,30 +6,21 @@ import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 
 import authApi from "apis/authentication";
-import { setAuthHeaders } from "apis/axios";
-import { setToLocalStorage } from "utils/storage";
+import { setStandardUserEmail } from "utils/storage";
 
 import {
   REGISTRATION_FORM_INITIAL_VALUES,
   REGISTRATION_FORM_VALIDATION_SCHEMA,
 } from "./constants";
 
-const Register = ({ onSuccess, className = "" }) => {
+const Register = ({ afterRegistration, className = "" }) => {
   const { t } = useTranslation();
 
   const handleStandardUserRegistration = async formData => {
     try {
       const responseData = await authApi.authenticateStandardUser(formData);
-      setToLocalStorage({
-        authToken: responseData.authenticationToken,
-        email: responseData.email,
-        userId: responseData.id,
-        userName: [responseData.firstName, responseData.lastName]
-          .join(" ")
-          .trim(),
-      });
-      setAuthHeaders();
-      onSuccess();
+      setStandardUserEmail(responseData.email);
+      afterRegistration(responseData);
     } catch (error) {
       logger.error(error);
     }

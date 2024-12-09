@@ -4,7 +4,7 @@ class Submission < ApplicationRecord
   enum status: { completed: "completed", incomplete: "incomplete" }
 
   belongs_to :user
-  belongs_to :quiz
+  belongs_to :quiz, counter_cache: true
 
   validates :user_id, presence: true
   validates :quiz_id, presence: true

@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 
 import { Filter as FilterIcon, Close } from "neetoicons";
 import { Typography, Dropdown, Button } from "neetoui";
-import { mergeLeft, isEmpty } from "ramda";
+import { mergeLeft, isEmpty, either, isNil } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -49,7 +49,7 @@ const Filter = () => {
           </div>
         </div>
       </Dropdown>
-      {!isEmpty(queryParams.category) && (
+      {!either(isNil, isEmpty)(queryParams.category) && (
         <Button
           icon={Close}
           style="danger-text"

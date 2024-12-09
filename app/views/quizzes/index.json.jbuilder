@@ -6,6 +6,7 @@ json.quizzes @paginated_quizzes do |quiz|
     :status,
     :slug,
     :questions_count,
+    :submissions_count,
     :updated_at
   json.category quiz.category.name
 end

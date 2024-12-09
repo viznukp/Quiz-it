@@ -107,7 +107,9 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
             values={{ entity: quizName }}
           />
         </Typography>
-        <Typography>{t("messages.warnings.confirmDelete")}</Typography>
+        <Typography className="mt-4">
+          {t("messages.warnings.confirmDelete", { entity: "It" })}
+        </Typography>
       </ActionModal>
     </>
   );
