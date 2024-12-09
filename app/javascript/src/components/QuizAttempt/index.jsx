@@ -37,7 +37,7 @@ const QuizAttempt = () => {
   const handleResponseSubmission = async () => {
     try {
       await submissionsApi.create({
-        email: getFromLocalStorage(STORAGE_KEYS.EMAIL),
+        email: getFromLocalStorage(STORAGE_KEYS.STANDARD_USER_EMAIL),
         quiz_slug: slug,
         status: "completed",
         answers: userAnswers,

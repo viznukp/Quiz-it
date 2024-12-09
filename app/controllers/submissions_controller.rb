@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SubmissionsController < ApplicationController
+  skip_before_action :authenticate_user_using_x_auth_token, only: %i[create result ]
+
   def create
     user = User.find_by!(email: submission_params[:email])
     quiz = Quiz.find_by!(slug: submission_params[:quiz_slug])
@@ -22,7 +24,7 @@ class SubmissionsController < ApplicationController
   end
 
   def result
-    user = User.find_by!(email: request.headers["X-Auth-Email"])
+    user = User.find_by!(email: request.headers["X-Standard-Email"])
     quiz = Quiz.find_by!(slug: params[:slug])
 
     submission = Submission.find_by(user:, quiz:)

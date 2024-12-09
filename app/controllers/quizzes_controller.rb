@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  skip_before_action :authenticate_user_using_x_auth_token, only: %i[index_public stats ]
+  skip_before_action :authenticate_user_using_x_auth_token, only: %i[index_public show_quiz_without_answer stats ]
   before_action :load_quiz, only: %i[update destroy clone]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
   before_action :load_quiz_with_questions, only: %i[show show_quiz_without_answer]
-  after_action :verify_authorized, except: %i[index index_public show show_quiz_without_answer stats]
+  after_action :verify_authorized, except: %i[index index_public show_quiz_without_answer stats]
   after_action :verify_policy_scoped, only: :index
   before_action :authorize_if_user_is_admin_and_creator_of_quiz, only: %i[update show destroy]
 
