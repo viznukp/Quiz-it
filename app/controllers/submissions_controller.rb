@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SubmissionsController < ApplicationController
-  skip_before_action :authenticate_user_using_x_auth_token, only: %i[create result ]
+  skip_before_action :authenticate_user_using_x_auth_token, only: %i[create result check ]
 
   def create
     user = User.find_by!(email: submission_params[:email])
@@ -31,6 +31,19 @@ class SubmissionsController < ApplicationController
     result = ResultService.new.generate_result(submission)
 
     render_json(result)
+  end
+
+  def check
+    quiz = Quiz.find_by!(slug: params[:slug])
+    user = User.find_by!(email: request.headers["X-Standard-Email"])
+
+    submission = Submission.find_by(user:, quiz:)
+
+    if submission
+      render_error(t("user_already_attempted_quiz"), :conflict)
+    else
+      render_json({ access: "permitted" })
+    end
   end
 
   private

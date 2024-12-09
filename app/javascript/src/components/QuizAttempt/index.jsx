@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Typography, Button } from "neetoui";
+import { Typography, Button, Toastr } from "neetoui";
 import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
@@ -33,6 +33,21 @@ const QuizAttempt = () => {
   const questionCount = questions.length;
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questionCount - 1;
+
+  const checkIfUserHasAlreadyAttemptedQuiz = async registrationResponse => {
+    if (registrationResponse.status !== "success") {
+      Toastr.error(t("messages.error.default"));
+
+      return;
+    }
+
+    try {
+      const response = await submissionsApi.checkSubmissionExists(slug);
+      setIsUserAuthenticated(response?.access === "permitted");
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const handleResponseSubmission = async () => {
     try {
@@ -80,8 +95,8 @@ const QuizAttempt = () => {
         <div className=" max-w-6xl sm:max-w-md lg:max-w-xl ">
           <Typography style="h1">{quiz.name}</Typography>
           <RegisterStandardUser
+            afterRegistration={checkIfUserHasAlreadyAttemptedQuiz}
             className="mt-12"
-            onSuccess={() => setIsUserAuthenticated(true)}
           />
         </div>
       </div>

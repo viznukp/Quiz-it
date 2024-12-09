@@ -13,14 +13,14 @@ import {
   REGISTRATION_FORM_VALIDATION_SCHEMA,
 } from "./constants";
 
-const Register = ({ onSuccess, className = "" }) => {
+const Register = ({ afterRegistration, className = "" }) => {
   const { t } = useTranslation();
 
   const handleStandardUserRegistration = async formData => {
     try {
       const responseData = await authApi.authenticateStandardUser(formData);
       setStandardUserEmail(responseData.email);
-      onSuccess();
+      afterRegistration(responseData);
     } catch (error) {
       logger.error(error);
     }

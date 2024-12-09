@@ -4,5 +4,5 @@ json.extract! @user,
   :id,
   :first_name,
   :last_name,
-  :email,
-  :authentication_token
+  :email
+json.status "success"

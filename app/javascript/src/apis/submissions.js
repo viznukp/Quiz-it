@@ -7,15 +7,20 @@ const fetch = (slug, filters) =>
 
 const create = payload => axios.post("/submissions", { submission: payload });
 
-const fetchResult = slug => {
-  const standard_user_email = getFromLocalStorage(
-    STORAGE_KEYS.STANDARD_USER_EMAIL
-  );
-
-  return axios.get(`/submissions/${slug}/result`, {
-    headers: { "X-Standard-Email": standard_user_email },
+const fetchResult = slug =>
+  axios.get(`/submissions/${slug}/result`, {
+    headers: {
+      "X-Standard-Email": getFromLocalStorage(STORAGE_KEYS.STANDARD_USER_EMAIL),
+    },
   });
-};
+
+const checkSubmissionExists = slug =>
+  axios.get("/submissions/check", {
+    params: { slug },
+    headers: {
+      "X-Standard-Email": getFromLocalStorage(STORAGE_KEYS.STANDARD_USER_EMAIL),
+    },
+  });
 
 const generatePdf = slug =>
   axios.post("/submissions/report", { submission: { slug } });
@@ -29,6 +34,7 @@ const submissionsApi = {
   fetchResult,
   generatePdf,
   download,
+  checkSubmissionExists,
 };
 
 export default submissionsApi;
