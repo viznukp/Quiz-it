@@ -58,3 +58,8 @@ end
 def response_count_considering_pagination(expected_count)
   expected_count > default_page_size ? default_page_size : expected_count
 end
+
+def get_incorrect_answer_index(question)
+  correct = question.answer_index
+  correct < question.options.count ? correct + 1 : correct - 1
+end
