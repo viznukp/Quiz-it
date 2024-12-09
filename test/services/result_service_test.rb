@@ -7,7 +7,6 @@ class ResultServiceTest < ActionDispatch::IntegrationTest
     @user = create(:user)
     @quiz = create(:quiz)
     @submission = build(:submission, user: @user, quiz: @quiz)
-    @headers = headers(@user)
   end
 
   def test_should_produce_correct_result
