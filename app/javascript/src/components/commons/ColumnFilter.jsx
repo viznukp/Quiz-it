@@ -2,10 +2,11 @@ import React, { useState } from "react";
 
 import { Column } from "neetoicons";
 import { Dropdown, Checkbox } from "neetoui";
+import PropTypes from "prop-types";
 import { without } from "ramda";
 import { useTranslation } from "react-i18next";
 
-const ColumnFilter = ({ schema, setVisibleColumns }) => {
+const ColumnFilter = ({ schema = [], setVisibleColumns }) => {
   const { t } = useTranslation();
   const [columnsToHide, setColumnsToHide] = useState([]);
 
@@ -46,6 +47,11 @@ const ColumnFilter = ({ schema, setVisibleColumns }) => {
       </div>
     </Dropdown>
   );
+};
+
+ColumnFilter.propTypes = {
+  schema: PropTypes.array,
+  setVisibleColumns: PropTypes.func,
 };
 
 export default ColumnFilter;
