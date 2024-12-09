@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { Field } from "formik";
 import { Delete, CheckCircle, Checkmark, CloseCircle } from "neetoicons";
 import { Button, Typography } from "neetoui";
+import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
 const Option = ({
@@ -79,6 +80,18 @@ const Option = ({
       )}
     </div>
   );
+};
+
+Option.propTypes = {
+  number: PropTypes.number,
+  deleteSelf: PropTypes.func,
+  isRemovable: PropTypes.bool,
+  onSelectCorrect: PropTypes.func,
+  style: PropTypes.string,
+  isDisabled: PropTypes.bool,
+  isStatusLabelEnabled: PropTypes.bool,
+  statusLabel: PropTypes.string,
+  statusLabelStyle: PropTypes.string,
 };
 
 export default Option;

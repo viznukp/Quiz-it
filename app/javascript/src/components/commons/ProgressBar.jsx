@@ -2,6 +2,7 @@ import React from "react";
 
 import classNames from "classnames";
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 const ProgressBar = ({ progress }) => (
   <div className="relative h-5 w-full overflow-hidden rounded-full bg-gray-200">
@@ -21,5 +22,9 @@ const ProgressBar = ({ progress }) => (
     </motion.div>
   </div>
 );
+
+ProgressBar.propTypes = {
+  progress: PropTypes.number,
+};
 
 export default ProgressBar;

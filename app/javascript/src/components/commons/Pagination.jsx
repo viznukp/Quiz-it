@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Pagination as NeetoUIPagination } from "neetoui";
+import PropTypes from "prop-types";
 import { mergeLeft } from "ramda";
 import { useHistory } from "react-router-dom";
 
@@ -39,6 +40,14 @@ const Pagination = ({
       pageSize={Number(pageSize)}
     />
   );
+};
+
+Pagination.propTypes = {
+  page: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  pageCount: PropTypes.number.isRequired,
+  pageNumberFromApi: PropTypes.number.isRequired,
+  className: PropTypes.string,
 };
 
 export default Pagination;

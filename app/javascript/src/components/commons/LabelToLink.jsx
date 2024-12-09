@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import { Tooltip } from "neetoui";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const LabelToLink = ({ label, pathTo }) => {
@@ -25,6 +26,11 @@ const LabelToLink = ({ label, pathTo }) => {
       </Link>
     </Tooltip>
   );
+};
+
+LabelToLink.propTypes = {
+  label: PropTypes.string,
+  pathTo: PropTypes.string,
 };
 
 export default LabelToLink;

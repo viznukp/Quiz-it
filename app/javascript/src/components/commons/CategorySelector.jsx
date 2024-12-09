@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Select } from "neetoui/formik";
+import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
 const CategorySelector = ({ categories = [] }) => {
@@ -18,6 +19,10 @@ const CategorySelector = ({ categories = [] }) => {
       }))}
     />
   );
+};
+
+CategorySelector.propTypes = {
+  categories: PropTypes.array,
 };
 
 export default CategorySelector;
