@@ -27,9 +27,4 @@ class ResultServiceTest < ActionDispatch::IntegrationTest
     assert_equal result[:wrong_answers_count], 2
     assert_equal result[:unanswered_count], 1
   end
-
-  def get_incorrect_answer_index(question)
-    correct = question.answer_index
-    correct < question.options.count ? correct + 1 : correct - 1
-  end
 end
