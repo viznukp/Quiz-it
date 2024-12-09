@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Delete, Filter as FilterIcon } from "neetoicons";
-import {
-  Table,
-  Button,
-  Dropdown,
-  Typography,
-  Pagination,
-  Modal,
-} from "neetoui";
+import { Table, Button, Dropdown, Typography, Modal } from "neetoui";
 import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
@@ -21,6 +13,7 @@ import {
   ColumnFilter,
   StatusTag,
   NoData,
+  Pagination,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -31,7 +24,6 @@ import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
 import { dateFromTimeStamp } from "utils/dateTime";
-import { buildUrl } from "utils/url";
 
 import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
@@ -40,7 +32,6 @@ import Filter from "./Filter";
 
 const QuizList = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const queryParams = useQueryParams();
   const { setResultType } = useQuizzesStore();
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
@@ -54,17 +45,6 @@ const QuizList = () => {
 
   const closeDeleteConfirmationModal = () =>
     setIsDeleteConfirmationModalOpen(false);
-
-  const handlePageNavigation = page => {
-    history.replace(buildUrl("", mergeLeft({ page }, queryParams)));
-  };
-
-  const handlePageNumber = () => {
-    const currentPage = Number(page);
-    const pageFromApi = Number(paginationData.page);
-
-    return currentPage !== pageFromApi ? pageFromApi : currentPage;
-  };
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(
@@ -231,10 +211,10 @@ const QuizList = () => {
       />
       <Pagination
         className="mt-3"
-        count={paginationData.count}
-        navigate={pageNumber => handlePageNavigation(pageNumber)}
-        pageNo={handlePageNumber()}
-        pageSize={Number(pageSize)}
+        page={page}
+        pageCount={paginationData.count}
+        pageNumberFromApi={Number(paginationData.page)}
+        pageSize={pageSize}
       />
       <Filter
         closeFilter={() => setIsFilterPaneOpen(false)}

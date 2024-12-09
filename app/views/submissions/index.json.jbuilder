@@ -22,3 +22,5 @@ json.submissions do
 
   end
 end
+
+json.pagination_data @pagination_metadata

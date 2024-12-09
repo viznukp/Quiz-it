@@ -13,8 +13,10 @@ import {
   StatusTag,
   ColumnFilter,
   SearchBar,
+  Pagination,
 } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX } from "components/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
@@ -30,7 +32,8 @@ const SubmissionList = () => {
   const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
-
+  const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
+    queryParams;
   const history = useHistory();
 
   const updateSearchTerm = searchTerm => {
@@ -38,7 +41,10 @@ const SubmissionList = () => {
     history.replace(buildUrl("", mergeLeft({ name: searchTerm }, queryParams)));
   };
 
-  const { data = {}, isLoading } = useFetchSubmissions(slug, queryParams);
+  const {
+    data: { submissions = [], paginationData = {}, quiz = "" } = {},
+    isLoading,
+  } = useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
 
   const transformSubmissionDataForTableDisplay = data =>
     data?.map(({ submission, user }) => ({
@@ -63,7 +69,7 @@ const SubmissionList = () => {
           isTabsEnabled
           activeTab={TAB_IDS.submissions}
           quizSlug={slug}
-          title={data?.quiz}
+          title={quiz}
         />
       }
     >
@@ -79,7 +85,7 @@ const SubmissionList = () => {
         <div className="mb-3 flex gap-3">
           <Typography style="h4">
             {t("labels.availableSubmissions", {
-              count: data?.submissions?.length,
+              count: submissions?.length,
             })}
           </Typography>
         </div>
@@ -101,8 +107,15 @@ const SubmissionList = () => {
         columnData={visibleColumns}
         scroll={{ x: "100%" }}
         rowData={
-          data ? transformSubmissionDataForTableDisplay(data.submissions) : []
+          submissions ? transformSubmissionDataForTableDisplay(submissions) : []
         }
+      />
+      <Pagination
+        className="mt-3"
+        page={page}
+        pageCount={paginationData.count}
+        pageNumberFromApi={Number(paginationData.page)}
+        pageSize={pageSize}
       />
       <Filter
         closeFilter={() => setIsFilterPaneOpen(false)}

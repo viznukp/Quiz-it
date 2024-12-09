@@ -7,6 +7,7 @@ import NoData from "./NoData";
 import Option from "./Option";
 import PageLoader from "./PageLoader";
 import PageNotFound from "./PageNotFound";
+import Pagination from "./Pagination";
 import PrivateRoute from "./PrivateRoute";
 import ProgressBar from "./ProgressBar";
 import SearchBar from "./SearchBar";
@@ -24,6 +25,7 @@ export {
   ColumnFilter,
   ProgressBar,
   LabelToLink,
+  Pagination,
   SearchBar,
   NoData,
 };
