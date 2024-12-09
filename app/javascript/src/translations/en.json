@@ -84,7 +84,9 @@
     "draftSavedAt": "Draft saved at {{dateAndTime}}",
     "copyQuizLink": "Copy quiz link",
     "newNameForQuiz": "Select new name for quiz",
-    "submissionsCount": "Submission count"
+    "submissionsCount": "Submission count",
+    "filter": "Filter",
+    "columnFilter": "Column filter"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
