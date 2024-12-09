@@ -4,7 +4,7 @@ require "test_helper"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @user = create(:user)
+    @user = create(:user, user_type: "admin")
     @headers = headers(@user)
   end
 
@@ -42,5 +42,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get quiz_path(slug: quiz.slug), headers: headers(standard_user)
 
     assert_equal I18n.t("authorization.denied"), response.parsed_body["error"]
+  end
+
+  def test_should_not_get_access_after_logging_out
+    @headers.delete("X-Auth-Token")
+    post session_path, params: { session: { email: @user.email, password: "welcome" } }, headers: @headers
+    assert_response :success
+    delete session_path, headers: headers(@user)
+    assert_nil assigns(:current_user)
   end
 end
