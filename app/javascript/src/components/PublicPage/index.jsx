@@ -13,7 +13,12 @@ import {
   PageLoader,
   SearchBar,
   NoData,
+  Pagination,
 } from "components/commons";
+import {
+  DEFAULT_PAGE_INDEX,
+  DEFAULT_PAGE_SIZE_PUBLIC,
+} from "components/constants";
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
 
@@ -25,6 +30,8 @@ const PublicPage = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
+  const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE_PUBLIC } =
+    queryParams;
 
   const updateSearchTerm = searchTerm => {
     setSearchTerm(searchTerm);
@@ -33,10 +40,10 @@ const PublicPage = () => {
     );
   };
 
-  const { data = {}, isLoading } = useFetchQuizzesPublic({
-    filters: queryParams,
-  });
-  const { organization, quizzes = [] } = data;
+  const {
+    data: { organization, quizzes = [], paginationData } = {},
+    isLoading,
+  } = useFetchQuizzesPublic({ filters: mergeLeft({ pageSize }, queryParams) });
 
   if (isLoading) return <PageLoader className="h-64" />;
 
@@ -70,11 +77,20 @@ const PublicPage = () => {
           })}
         />
       ) : (
-        <div className="grid grid-cols-3 gap-3">
-          {quizzes?.map(quiz => (
-            <Card key={quiz.id} {...quiz} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-3 gap-3">
+            {quizzes?.map(quiz => (
+              <Card key={quiz.id} {...quiz} />
+            ))}
+          </div>
+          <Pagination
+            className="mt-12"
+            page={page}
+            pageCount={paginationData.count}
+            pageNumberFromApi={Number(paginationData.page)}
+            pageSize={pageSize}
+          />
+        </>
       )}
     </Container>
   );
