@@ -6,8 +6,19 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = create(:user)
     @quiz = create(:quiz)
-    @submission = build(:submission, user: @user, quiz: @quiz)
+    @question = create(:question, quiz: @quiz)
     @headers = headers(@user)
+  end
+
+  def create_submission(user, quiz, question, headers)
+    post submissions_path, params: {
+      submission: {
+        email: user.email,
+        quiz_slug: quiz.slug,
+        status: "completed",
+        answers: [{ question_id: question.id, answer_index: 1 }]
+      }
+    }, headers:
   end
 
   def test_should_list_all_submissions
@@ -26,18 +37,9 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_create_valid_submission_entry
-    @quiz.save!
     question = create(:question, quiz: @quiz)
     assert_difference "Submission.count", 1 do
-      post submissions_path, params: {
-        submission: {
-          email: @user.email,
-          quiz_slug: @quiz.slug,
-          status: "completed",
-          answers: [{ question_id: question.id, answer_index: 1 }]
-        }
-      }, headers: @headers
-
+      create_submission(@user, @quiz, question, @headers)
       assert_response :success
     end
   end
@@ -55,5 +57,20 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal response_result["correct_answers_count"], result[:correct_answers_count]
     assert_equal response_result["total_questions"], result[:total_questions]
     assert_equal response_result["wrong_answers_count"], result[:wrong_answers_count]
+  end
+
+  def test_user_can_have_only_one_submission_per_quiz
+    create_submission(@user, @quiz, @question, @headers)
+    assert_response :success
+
+    get check_submissions_path, params: { slug: @quiz.slug }, headers: standard_user_headers(@user)
+    assert_response :conflict
+    assert_includes I18n.t("user_already_attempted_quiz"), response.parsed_body["error"]
+  end
+
+  def test_should_permit_user_if_no_submission_exist_for_given_quiz
+    get check_submissions_path, params: { slug: @quiz.slug }, headers: standard_user_headers(@user)
+    assert_response :success
+    assert_equal "permitted", response.parsed_body["access"]
   end
 end
