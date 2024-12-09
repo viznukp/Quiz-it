@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import { Pane, Button, Typography } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
-import { useFetchQuizzes } from "src/hooks/reactQuery/useQuizzesApi";
+import { useQueryClient } from "react-query";
 
 import quizzesApi from "apis/quizzes";
 import { CategorySelector } from "components/commons";
@@ -14,11 +14,11 @@ import { CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA } from "./constants";
 
 const NewQuizPane = () => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const [isPaneOpen, setIsPaneOpen] = useState(false);
 
   const closePane = () => setIsPaneOpen(false);
 
-  const { refetch: refetchQuizzes } = useFetchQuizzes();
   const { data: { categories = [] } = {} } = useFetchCategories();
 
   const handleCreateNewQuiz = async formData => {
@@ -27,8 +27,8 @@ const NewQuizPane = () => {
         name: formData.name,
         categoryId: formData.category.value.id,
       });
+      queryClient.invalidateQueries("quizzes");
       closePane();
-      refetchQuizzes();
     } catch (error) {
       logger.error(error);
     }
