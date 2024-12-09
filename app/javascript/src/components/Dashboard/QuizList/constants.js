@@ -2,6 +2,7 @@ import { columnsToTableSchema } from "utils/schemaBuilder";
 
 const QUIZ_TABLE_COLUMNS = [
   "name",
+  "submissionsCount",
   "createdOn",
   "category",
   "status",

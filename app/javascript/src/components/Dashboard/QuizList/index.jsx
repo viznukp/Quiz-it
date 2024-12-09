@@ -67,28 +67,31 @@ const QuizList = () => {
   };
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
-    quizzes?.map(({ id, name, status, updatedAt, category, slug }) => ({
-      id,
-      slug,
-      key: id,
-      name: (
-        <LabelToLink
-          label={name}
-          pathTo={routes.quiz.questions.replace(":slug", slug)}
-        />
-      ),
-      status: <StatusTag label={status} primaryLabel="published" />,
-      category,
-      createdOn: dateFromTimeStamp(updatedAt),
-      actions: (
-        <ActionList
-          quizName={name}
-          reloadQuizzes={reloadQuizzes}
-          slug={slug}
-          status={status}
-        />
-      ),
-    }));
+    quizzes?.map(
+      ({ id, name, submissionsCount, status, updatedAt, category, slug }) => ({
+        id,
+        slug,
+        key: id,
+        name: (
+          <LabelToLink
+            label={name}
+            pathTo={routes.quiz.questions.replace(":slug", slug)}
+          />
+        ),
+        submissionsCount,
+        status: <StatusTag label={status} primaryLabel="published" />,
+        category,
+        createdOn: dateFromTimeStamp(updatedAt),
+        actions: (
+          <ActionList
+            quizName={name}
+            reloadQuizzes={reloadQuizzes}
+            slug={slug}
+            status={status}
+          />
+        ),
+      })
+    );
 
   const handleRowSelection = (selectedRowKeys, selectedRows) => {
     setSelectedQuizzesSlugs(selectedRows.map(row => row.slug));

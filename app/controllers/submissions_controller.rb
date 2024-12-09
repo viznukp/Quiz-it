@@ -8,7 +8,7 @@ class SubmissionsController < ApplicationController
     quiz = Quiz.find_by!(slug: submission_params[:quiz_slug])
 
     existing_submission = Submission.find_by(user:, quiz:)
-    render_error(t("user_already_attempted_quiz")) and return if existing_submission
+    render_error(t("user_already_attempted_quiz"), :conflict) and return if existing_submission
 
     submission = Submission.new(user:, quiz:, status: submission_params[:status], answers: submission_params[:answers])
     submission = EvaluationService.new().evaluate_submission(submission)

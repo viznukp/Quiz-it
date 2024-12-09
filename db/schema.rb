@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_07_162737) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_09_061135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_07_162737) do
     t.string "slug", null: false
     t.integer "questions_count", default: 0
     t.uuid "category_id"
+    t.integer "submissions_count", default: 0
     t.index ["category_id"], name: "index_quizzes_on_category_id"
   end
 

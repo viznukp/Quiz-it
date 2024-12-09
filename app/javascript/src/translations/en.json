@@ -83,7 +83,8 @@
     "filterByCategory": "Filter by category",
     "draftSavedAt": "Draft saved at {{dateAndTime}}",
     "copyQuizLink": "Copy quiz link",
-    "newNameForQuiz": "Select new name for quiz"
+    "newNameForQuiz": "Select new name for quiz",
+    "submissionsCount": "Submission count"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
