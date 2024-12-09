@@ -98,6 +98,7 @@ const SubmissionList = () => {
           <Button
             icon={FilterIcon}
             style="text"
+            tooltipProps={{ content: t("labels.filter"), position: "top" }}
             onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
           />
         </div>
