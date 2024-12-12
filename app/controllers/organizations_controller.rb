@@ -8,7 +8,7 @@ class OrganizationsController < ApplicationController
   end
 
   def update
-    Organization.first.update!(organization_params)
+    @organization.update!(name: organization_params[:name].strip)
     render_notice(t("successfully_updated", entity: "Organization"))
   end
 
