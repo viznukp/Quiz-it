@@ -2,9 +2,6 @@ import axios from "axios";
 
 const fetch = filters => axios.get("/quizzes", { params: filters });
 
-const fetchPublic = filters =>
-  axios.get("/quizzes/index_public", { params: filters });
-
 const create = payload => axios.post("/quizzes", { quiz: payload });
 
 const show = slug => axios.get(`/quizzes/${slug}`);
@@ -37,7 +34,6 @@ const quizzesApi = {
   destroy,
   deleteMultiple,
   updateMultiple,
-  fetchPublic,
   showWithoutAnswer,
   fetchQuizStats,
 };

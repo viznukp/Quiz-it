@@ -10,7 +10,6 @@ Rails.application.routes.draw do
       collection do
         delete :bulk_destroy
         put :bulk_update
-        get :index_public
         get :stats
       end
     end
@@ -33,6 +32,9 @@ Rails.application.routes.draw do
     resource :session, only: %i[create destroy]
     resource :organization, only: %i[show update]
     resources :categories, only: :index
+    namespace :public do
+      resources :quizzes, only: :index
+    end
   end
 
   root "home#index"

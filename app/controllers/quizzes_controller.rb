@@ -1,26 +1,18 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  skip_before_action :authenticate_user_using_x_auth_token, only: %i[index_public show_quiz_without_answer stats ]
+  skip_before_action :authenticate_user_using_x_auth_token, only: %i[ show_quiz_without_answer stats ]
   before_action :load_quiz, only: %i[update destroy clone]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
   before_action :load_quiz_with_questions, only: %i[show show_quiz_without_answer]
-  after_action :verify_authorized, except: %i[index index_public show_quiz_without_answer stats]
+  after_action :verify_authorized, except: %i[index show_quiz_without_answer stats]
   after_action :verify_policy_scoped, only: :index
   before_action :authorize_if_user_is_admin_and_creator_of_quiz, only: %i[update show destroy]
 
   def index
-    filtered_quizzes, @result_type = QuizFilterService.new(params).filter_quizzes
+    filtered_quizzes, @result_type = QuizFilterService.new(params[:filters]).filter_quizzes
     filtered_quizzes = policy_scope(filtered_quizzes)
     @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).paginate
-  end
-
-  def index_public
-    params[:filters] ||= {}
-    params[:filters] = params[:filters].merge(status: "published")
-    filtered_quizzes, = QuizFilterService.new(params).filter_quizzes
-    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).paginate
-    @organization = Organization.first
   end
 
   def create
