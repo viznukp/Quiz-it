@@ -6,9 +6,6 @@ const create = payload => axios.post("/quizzes", { quiz: payload });
 
 const show = slug => axios.get(`/quizzes/${slug}`);
 
-const showWithoutAnswer = slug =>
-  axios.get(`/quizzes/${slug}/show_quiz_without_answer`);
-
 const update = (slug, payload) =>
   axios.put(`/quizzes/${slug}`, { quiz: payload });
 
@@ -34,7 +31,6 @@ const quizzesApi = {
   destroy,
   deleteMultiple,
   updateMultiple,
-  showWithoutAnswer,
   fetchQuizStats,
 };
 

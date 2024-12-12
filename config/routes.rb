@@ -5,7 +5,6 @@ Rails.application.routes.draw do
     resources :quizzes, except: %i[new edit], param: :slug do
       member do
         post :clone
-        get :show_quiz_without_answer
       end
       collection do
         delete :bulk_destroy
@@ -33,7 +32,7 @@ Rails.application.routes.draw do
     resource :organization, only: %i[show update]
     resources :categories, only: :index
     namespace :public do
-      resources :quizzes, only: :index
+      resources :quizzes, only: %i[index show], param: :slug
     end
   end
 

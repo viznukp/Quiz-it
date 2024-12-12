@@ -7,6 +7,10 @@ class Public::QuizzesController < ApplicationController
     @organization = Organization.first
   end
 
+  def show
+    @quiz = Quiz.includes(:questions).find_by!(slug: params[:slug])
+  end
+
   private
 
     def filter_params

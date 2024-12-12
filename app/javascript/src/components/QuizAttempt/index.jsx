@@ -9,7 +9,7 @@ import routes from "src/routes";
 import submissionsApi from "apis/submissions";
 import { RegisterStandardUser } from "components/Authentication";
 import { PageLoader } from "components/commons";
-import { useShowQuizWithoutAnswer } from "hooks/reactQuery/useQuizzesApi";
+import { useShowQuiz } from "hooks/reactQuery/usePublicApi";
 import { buildRoute } from "utils/url";
 
 import ShowQuestion from "./ShowQuestion";
@@ -23,7 +23,7 @@ const QuizAttempt = () => {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userId, setUserId] = useState("");
 
-  const { data = {}, isLoading } = useShowQuizWithoutAnswer(slug);
+  const { data = {}, isLoading } = useShowQuiz(slug);
 
   if (isLoading) {
     return <PageLoader fullScreen />;

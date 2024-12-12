@@ -14,12 +14,6 @@ export const useShowQuiz = queryParams =>
     queryFn: () => quizzesApi.show(queryParams),
   });
 
-export const useShowQuizWithoutAnswer = queryParams =>
-  useQuery({
-    queryKey: ["quiz", queryParams],
-    queryFn: () => quizzesApi.showWithoutAnswer(queryParams),
-  });
-
 export const useFetchQuizStats = () =>
   useQuery({
     queryKey: ["quizStats"],
