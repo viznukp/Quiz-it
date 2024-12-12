@@ -49,6 +49,7 @@ const PublicPage = () => {
 
   return (
     <Container
+      sideBarDisabled
       navbar={
         <NavBar title={organization}>
           <Button

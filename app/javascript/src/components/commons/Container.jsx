@@ -5,9 +5,14 @@ import PropTypes from "prop-types";
 
 import Sidebar from "components/Sidebar";
 
-const Container = ({ children, navbar, className = "" }) => (
+const Container = ({
+  children,
+  navbar,
+  sideBarDisabled = false,
+  className = "",
+}) => (
   <div className="flex h-screen w-full overflow-hidden">
-    <Sidebar />
+    {!sideBarDisabled && <Sidebar />}
     <div className="flex flex-1 flex-col">
       {navbar}
       <div className="w-full flex-1 overflow-y-auto">
@@ -23,6 +28,7 @@ Container.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   navbar: PropTypes.node,
+  sideBarDisabled: PropTypes.bool,
 };
 
 export default Container;
