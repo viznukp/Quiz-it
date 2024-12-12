@@ -2,18 +2,15 @@
 
 class QuestionsController < ApplicationController
   before_action :load_question, only: %i[update destroy]
+  before_action :load_quiz, only: %i[create show]
 
   def create
-    quiz = Quiz.find_by!(slug: params[:question][:quiz_slug])
-    question = Question.new(question_params)
-    question.quiz = quiz
-    question.save!
+    Question.create!(question_params.merge(quiz: @quiz))
     render_notice(t("successfully_created", entity: "Question"))
   end
 
   def show
-    @quiz = Quiz.find_by!(slug: params[:slug])
-    @question = @quiz.questions.find_by!(id: params[:id])
+    @question = @quiz.questions.find(params[:id])
   end
 
   def update
@@ -27,7 +24,7 @@ class QuestionsController < ApplicationController
   end
 
   def clone
-    question = Question.find_by!(id: params[:question_id])
+    question = Question.find(params[:question_id])
     @cloned_question = question.deep_clone
   end
 
@@ -38,6 +35,10 @@ class QuestionsController < ApplicationController
     end
 
     def load_question
-      @question = Question.find_by!(id: params[:id])
+      @question = Question.find(params[:id])
+    end
+
+    def load_quiz
+      @quiz = Quiz.find_by!(slug: params[:slug])
     end
 end

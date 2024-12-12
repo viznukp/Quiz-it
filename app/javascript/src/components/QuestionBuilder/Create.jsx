@@ -7,7 +7,7 @@ import {
 import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
-import quizzesApi from "apis/quizzes";
+import questionsApi from "apis/questions";
 import { Container, NavBar, PageLoader } from "components/commons";
 
 import Form from "./Form";
@@ -20,10 +20,7 @@ const Create = () => {
 
   const handleSubmit = async ({ formData, resetForm, submissionSource }) => {
     try {
-      await quizzesApi.addQuestion({
-        ...formData,
-        quizSlug: slug,
-      });
+      await questionsApi.create({ questionData: formData, slug });
       refetch();
 
       if (submissionSource === "primary") {

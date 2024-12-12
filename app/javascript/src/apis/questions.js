@@ -1,5 +1,8 @@
 import axios from "axios";
 
+const create = ({ slug, questionData }) =>
+  axios.post("/questions", { question: questionData, slug });
+
 const update = (id, payload) =>
   axios.put(`/questions/${id}`, { question: payload });
 
@@ -10,6 +13,6 @@ const clone = id => axios.get(`questions/${id}/clone`);
 const show = ({ slug, id }) =>
   axios.get(`/questions/${id}`, { params: { slug } });
 
-const questionsApi = { show, update, destroy, clone };
+const questionsApi = { create, show, update, destroy, clone };
 
 export default questionsApi;
