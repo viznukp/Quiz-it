@@ -5,12 +5,12 @@ class QuestionsController < ApplicationController
   before_action :load_quiz, only: %i[create show]
 
   def create
-    Question.create!(question_params.merge(quiz: @quiz))
+    @current_quiz.questions.create!(question_params)
     render_notice(t("successfully_created", entity: "Question"))
   end
 
   def show
-    @question = @quiz.questions.find(params[:id])
+    @question = @current_quiz.questions.find(params[:id])
   end
 
   def update
@@ -39,6 +39,6 @@ class QuestionsController < ApplicationController
     end
 
     def load_quiz
-      @quiz = Quiz.find_by!(slug: params[:slug])
+      @current_quiz = Quiz.find_by!(slug: params[:slug])
     end
 end
