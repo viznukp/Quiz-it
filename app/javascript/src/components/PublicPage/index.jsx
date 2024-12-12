@@ -24,6 +24,7 @@ import { buildUrl } from "utils/url";
 
 import Card from "./Card";
 import Filter from "./Filter";
+import SelectedCategoryDisplay from "./SelectedCategoryDisplay";
 
 const PublicPage = () => {
   const history = useHistory();
@@ -79,6 +80,7 @@ const PublicPage = () => {
               <Filter />
             </div>
           </div>
+          <SelectedCategoryDisplay />
           <div className="grid grid-cols-3 gap-3">
             {quizzes?.map(quiz => (
               <Card key={quiz.id} {...quiz} />

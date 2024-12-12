@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 
-import { Filter as FilterIcon, Close } from "neetoicons";
-import { Typography, Dropdown, Button } from "neetoui";
-import { mergeLeft, isEmpty, either, isNil } from "ramda";
+import { Filter as FilterIcon } from "neetoicons";
+import { Typography, Dropdown } from "neetoui";
+import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -25,10 +25,7 @@ const Filter = () => {
   return (
     <div>
       <Dropdown buttonStyle="text" icon={FilterIcon}>
-        <div
-          className="absolute z-10 mt-2 flex w-48 flex-col gap-3 rounded-lg border bg-white px-4 py-3 shadow-xl"
-          ref={filterRef}
-        >
+        <div className=" flex flex-col gap-3 px-4 py-3 " ref={filterRef}>
           <Typography style="h4">{t("labels.category")}</Typography>
           <div onClick={event => event.stopPropagation()}>
             <Dropdown
@@ -49,17 +46,6 @@ const Filter = () => {
           </div>
         </div>
       </Dropdown>
-      {!either(isNil, isEmpty)(queryParams.category) && (
-        <Button
-          icon={Close}
-          style="danger-text"
-          tooltipProps={{
-            content: t("labels.clearFilters"),
-            position: "top",
-          }}
-          onClick={() => handleCategoryFilterSubmit("")}
-        />
-      )}
     </div>
   );
 };
