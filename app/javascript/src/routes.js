@@ -10,7 +10,7 @@ const routes = {
       clone: "/:slug/questions/:id/clone",
     },
     submissions: "/:slug/submissions",
-    result: "/submissions/:slug/result",
+    result: "/submissions/:slug/:userId/result",
   },
   publicPage: "/public",
   registerStandardUser: "/user/standard/register/:slug",

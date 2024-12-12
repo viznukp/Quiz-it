@@ -10,7 +10,7 @@ import submissionsApi from "apis/submissions";
 import { RegisterStandardUser } from "components/Authentication";
 import { PageLoader } from "components/commons";
 import { useShowQuizWithoutAnswer } from "hooks/reactQuery/useQuizzesApi";
-import { getFromLocalStorage, STORAGE_KEYS } from "utils/storage";
+import { buildRoute } from "utils/url";
 
 import ShowQuestion from "./ShowQuestion";
 
@@ -21,6 +21,7 @@ const QuizAttempt = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+  const [userId, setUserId] = useState("");
 
   const { data = {}, isLoading } = useShowQuizWithoutAnswer(slug);
 
@@ -41,8 +42,13 @@ const QuizAttempt = () => {
       return;
     }
 
+    setUserId(registrationResponse.id);
+
     try {
-      const response = await submissionsApi.checkSubmissionExists(slug);
+      const response = await submissionsApi.checkSubmissionExists(
+        slug,
+        registrationResponse.id
+      );
       setIsUserAuthenticated(response?.access === "permitted");
     } catch (error) {
       logger.error(error);
@@ -52,12 +58,14 @@ const QuizAttempt = () => {
   const handleResponseSubmission = async () => {
     try {
       await submissionsApi.create({
-        email: getFromLocalStorage(STORAGE_KEYS.STANDARD_USER_EMAIL),
-        quiz_slug: slug,
-        status: "completed",
-        answers: userAnswers,
+        submission: {
+          status: "completed",
+          answers: userAnswers,
+        },
+        slug,
+        userId,
       });
-      history.replace(routes.quiz.result.replace(":slug", slug));
+      history.replace(buildRoute(routes.quiz.result, { slug, userId }));
     } catch (error) {
       logger.error(error);
     }

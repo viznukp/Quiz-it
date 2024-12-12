@@ -1,26 +1,15 @@
 import axios from "axios";
 
-import { getFromLocalStorage, STORAGE_KEYS } from "utils/storage";
-
 const fetch = (slug, filters) =>
   axios.get("/submissions", { params: { slug, filters } });
 
-const create = payload => axios.post("/submissions", { submission: payload });
+const create = payload => axios.post("/submissions", payload);
 
-const fetchResult = slug =>
-  axios.get(`/submissions/${slug}/result`, {
-    headers: {
-      "X-Standard-Email": getFromLocalStorage(STORAGE_KEYS.STANDARD_USER_EMAIL),
-    },
-  });
+const fetchResult = (slug, userId) =>
+  axios.get(`/submissions/${slug}/result`, { params: { slug, userId } });
 
-const checkSubmissionExists = slug =>
-  axios.get("/submissions/check", {
-    params: { slug },
-    headers: {
-      "X-Standard-Email": getFromLocalStorage(STORAGE_KEYS.STANDARD_USER_EMAIL),
-    },
-  });
+const checkSubmissionExists = (slug, userId) =>
+  axios.get("/submissions/check", { params: { slug, userId } });
 
 const generatePdf = slug =>
   axios.post("/submissions/report", { submission: { slug } });

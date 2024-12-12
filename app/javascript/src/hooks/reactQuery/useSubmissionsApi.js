@@ -8,8 +8,8 @@ export const useFetchSubmissions = (slug, filters) =>
     queryFn: () => submissionsApi.fetch(slug, filters),
   });
 
-export const useFetchResult = slug =>
+export const useFetchResult = (slug, userId) =>
   useQuery({
-    queryKey: ["result", slug],
-    queryFn: () => submissionsApi.fetchResult(slug),
+    queryKey: ["result", slug, userId],
+    queryFn: () => submissionsApi.fetchResult(slug, userId),
   });

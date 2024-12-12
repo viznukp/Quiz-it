@@ -13,7 +13,7 @@ import ShowAnswer from "./ShowAnswer";
 
 const QuizResult = () => {
   const { t } = useTranslation();
-  const { slug } = useParams();
+  const { slug, userId } = useParams();
   const history = useHistory();
 
   const {
@@ -24,7 +24,7 @@ const QuizResult = () => {
       unansweredCount = 0,
       totalQuestions = 0,
     } = {},
-  } = useFetchResult(slug);
+  } = useFetchResult(slug, userId);
 
   return (
     <div className="neeto-ui-bg-gray-200 flex items-center justify-center overflow-y-auto p-6">
