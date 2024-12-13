@@ -1,3 +1,4 @@
+import ActiveFilters from "./ActiveFilters";
 import CategorySelector from "./CategorySelector";
 import ColumnFilter from "./ColumnFilter";
 import Container from "./Container";
@@ -20,6 +21,7 @@ export {
   Container,
   PageLoader,
   PrivateRoute,
+  ActiveFilters,
   CategorySelector,
   PageNotFound,
   ColumnFilter,

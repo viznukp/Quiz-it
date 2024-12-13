@@ -86,6 +86,7 @@
     "newNameForQuiz": "Select new name for quiz",
     "submissionsCount": "Submission count",
     "filter": "Filter",
+    "appliedFilters": "Applied filters",
     "columnFilter": "Column filter",
     "selectedCategory": "Selected category"
   },
@@ -128,5 +129,11 @@
       "confirmDelete": "{{entity}} will be permanently deleted and we won't be able to recover!",
       "deleteMultiple": "You are about to delete multiple {{entity}}"
     }
+  },
+  "filters": {
+    "category": "Category: {{category}} ",
+    "email": "Email: {{email}}",
+    "status": "status: {{status}}",
+    "quizName": "Quiz: {{quizName}}"
   }
 }

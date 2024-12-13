@@ -14,6 +14,7 @@ import {
   StatusTag,
   NoData,
   Pagination,
+  ActiveFilters,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -114,7 +115,7 @@ const QuizList = () => {
 
   if (isLoading) return <PageLoader className="h-64" />;
 
-  return isEmpty(quizzes) ? (
+  return isEmpty(quizzes) && isEmpty(queryParams) ? (
     <NoData
       message={t("messages.info.noEntityToShow", {
         entity: t("labels.quizzesLower"),
@@ -123,18 +124,7 @@ const QuizList = () => {
   ) : (
     <>
       <div className="mb-3 flex justify-between gap-3">
-        <div className="mb-3 flex gap-3">
-          <Typography style="h4">
-            {selectedQuizzesIds.length > 0
-              ? t("messages.info.selectedRows", {
-                  selected: selectedQuizzesIds.length,
-                  total: quizzes?.length,
-                  entity: "quizzes",
-                })
-              : t("messages.info.availableQuizzes", {
-                  count: quizzes?.length,
-                })}
-          </Typography>
+        <div>
           {!isEmpty(selectedQuizzesSlugs) && (
             <div className="flex gap-3">
               <Dropdown
@@ -184,6 +174,20 @@ const QuizList = () => {
               />
             </div>
           )}
+          <div className="mb-3 flex items-center gap-3">
+            <Typography style="h4">
+              {selectedQuizzesIds.length > 0
+                ? t("messages.info.selectedRows", {
+                    selected: selectedQuizzesIds.length,
+                    total: quizzes?.length,
+                    entity: "quizzes",
+                  })
+                : t("messages.info.availableQuizzes", {
+                    count: quizzes?.length,
+                  })}
+            </Typography>
+            <ActiveFilters filters={["category", "status", "quizName"]} />
+          </div>
         </div>
         <div className="flex gap-2">
           <ColumnFilter
