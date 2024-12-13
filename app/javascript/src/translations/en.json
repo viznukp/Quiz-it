@@ -86,7 +86,8 @@
     "newNameForQuiz": "Select new name for quiz",
     "submissionsCount": "Submission count",
     "filter": "Filter",
-    "columnFilter": "Column filter"
+    "columnFilter": "Column filter",
+    "selectedCategory": "Selected category"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",

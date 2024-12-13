@@ -17,7 +17,7 @@ const SelectedCategoryDisplay = () => {
     <>
       {!either(isNil, isEmpty)(queryParams.category) && (
         <div className="mb-4 flex items-center gap-2">
-          <Typography>Selected: </Typography>
+          <Typography>{t("labels.selectedCategory")} </Typography>
           <Tag className="h-5" label={queryParams.category} />
           <Button
             label={t("labels.clearFilters")}
