@@ -48,7 +48,7 @@ const Form = ({
           })
         }
       >
-        {({ values, touched, errors, submitForm }) => (
+        {({ values, touched, errors, submitForm, isSubmitting, dirty }) => (
           <FormikForm>
             <Input
               nakedInput
@@ -107,6 +107,7 @@ const Form = ({
             </div>
             <div className="mt-12 flex gap-3">
               <Button
+                disabled={isSubmitting || !dirty}
                 label={primaryButtonLabel || t("labels.save")}
                 type="submit"
                 onClick={() => {
@@ -115,6 +116,7 @@ const Form = ({
               />
               {isSecondaryButtonVisible && (
                 <Button
+                  disabled={isSubmitting || !dirty}
                   style="secondary"
                   label={
                     secondaryButtonLabel || t("labels.saveAndAddNewQuestion")
