@@ -2,35 +2,37 @@ import React, { useState, useEffect } from "react";
 
 import { Typography, Button, Input } from "neetoui";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import routes from "src/routes";
 
 import organizationApi from "apis/organization";
-import { Container } from "components/commons";
+import { Container, PageLoader } from "components/commons";
 import { useShowOrganization } from "hooks/reactQuery/useOrganizationApi";
 
 const Settings = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const [siteName, setSiteName] = useState("");
   const [initialName, setInitialName] = useState("");
 
-  const { data: { organization = "" } = {}, isLoading } = useShowOrganization();
+  const {
+    data: { organization = "" } = {},
+    isLoading,
+    refetch,
+  } = useShowOrganization();
 
   const handleSiteUpdate = async () => {
     try {
       await organizationApi.update({ name: siteName });
+      refetch();
     } catch (error) {
       logger.error(error);
     }
   };
 
   useEffect(() => {
-    if (organization) {
-      setSiteName(organization);
-      setInitialName(organization);
-    }
-  }, [isLoading]);
+    setSiteName(organization);
+    setInitialName(organization);
+  }, [organization]);
+
+  if (isLoading) return <PageLoader fullScreen />;
 
   return (
     <Container>
@@ -56,7 +58,7 @@ const Settings = () => {
           <Button
             label={t("labels.cancel")}
             style="secondary"
-            onClick={() => history.push(routes.root)}
+            onClick={() => setSiteName(initialName)}
           />
         </div>
       </div>
