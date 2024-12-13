@@ -88,7 +88,10 @@
     "filter": "Filter",
     "appliedFilters": "Applied filters",
     "columnFilter": "Column filter",
-    "selectedCategory": "Selected category"
+    "quiz_one": "{{count}} Quiz",
+    "quiz_other": "{{count}} Quizzes",
+    "selectedQuiz_one": "{{count}} quiz selected of {{total}}",
+    "selectedQuiz_other": "{{count}} quizzes selected of {{total}}"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",

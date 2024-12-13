@@ -177,14 +177,11 @@ const QuizList = () => {
           <div className="mb-3 flex items-center gap-3">
             <Typography style="h4">
               {selectedQuizzesIds.length > 0
-                ? t("messages.info.selectedRows", {
-                    selected: selectedQuizzesIds.length,
+                ? t("labels.selectedQuiz", {
+                    count: selectedQuizzesIds.length,
                     total: quizzes?.length,
-                    entity: "quizzes",
                   })
-                : t("messages.info.availableQuizzes", {
-                    count: quizzes?.length,
-                  })}
+                : t("labels.quiz", { count: quizzes?.length })}
             </Typography>
             <ActiveFilters filters={["category", "status", "quizName"]} />
           </div>
