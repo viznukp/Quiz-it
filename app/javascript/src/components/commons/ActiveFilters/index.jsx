@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button } from "neetoui";
-import { either, isNil, isEmpty, mergeLeft, pick } from "ramda";
+import { either, isNil, isEmpty, mergeLeft, pick, map } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -38,7 +38,13 @@ const ActiveFilters = ({ filters }) => {
             style="danger-text"
             onClick={() =>
               history.replace(
-                buildUrl("", mergeLeft({ category: "" }, queryParams))
+                buildUrl(
+                  "",
+                  mergeLeft(
+                    map(() => "", filtersFromQueryParams),
+                    queryParams
+                  )
+                )
               )
             }
           />

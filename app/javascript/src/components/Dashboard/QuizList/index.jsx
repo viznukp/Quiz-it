@@ -126,7 +126,7 @@ const QuizList = () => {
   ) : (
     <>
       <div className="mb-3 flex justify-between gap-3">
-        <div>
+        <div className="flex flex-col gap-3">
           {!isEmpty(selectedQuizzesSlugs) && (
             <div className="flex gap-3">
               <Dropdown
