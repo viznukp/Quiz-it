@@ -111,6 +111,8 @@ const QuizList = () => {
 
   useEffect(() => {
     setResultType(resultType);
+    setSelectedQuizzesIds([]);
+    setSelectedQuizzesSlugs([]);
   }, [quizzes]);
 
   if (isLoading) return <PageLoader className="h-64" />;
