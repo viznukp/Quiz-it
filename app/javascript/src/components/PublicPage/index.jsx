@@ -20,6 +20,7 @@ import {
   DEFAULT_PAGE_SIZE_PUBLIC,
 } from "components/constants";
 import useQueryParams from "hooks/useQueryParams";
+import { isLoggedIn } from "utils/auth";
 import { buildUrl } from "utils/url";
 
 import Card from "./Card";
@@ -55,7 +56,9 @@ const PublicPage = () => {
         <NavBar title={organization}>
           <Button
             label="Login as admin"
-            onClick={() => history.push(routes.login)}
+            onClick={() =>
+              history.push(isLoggedIn() ? routes.root : routes.login)
+            }
           />
         </NavBar>
       }
