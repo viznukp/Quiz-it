@@ -24,6 +24,8 @@ class QuizFilterService
       quizzes = quizzes.where("LOWER(quizzes.name) LIKE ?", "%#{params[:quiz_name].downcase}%")
     end
 
+    quizzes = quizzes.order(created_at: :desc)
+
     result_type = params[:status] || "all"
     [quizzes, result_type]
   end
