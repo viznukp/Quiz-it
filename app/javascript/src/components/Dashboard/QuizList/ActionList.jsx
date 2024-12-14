@@ -7,7 +7,7 @@ import { useTranslation, Trans } from "react-i18next";
 import quizzesApi from "apis/quizzes";
 import { QUIZ_STATUSES } from "components/constants";
 
-import ActionModal from "./ActionModal";
+import ConfirmationModal from "./ConfirmationModal";
 
 const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
   const { t } = useTranslation();
@@ -78,12 +78,11 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
           />
         </div>
       </Dropdown>
-      <ActionModal
+      <ConfirmationModal
         isOpen={isCloneModalOpen}
         isPrimaryButtonDisabled={quizName === newQuizName}
         primaryButtonAction={handleClone}
         primaryButtonLabel={t("labels.save")}
-        primaryButtonStyle="danger"
         title={t("labels.newNameForQuiz")}
         onClose={closeNewQuizModal}
       >
@@ -91,8 +90,8 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
           value={newQuizName}
           onChange={event => setNewQuizName(event.target.value)}
         />
-      </ActionModal>
-      <ActionModal
+      </ConfirmationModal>
+      <ConfirmationModal
         isOpen={isConfirmationModalOpen}
         primaryButtonAction={handleDelete}
         primaryButtonLabel={t("labels.confirmDelete")}
@@ -108,9 +107,9 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
           />
         </Typography>
         <Typography className="mt-4">
-          {t("messages.warnings.confirmDelete", { entity: "It" })}
+          {t("messages.warnings.confirmDelete")}
         </Typography>
-      </ActionModal>
+      </ConfirmationModal>
     </>
   );
 };

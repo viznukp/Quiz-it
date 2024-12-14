@@ -129,8 +129,8 @@
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
-      "confirmDelete": "{{entity}} will be permanently deleted and we won't be able to recover!",
-      "deleteMultiple": "You are about to delete multiple {{entity}}"
+      "confirmDelete": "It will be permanently deleted and we won't be able to recover!",
+      "confirmDelete_other": "They will be permanently deleted and we won't be able to recover!"
     }
   },
   "filters": {

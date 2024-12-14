@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Delete, Filter as FilterIcon } from "neetoicons";
-import { Table, Button, Dropdown, Typography, Modal } from "neetoui";
-import { isEmpty, mergeLeft } from "ramda";
-import { useTranslation } from "react-i18next";
+import { Table, Button, Dropdown, Typography } from "neetoui";
+import { isEmpty, mergeLeft, find, propEq } from "ramda";
+import { useTranslation, Trans } from "react-i18next";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
@@ -28,6 +28,7 @@ import { dateFromTimeStamp } from "utils/dateTime";
 
 import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
+import ConfirmationModal from "./ConfirmationModal";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
 
@@ -46,6 +47,25 @@ const QuizList = () => {
 
   const closeDeleteConfirmationModal = () =>
     setIsDeleteConfirmationModalOpen(false);
+
+  const handleConfirmationMessage = () => {
+    const selectedQuizCount = selectedQuizzesSlugs.length;
+
+    if (selectedQuizCount === 0) return "";
+
+    const entity =
+      selectedQuizCount > 1
+        ? t("labels.quiz", { count: selectedQuizCount })
+        : find(propEq(selectedQuizzesSlugs[0], "slug"))(quizzes).name;
+
+    return (
+      <Trans
+        components={{ strong: <strong /> }}
+        i18nKey="messages.warnings.beforeDelete"
+        values={{ entity }}
+      />
+    );
+  };
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(
@@ -224,30 +244,25 @@ const QuizList = () => {
         closeFilter={() => setIsFilterPaneOpen(false)}
         isOpen={isFilterPaneOpen}
       />
-      <Modal
+      <ConfirmationModal
         isOpen={isDeleteConfirmationModalOpen}
+        primaryButtonLabel={t("labels.confirmDelete")}
+        primaryButtonStyle="danger"
+        primaryButtonAction={() => {
+          closeDeleteConfirmationModal();
+          handleDeleteMultipleQuizzes();
+        }}
         onClose={closeDeleteConfirmationModal}
       >
-        <div className="mt-3 p-4">
-          <Typography style="h3">
-            {t("messages.warnings.deleteMultiple", {
-              entity: t("labels.quizzesLower"),
+        <div className="p-4">
+          {handleConfirmationMessage()}
+          <Typography className="mt-4">
+            {t("messages.warnings.confirmDelete", {
+              count: selectedQuizzesSlugs.length,
             })}
           </Typography>
-          <Typography className="mt-4">
-            {t("messages.warnings.confirmDelete", { entity: "They" })}
-          </Typography>
-          <Button
-            className="mt-6"
-            label={t("labels.delete")}
-            style="danger"
-            onClick={() => {
-              closeDeleteConfirmationModal();
-              handleDeleteMultipleQuizzes();
-            }}
-          />
         </div>
-      </Modal>
+      </ConfirmationModal>
     </>
   );
 };
