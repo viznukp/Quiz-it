@@ -28,6 +28,15 @@ const QuestionDisplayCard = ({
     }
   };
 
+  const handleQuestionClone = async () => {
+    try {
+      await questionsApi.clone(id);
+      refetchQuizzes();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   return (
     <div className="border p-4">
       <div className="relative flex justify-between">
@@ -48,13 +57,7 @@ const QuestionDisplayCard = ({
             <Button
               label={t("labels.clone")}
               style="text"
-              onClick={() =>
-                history.push(
-                  routes.quiz.question.clone
-                    .replace(":slug", slug)
-                    .replace(":id", id)
-                )
-              }
+              onClick={handleQuestionClone}
             />
             <Button
               label={t("labels.delete")}

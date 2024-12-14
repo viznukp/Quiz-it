@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  before_action :load_question, only: %i[update destroy]
+  before_action :load_question, only: %i[update destroy clone]
   before_action :load_quiz, only: %i[create show]
 
   def create
@@ -24,8 +24,8 @@ class QuestionsController < ApplicationController
   end
 
   def clone
-    question = Question.find(params[:question_id])
-    @cloned_question = question.deep_clone
+    @question.deep_clone.save!
+    render_notice(t("successfully_cloned", entity: "Question"))
   end
 
   private

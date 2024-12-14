@@ -12,7 +12,6 @@ import PublicPage from "components/PublicPage";
 import {
   ShowQuestions,
   CreateQuestion,
-  CloneQuestion,
   EditQuestion,
 } from "components/QuestionBuilder";
 import QuizAttempt from "components/QuizAttempt";
@@ -43,11 +42,6 @@ const App = () => (
           exact
           component={EditQuestion}
           path={routes.quiz.question.edit}
-        />
-        <Route
-          exact
-          component={CloneQuestion}
-          path={routes.quiz.question.clone}
         />
         <Route
           exact
