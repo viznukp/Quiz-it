@@ -4,7 +4,7 @@ import { Button } from "neetoui";
 import { mergeLeft, isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { useFetchQuizzesPublic } from "src/hooks/reactQuery/useQuizzesApi";
+import { useFetchQuizzes } from "src/hooks/reactQuery/usePublicApi";
 import routes from "src/routes";
 
 import {
@@ -43,7 +43,7 @@ const PublicPage = () => {
   const {
     data: { organization, quizzes = [], paginationData } = {},
     isLoading,
-  } = useFetchQuizzesPublic({ filters: mergeLeft({ pageSize }, queryParams) });
+  } = useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
 
   if (isLoading) return <PageLoader className="h-64" />;
 

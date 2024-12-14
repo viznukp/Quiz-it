@@ -6,7 +6,6 @@ import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 
 import authApi from "apis/authentication";
-import { setStandardUserEmail } from "utils/storage";
 
 import {
   REGISTRATION_FORM_INITIAL_VALUES,
@@ -19,7 +18,6 @@ const Register = ({ afterRegistration, className = "" }) => {
   const handleStandardUserRegistration = async formData => {
     try {
       const responseData = await authApi.authenticateStandardUser(formData);
-      setStandardUserEmail(responseData.email);
       afterRegistration(responseData);
     } catch (error) {
       logger.error(error);

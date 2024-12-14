@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.quiz do
-  json.extract! @quiz,
+  json.extract! @current_quiz,
     :name,
     :slug,
     :category,

@@ -23,3 +23,6 @@ export const buildUrl = (route, params) => {
 
   return `${route}?${queryParams}`;
 };
+
+export const buildRoute = (route, params) =>
+  route.replace(/:(\w+)/g, (match, key) => params[key] || match);

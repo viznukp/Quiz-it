@@ -20,7 +20,7 @@ const Signup = () => {
 
   const handleSignup = async formData => {
     try {
-      await authApi.signup({ ...formData, userType: "admin" });
+      await authApi.signup(formData);
       history.push(routes.login);
     } catch (error) {
       logger.error(error);
