@@ -51,6 +51,7 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
   const handleClone = async () => {
     try {
       await quizzesApi.clone(slug, newQuizName);
+      setNewQuizName(quizName);
       reloadQuizzes();
     } catch (error) {
       logger.error(error);

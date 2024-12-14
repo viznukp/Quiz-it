@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Delete, Filter as FilterIcon } from "neetoicons";
+import { Delete } from "neetoicons";
 import { Table, Button, Dropdown, Typography } from "neetoui";
 import { isEmpty, mergeLeft, find, propEq } from "ramda";
 import { useTranslation, Trans } from "react-i18next";
@@ -40,7 +40,6 @@ const QuizList = () => {
     queryParams;
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
-  const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
@@ -213,12 +212,7 @@ const QuizList = () => {
             schema={QUIZ_TABLE_SCHEMA}
             setVisibleColumns={setVisibleColumns}
           />
-          <Button
-            icon={FilterIcon}
-            style="text"
-            tooltipProps={{ content: t("labels.filter"), position: "top" }}
-            onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
-          />
+          <Filter />
         </div>
       </div>
       <Table
@@ -239,10 +233,6 @@ const QuizList = () => {
         pageCount={paginationData.count}
         pageNumberFromApi={Number(paginationData.page)}
         pageSize={pageSize}
-      />
-      <Filter
-        closeFilter={() => setIsFilterPaneOpen(false)}
-        isOpen={isFilterPaneOpen}
       />
       <ConfirmationModal
         isOpen={isDeleteConfirmationModalOpen}

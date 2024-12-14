@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
+import { Filter as FilterIcon } from "neetoicons";
 import { Typography, Pane, Button } from "neetoui";
 import { Form as NeetoUIForm, Input, Select } from "neetoui/formik";
 import { mergeLeft } from "ramda";
@@ -14,13 +15,17 @@ import { buildUrl } from "utils/url";
 
 import { FILTER_INITIAL_VALUES } from "./constants";
 
-const Filter = ({ isOpen, closeFilter }) => {
+const Filter = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
+  const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+
   const { category: queryCategory, quizName, status } = queryParams;
 
   const { data: { categories = [] } = {} } = useFetchCategories();
   const history = useHistory();
+
+  const closeFilter = () => setIsFilterPaneOpen(false);
 
   const selectedCategory = categories.find(
     category => category.name.toLowerCase() === queryCategory?.toLowerCase()
@@ -44,48 +49,60 @@ const Filter = ({ isOpen, closeFilter }) => {
   };
 
   return (
-    <Pane className="px-4 pb-4 pt-12" isOpen={isOpen} onClose={closeFilter}>
-      <Typography style="h2"> Filters</Typography>
-      <NeetoUIForm
-        className="mt-4 flex flex-col gap-3"
-        formikProps={{
-          initialValues: {
-            quizName,
-            category: selectedCategory
-              ? { label: selectedCategory.name, value: selectedCategory }
-              : null,
-            status: status ? { label: status, value: status } : null,
-          },
-          onSubmit: handleFilterSubmit,
-        }}
+    <>
+      <Button
+        icon={FilterIcon}
+        style="text"
+        tooltipProps={{ content: t("labels.filter"), position: "top" }}
+        onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
+      />
+      <Pane
+        className="px-4 pb-4 pt-12"
+        isOpen={isFilterPaneOpen}
+        onClose={closeFilter}
       >
-        <Input label={t("labels.name")} name="quizName" />
-        <CategorySelector categories={categories} />
-        <Select
-          isClearable
-          label={t("labels.status")}
-          name="status"
-          options={[
-            { label: t("labels.draft"), value: QUIZ_STATUSES.DRAFT.STATUS },
-            {
-              label: t("labels.published"),
-              value: QUIZ_STATUSES.PUBLISHED.STATUS,
+        <Typography style="h2"> Filters</Typography>
+        <NeetoUIForm
+          className="mt-4 flex flex-col gap-3"
+          formikProps={{
+            initialValues: {
+              quizName,
+              category: selectedCategory
+                ? { label: selectedCategory.name, value: selectedCategory }
+                : null,
+              status: status ? { label: status, value: status } : null,
             },
-          ]}
-        />
-        <div className="flex gap-2">
-          <Button label={t("labels.done")} type="submit" />
-          <Button
-            label={t("labels.clearFilters")}
-            style="secondary"
-            onClick={() => {
-              handleFilterSubmit(FILTER_INITIAL_VALUES);
-              closeFilter();
-            }}
+            onSubmit: handleFilterSubmit,
+          }}
+        >
+          <Input label={t("labels.name")} name="quizName" />
+          <CategorySelector categories={categories} />
+          <Select
+            isClearable
+            label={t("labels.status")}
+            name="status"
+            options={[
+              { label: t("labels.draft"), value: QUIZ_STATUSES.DRAFT.STATUS },
+              {
+                label: t("labels.published"),
+                value: QUIZ_STATUSES.PUBLISHED.STATUS,
+              },
+            ]}
           />
-        </div>
-      </NeetoUIForm>
-    </Pane>
+          <div className="flex gap-2">
+            <Button label={t("labels.done")} type="submit" />
+            <Button
+              label={t("labels.clearFilters")}
+              style="secondary"
+              onClick={() => {
+                handleFilterSubmit(FILTER_INITIAL_VALUES);
+                closeFilter();
+              }}
+            />
+          </div>
+        </NeetoUIForm>
+      </Pane>
+    </>
   );
 };
 
