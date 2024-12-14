@@ -11,12 +11,14 @@ import { buildUrl } from "utils/url";
 import SubNavItem from "./SubNavItem";
 
 const QuizFilter = ({ isVisible = false }) => {
+  const STATUSES = { ALL: "all", PUBLISHED: "published", DRAFT: "draft" };
+
   const { t } = useTranslation();
   const queryParams = useQueryParams();
+  const history = useHistory();
+  const { status = STATUSES.ALL } = queryParams;
 
   const { data: { stats = {} } = {} } = useFetchQuizStats();
-
-  const history = useHistory();
 
   const handleFilterSubmit = status =>
     history.replace(buildUrl("", mergeLeft({ status }, queryParams)));
@@ -26,18 +28,21 @@ const QuizFilter = ({ isVisible = false }) => {
       <div className="flex flex-col gap-2 border-b py-2 pl-6">
         <SubNavItem
           count={stats.totalQuizzes}
+          isActive={status === STATUSES.ALL}
           label={t("labels.all")}
-          onClick={() => handleFilterSubmit("")}
+          onClick={() => handleFilterSubmit(STATUSES.ALL)}
         />
         <SubNavItem
           count={stats.publishedQuizzes}
+          isActive={status === STATUSES.PUBLISHED}
           label={t("labels.published")}
-          onClick={() => handleFilterSubmit("published")}
+          onClick={() => handleFilterSubmit(STATUSES.PUBLISHED)}
         />
         <SubNavItem
           count={stats.draftQuizzes}
+          isActive={status === STATUSES.DRAFT}
           label={t("labels.draft")}
-          onClick={() => handleFilterSubmit("draft")}
+          onClick={() => handleFilterSubmit(STATUSES.DRAFT)}
         />
       </div>
     )

@@ -1,12 +1,18 @@
 import React from "react";
 
-import { Button } from "neetoui";
+import classNames from "classnames";
 
-const SubNavItem = ({ label, count, onClick }) => (
-  <div className="flex justify-between gap-2">
-    <Button label={label} style="text" onClick={onClick} />
+const SubNavItem = ({ label, count, isActive = false, onClick }) => (
+  <button
+    className={classNames(
+      "flex items-center justify-between gap-2 rounded-lg px-3 py-1 hover:bg-gray-100",
+      { "bg-blue-200": isActive }
+    )}
+    onClick={onClick}
+  >
+    <span>{label}</span>
     <span className="rounded-lg bg-gray-100 p-2"> {count} </span>
-  </div>
+  </button>
 );
 
 export default SubNavItem;
