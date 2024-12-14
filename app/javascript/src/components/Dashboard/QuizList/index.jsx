@@ -149,6 +149,7 @@ const QuizList = () => {
           {!isEmpty(selectedQuizzesSlugs) && (
             <div className="flex gap-3">
               <Dropdown
+                appendTo={() => document.body}
                 buttonStyle="secondary"
                 className="border"
                 label={t("labels.changeCategory")}
@@ -162,6 +163,7 @@ const QuizList = () => {
                 />
               </Dropdown>
               <Dropdown
+                appendTo={() => document.body}
                 buttonStyle="secondary"
                 className="border"
                 label={t("labels.status")}
