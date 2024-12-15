@@ -14,6 +14,7 @@ import {
   SearchBar,
   NoData,
   Pagination,
+  ActiveFilters,
 } from "components/commons";
 import {
   DEFAULT_PAGE_INDEX,
@@ -25,7 +26,6 @@ import { buildUrl } from "utils/url";
 
 import Card from "./Card";
 import Filter from "./Filter";
-import SelectedCategoryDisplay from "./SelectedCategoryDisplay";
 
 const PublicPage = () => {
   const history = useHistory();
@@ -63,27 +63,28 @@ const PublicPage = () => {
         </NavBar>
       }
     >
-      {isEmpty(quizzes) && isEmpty(queryParams) ? (
+      <div className="mb-8 mt-12 flex w-full justify-center">
+        <div className="flex gap-3">
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={updateSearchTerm}
+            placeholder={t("messages.info.searchFor", {
+              entity: t("labels.quizzesLower"),
+            })}
+          />
+          <Filter />
+        </div>
+      </div>
+      <ActiveFilters className="mb-2" filters={["category", "quizName"]} />
+      {isEmpty(quizzes) ? (
         <NoData
+          className="rounded-xl bg-blue-50"
           message={t("messages.info.noEntityToShow", {
             entity: t("labels.quizzesLower"),
           })}
         />
       ) : (
         <>
-          <div className="mb-8 mt-12 flex w-full justify-center">
-            <div className="flex gap-3">
-              <SearchBar
-                searchTerm={searchTerm}
-                setSearchTerm={updateSearchTerm}
-                placeholder={t("messages.info.searchFor", {
-                  entity: t("labels.quizzesLower"),
-                })}
-              />
-              <Filter />
-            </div>
-          </div>
-          <SelectedCategoryDisplay />
           <div className="grid grid-cols-3 gap-3">
             {quizzes?.map(quiz => (
               <Card key={quiz.id} {...quiz} />

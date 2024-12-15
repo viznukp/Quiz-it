@@ -1,5 +1,6 @@
 import React from "react";
 
+import classNames from "classnames";
 import { Button } from "neetoui";
 import { either, isNil, isEmpty, mergeLeft, pick, map } from "ramda";
 import { useTranslation } from "react-i18next";
@@ -10,7 +11,7 @@ import { buildUrl } from "utils/url";
 
 import FilterTag from "./FilterTag";
 
-const ActiveFilters = ({ filters }) => {
+const ActiveFilters = ({ filters, className = "" }) => {
   const queryParams = useQueryParams();
   const history = useHistory();
   const { t } = useTranslation();
@@ -23,8 +24,8 @@ const ActiveFilters = ({ filters }) => {
 
   return (
     <>
-      {!either(isNil, isEmpty)(queryParams) && (
-        <div className="flex items-center gap-2">
+      {!either(isNil, isEmpty)(filtersFromQueryParams) && (
+        <div className={classNames("flex items-center gap-2", className)}>
           {Object.entries(filtersFromQueryParams).map(([filter, value]) => (
             <FilterTag
               key={filter}

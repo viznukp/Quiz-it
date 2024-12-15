@@ -30,7 +30,7 @@ const Filter = () => {
           <div onClick={event => event.stopPropagation()}>
             <Dropdown
               buttonStyle="secondary"
-              className="border"
+              className="border p-2"
               label={t("labels.selectCategory")}
             >
               {categories?.map(({ id, name }) => (

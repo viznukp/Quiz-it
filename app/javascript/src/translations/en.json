@@ -137,6 +137,7 @@
     "category": "Category: {{category}} ",
     "email": "Email: {{email}}",
     "status": "status: {{status}}",
-    "quizName": "Quiz: {{quizName}}"
+    "quizName": "Quiz: {{quizName}}",
+    "name": "Name: {{name}}"
   }
 }

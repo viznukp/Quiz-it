@@ -15,6 +15,7 @@ import {
   SearchBar,
   Pagination,
   NoData,
+  ActiveFilters,
 } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX } from "components/constants";
@@ -90,13 +91,14 @@ const SubmissionList = () => {
               setSearchTerm={updateSearchTerm}
             />
           </div>
-          <div className="mb-3 flex justify-between gap-3">
-            <div className="mb-3 flex gap-3">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="flex gap-3">
               <Typography style="h4">
                 {t("labels.availableSubmissions", {
                   count: submissions?.length,
                 })}
               </Typography>
+              <ActiveFilters filters={["email", "status", "name"]} />
             </div>
             <div className="flex gap-2">
               <ReportDownloader slug={slug} />
