@@ -16,6 +16,7 @@ import {
   Pagination,
   NoData,
   ActiveFilters,
+  ContentWrapper,
 } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX } from "components/constants";
@@ -64,79 +65,81 @@ const SubmissionList = () => {
   if (isLoading) return <PageLoader fullScreen />;
 
   return (
-    <Container
-      navbar={
-        <NavBar
-          backButtonVisible
-          isTabsEnabled
-          activeTab={TAB_IDS.submissions}
-          quizSlug={slug}
-          title={quiz}
-        />
-      }
-    >
-      {isEmpty(submissions) && isEmpty(queryParams) ? (
-        <NoData
-          message={t("messages.info.noEntityToShow", {
-            entity: t("labels.submissionsLower"),
-          })}
-        />
-      ) : (
-        <>
-          <div className="mb-3 flex justify-between gap-3">
-            <Typography style="h3">{t("labels.allSubmissions")}</Typography>
-            <SearchBar
-              placeholder={t("messages.info.searchName")}
-              searchTerm={searchTerm}
-              setSearchTerm={updateSearchTerm}
+    <Container>
+      <NavBar
+        backButtonVisible
+        isTabsEnabled
+        activeTab={TAB_IDS.submissions}
+        quizSlug={slug}
+        title={quiz}
+      />
+      <ContentWrapper>
+        {isEmpty(submissions) && isEmpty(queryParams) ? (
+          <NoData
+            message={t("messages.info.noEntityToShow", {
+              entity: t("labels.submissionsLower"),
+            })}
+          />
+        ) : (
+          <>
+            <div className="mb-3 flex justify-between gap-3">
+              <Typography style="h3">{t("labels.allSubmissions")}</Typography>
+              <SearchBar
+                placeholder={t("messages.info.searchName")}
+                searchTerm={searchTerm}
+                setSearchTerm={updateSearchTerm}
+              />
+            </div>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div className="flex gap-3">
+                <Typography style="h4">
+                  {t("labels.availableSubmissions", {
+                    count: submissions?.length,
+                  })}
+                </Typography>
+                <ActiveFilters filters={["email", "status", "name"]} />
+              </div>
+              <div className="flex gap-2">
+                <ReportDownloader slug={slug} />
+                <ColumnFilter
+                  schema={SUBMISSION_TABLE_SCHEMA}
+                  setVisibleColumns={setVisibleColumns}
+                />
+                <Button
+                  icon={FilterIcon}
+                  style="text"
+                  tooltipProps={{
+                    content: t("labels.filter"),
+                    position: "top",
+                  }}
+                  onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
+                />
+              </div>
+            </div>
+            <Table
+              rowSelection
+              columnData={visibleColumns}
+              scroll={{ x: "100%" }}
+              rowData={
+                submissions
+                  ? transformSubmissionDataForTableDisplay(submissions)
+                  : []
+              }
             />
-          </div>
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div className="flex gap-3">
-              <Typography style="h4">
-                {t("labels.availableSubmissions", {
-                  count: submissions?.length,
-                })}
-              </Typography>
-              <ActiveFilters filters={["email", "status", "name"]} />
-            </div>
-            <div className="flex gap-2">
-              <ReportDownloader slug={slug} />
-              <ColumnFilter
-                schema={SUBMISSION_TABLE_SCHEMA}
-                setVisibleColumns={setVisibleColumns}
-              />
-              <Button
-                icon={FilterIcon}
-                style="text"
-                tooltipProps={{ content: t("labels.filter"), position: "top" }}
-                onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
-              />
-            </div>
-          </div>
-          <Table
-            rowSelection
-            columnData={visibleColumns}
-            scroll={{ x: "100%" }}
-            rowData={
-              submissions
-                ? transformSubmissionDataForTableDisplay(submissions)
-                : []
-            }
-          />
-          <Pagination
-            className="mt-3"
-            page={page}
-            pageCount={paginationData.count}
-            pageNumberFromApi={Number(paginationData.page)}
-            pageSize={pageSize}
-          />
-          <Filter
-            closeFilter={() => setIsFilterPaneOpen(false)}
-            isOpen={isFilterPaneOpen}
-          />
-        </>
-      )}
+            <Pagination
+              className="mt-3"
+              page={page}
+              pageCount={paginationData.count}
+              pageNumberFromApi={Number(paginationData.page)}
+              pageSize={pageSize}
+            />
+            <Filter
+              closeFilter={() => setIsFilterPaneOpen(false)}
+              isOpen={isFilterPaneOpen}
+            />
+          </>
+        )}
+      </ContentWrapper>
     </Container>
   );
 };

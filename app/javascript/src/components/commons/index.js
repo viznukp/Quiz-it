@@ -2,6 +2,7 @@ import ActiveFilters from "./ActiveFilters";
 import CategorySelector from "./CategorySelector";
 import ColumnFilter from "./ColumnFilter";
 import Container from "./Container";
+import ContentWrapper from "./ContentWrapper";
 import LabelToLink from "./LabelToLink";
 import NavBar from "./NavBar";
 import NoData from "./NoData";
@@ -23,6 +24,7 @@ export {
   PrivateRoute,
   ActiveFilters,
   CategorySelector,
+  ContentWrapper,
   PageNotFound,
   ColumnFilter,
   ProgressBar,

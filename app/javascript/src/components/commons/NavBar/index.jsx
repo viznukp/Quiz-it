@@ -53,4 +53,4 @@ NavBar.propTypes = {
   quizSlug: PropTypes.string,
 };
 
-export default NavBar;
+export default React.memo(NavBar);

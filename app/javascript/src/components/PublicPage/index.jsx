@@ -10,11 +10,12 @@ import routes from "src/routes";
 import {
   Container,
   NavBar,
-  PageLoader,
   SearchBar,
   NoData,
   Pagination,
   ActiveFilters,
+  ContentWrapper,
+  PageLoader,
 } from "components/commons";
 import {
   DEFAULT_PAGE_INDEX,
@@ -50,55 +51,53 @@ const PublicPage = () => {
   if (isLoading) return <PageLoader className="h-64" />;
 
   return (
-    <Container
-      sideBarDisabled
-      navbar={
-        <NavBar title={organization}>
-          <Button
-            label="Login as admin"
-            onClick={() =>
-              history.push(isLoggedIn() ? routes.root : routes.login)
-            }
-          />
-        </NavBar>
-      }
-    >
-      <div className="mb-8 mt-12 flex w-full justify-center">
-        <div className="flex gap-3">
-          <SearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={updateSearchTerm}
-            placeholder={t("messages.info.searchFor", {
+    <Container sideBarDisabled>
+      <NavBar title={organization}>
+        <Button
+          label="Login as admin"
+          onClick={() =>
+            history.push(isLoggedIn() ? routes.root : routes.login)
+          }
+        />
+      </NavBar>
+      <ContentWrapper>
+        <div className="mb-8 mt-12 flex w-full justify-center">
+          <div className="flex gap-3">
+            <SearchBar
+              searchTerm={searchTerm}
+              setSearchTerm={updateSearchTerm}
+              placeholder={t("messages.info.searchFor", {
+                entity: t("labels.quizzesLower"),
+              })}
+            />
+            <Filter />
+          </div>
+        </div>
+        <ActiveFilters className="mb-2" filters={["category", "quizName"]} />
+        {isEmpty(quizzes) ? (
+          <NoData
+            className="rounded-xl bg-blue-50"
+            message={t("messages.info.noEntityToShow", {
               entity: t("labels.quizzesLower"),
             })}
           />
-          <Filter />
-        </div>
-      </div>
-      <ActiveFilters className="mb-2" filters={["category", "quizName"]} />
-      {isEmpty(quizzes) ? (
-        <NoData
-          className="rounded-xl bg-blue-50"
-          message={t("messages.info.noEntityToShow", {
-            entity: t("labels.quizzesLower"),
-          })}
-        />
-      ) : (
-        <>
-          <div className="grid grid-cols-3 gap-3">
-            {quizzes?.map(quiz => (
-              <Card key={quiz.id} {...quiz} />
-            ))}
-          </div>
-          <Pagination
-            className="mt-12"
-            page={page}
-            pageCount={paginationData.count}
-            pageNumberFromApi={Number(paginationData.page)}
-            pageSize={pageSize}
-          />
-        </>
-      )}
+        ) : (
+          <>
+            <div className="grid grid-cols-3 gap-3">
+              {quizzes?.map(quiz => (
+                <Card key={quiz.id} {...quiz} />
+              ))}
+            </div>
+            <Pagination
+              className="mt-12"
+              page={page}
+              pageCount={paginationData.count}
+              pageNumberFromApi={Number(paginationData.page)}
+              pageSize={pageSize}
+            />
+          </>
+        )}
+      </ContentWrapper>
     </Container>
   );
 };
