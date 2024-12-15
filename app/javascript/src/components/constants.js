@@ -1,6 +1,6 @@
 export const QUIZ_STATUSES = {
-  PUBLISHED: { STATUS: "published", BUTTON_LABEL: "Publish" },
-  DRAFT: { STATUS: "draft", BUTTON_LABEL: "Save as draft" },
+  PUBLISHED: { STATUS: "published" },
+  DRAFT: { STATUS: "draft" },
 };
 
 export const SUBMISSION_STATUSES = {

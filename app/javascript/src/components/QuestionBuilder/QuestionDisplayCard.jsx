@@ -14,7 +14,7 @@ const QuestionDisplayCard = ({
   options,
   answerIndex,
   slug,
-  refetchQuizzes,
+  refetchQuiz,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -22,7 +22,7 @@ const QuestionDisplayCard = ({
   const handleQuestionDelete = async () => {
     try {
       await questionsApi.destroy(id);
-      refetchQuizzes();
+      refetchQuiz();
     } catch (error) {
       logger.error(error);
     }
@@ -31,7 +31,7 @@ const QuestionDisplayCard = ({
   const handleQuestionClone = async () => {
     try {
       await questionsApi.clone(id);
-      refetchQuizzes();
+      refetchQuiz();
     } catch (error) {
       logger.error(error);
     }

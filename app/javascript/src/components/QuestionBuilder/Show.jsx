@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { Link as LinkIcon } from "neetoicons";
 import { Button, Typography, Toastr } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "react-query";
 import { useParams, useHistory } from "react-router-dom";
 import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
@@ -14,22 +15,22 @@ import { TAB_IDS } from "components/commons/NavBar/constants";
 import { QUIZ_STATUSES, BASE_URL } from "components/constants";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
-import SaveAction from "./SaveAction";
 
 const Show = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const history = useHistory();
+  const queryClient = useQueryClient();
   const {
     DRAFT: { STATUS: STATUS_DRAFT },
     PUBLISHED: { STATUS: STATUS_PUBLISHED },
   } = QUIZ_STATUSES;
-  const [saveType, setSaveType] = useState(STATUS_DRAFT);
 
-  const handleQuizSave = async () => {
+  const handleQuizSave = async saveType => {
     try {
       await quizzesApi.update(slug, { status: saveType });
-      refetchQuizzes();
+      refetchQuiz();
+      queryClient.invalidateQueries("quizzes");
     } catch (error) {
       logger.error(error);
     }
@@ -48,16 +49,8 @@ const Show = () => {
   const {
     data: { quiz } = {},
     isLoading,
-    refetch: refetchQuizzes,
+    refetch: refetchQuiz,
   } = useShowQuiz(slug);
-
-  useEffect(() => {
-    if (quiz?.status) {
-      setSaveType(
-        quiz.status === STATUS_DRAFT ? STATUS_PUBLISHED : STATUS_DRAFT
-      );
-    }
-  }, [quiz]);
 
   if (isLoading) return <PageLoader fullScreen />;
 
@@ -80,10 +73,17 @@ const Show = () => {
                   })}
                 </Typography>
               )}
-              <SaveAction
-                saveAction={handleQuizSave}
-                saveType={saveType}
-                setSaveType={setSaveType}
+              <Button
+                label={
+                  quiz?.status === STATUS_DRAFT
+                    ? t("labels.publish")
+                    : t("labels.unpublish")
+                }
+                onClick={() => {
+                  const saveType =
+                    quiz?.status === STATUS_DRAFT ? "published" : "draft";
+                  handleQuizSave(saveType);
+                }}
               />
               {quiz?.status === STATUS_PUBLISHED && (
                 <Button
@@ -125,7 +125,7 @@ const Show = () => {
               key={question.id}
               slug={slug}
               {...question}
-              refetchQuizzes={refetchQuizzes}
+              refetchQuiz={refetchQuiz}
             />
           ))}
         </div>
