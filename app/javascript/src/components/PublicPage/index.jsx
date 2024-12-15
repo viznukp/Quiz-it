@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Button } from "neetoui";
 import { mergeLeft, isEmpty } from "ramda";
@@ -15,7 +15,6 @@ import {
   Pagination,
   ActiveFilters,
   ContentWrapper,
-  PageLoader,
 } from "components/commons";
 import {
   DEFAULT_PAGE_INDEX,
@@ -33,6 +32,7 @@ const PublicPage = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
+  const [organizationName, setOrganizationName] = useState("");
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE_PUBLIC } =
     queryParams;
 
@@ -43,16 +43,16 @@ const PublicPage = () => {
     );
   };
 
-  const {
-    data: { organization, quizzes = [], paginationData } = {},
-    isLoading,
-  } = useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
+  const { data: { organization, quizzes = [], paginationData } = {} } =
+    useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
 
-  if (isLoading) return <PageLoader className="h-64" />;
+  useEffect(() => {
+    if (organization) setOrganizationName(organization);
+  }, [organization]);
 
   return (
     <Container sideBarDisabled>
-      <NavBar title={organization}>
+      <NavBar title={organizationName}>
         <Button
           label="Login as admin"
           onClick={() =>

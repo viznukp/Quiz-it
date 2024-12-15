@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Filter as FilterIcon } from "neetoicons";
 import { Table, Typography, Button } from "neetoui";
@@ -9,7 +9,6 @@ import { useParams, useHistory } from "react-router-dom";
 import {
   Container,
   NavBar,
-  PageLoader,
   StatusTag,
   ColumnFilter,
   SearchBar,
@@ -34,6 +33,7 @@ const SubmissionList = () => {
   const queryParams = useQueryParams();
   const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+  const [quizTitle, setQuizTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
@@ -44,10 +44,8 @@ const SubmissionList = () => {
     history.replace(buildUrl("", mergeLeft({ name: searchTerm }, queryParams)));
   };
 
-  const {
-    data: { submissions = [], paginationData = {}, quiz = "" } = {},
-    isLoading,
-  } = useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
+  const { data: { submissions = [], paginationData = {}, quiz } = {} } =
+    useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
 
   const transformSubmissionDataForTableDisplay = data =>
     data?.map(({ submission, user }) => ({
@@ -62,7 +60,11 @@ const SubmissionList = () => {
       status: <StatusTag label={submission.status} primaryLabel="completed" />,
     }));
 
-  if (isLoading) return <PageLoader fullScreen />;
+  useEffect(() => {
+    if (quiz) {
+      setQuizTitle(quiz);
+    }
+  }, [quiz]);
 
   return (
     <Container>
@@ -71,7 +73,7 @@ const SubmissionList = () => {
         isTabsEnabled
         activeTab={TAB_IDS.submissions}
         quizSlug={slug}
-        title={quiz}
+        title={quizTitle}
       />
       <ContentWrapper>
         {isEmpty(submissions) && isEmpty(queryParams) ? (
@@ -129,7 +131,7 @@ const SubmissionList = () => {
             <Pagination
               className="mt-3"
               page={page}
-              pageCount={paginationData.count}
+              pageCount={paginationData.count || 0}
               pageNumberFromApi={Number(paginationData.page)}
               pageSize={pageSize}
             />

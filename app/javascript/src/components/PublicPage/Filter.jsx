@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 import { Filter as FilterIcon } from "neetoicons";
 import { Typography, Dropdown } from "neetoui";
@@ -14,7 +14,6 @@ const Filter = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
   const history = useHistory();
-  const filterRef = useRef(null);
 
   const { data: { categories = [] } = {} } = useFetchCategories();
 
@@ -25,26 +24,18 @@ const Filter = () => {
   return (
     <div>
       <Dropdown buttonStyle="text" icon={FilterIcon}>
-        <div className=" flex flex-col gap-3 px-4 py-3 " ref={filterRef}>
-          <Typography style="h4">{t("labels.category")}</Typography>
-          <div onClick={event => event.stopPropagation()}>
-            <Dropdown
-              buttonStyle="secondary"
-              className="border p-2"
-              label={t("labels.selectCategory")}
-            >
-              {categories?.map(({ id, name }) => (
-                <div
-                  className="cursor-pointer rounded p-1 text-base hover:bg-gray-200"
-                  key={id}
-                  onClick={() => handleCategoryFilterSubmit(name)}
-                >
-                  {name}
-                </div>
-              ))}
-            </Dropdown>
+        <Typography className=" px-2 py-1" style="h4">
+          {t("labels.selectCategory")}
+        </Typography>
+        {categories?.map(({ id, name }) => (
+          <div
+            className="cursor-pointer rounded px-2 py-1 text-base hover:bg-gray-200"
+            key={id}
+            onClick={() => handleCategoryFilterSubmit(name)}
+          >
+            {name}
           </div>
-        </div>
+        ))}
       </Dropdown>
     </div>
   );
