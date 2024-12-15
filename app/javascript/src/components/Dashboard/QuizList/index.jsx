@@ -24,7 +24,6 @@ import {
 import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
-import { dateFromTimeStamp } from "utils/dateTime";
 
 import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
@@ -68,7 +67,7 @@ const QuizList = () => {
 
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(
-      ({ id, name, submissionsCount, status, updatedAt, category, slug }) => ({
+      ({ id, name, submissionsCount, status, createdOn, category, slug }) => ({
         id,
         slug,
         key: id,
@@ -81,7 +80,7 @@ const QuizList = () => {
         submissionsCount,
         status: <StatusTag label={status} primaryLabel="published" />,
         category,
-        createdOn: dateFromTimeStamp(updatedAt),
+        createdOn,
         actions: (
           <ActionList
             quizName={name}
