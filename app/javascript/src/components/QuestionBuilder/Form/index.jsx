@@ -24,15 +24,22 @@ const Form = ({
 }) => {
   const { t } = useTranslation();
   const submissionSource = useRef("primary");
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(
-    initialValues?.answerIndex - 1 || 0
-  );
+  const initialAnswerIndex = initialValues?.answerIndex - 1 || 0;
+  const [correctAnswerIndex, setCorrectAnswerIndex] =
+    useState(initialAnswerIndex);
 
   const [formInitialValues, setFormInitialValues] = useState(() =>
     isEmpty(initialValues)
       ? QUESTION_BUILDER_FORM_INITIAL_VALUES
       : initialValues
   );
+
+  const isSubmitDisabled = (isSubmitting, isDirty) =>
+    isSubmitting ||
+    (!isDirty &&
+      (isEmpty(initialValues)
+        ? !isDirty
+        : correctAnswerIndex === initialAnswerIndex));
 
   return (
     <div className="py-12">
@@ -107,7 +114,7 @@ const Form = ({
             </div>
             <div className="mt-12 flex gap-3">
               <Button
-                disabled={isSubmitting || !dirty}
+                disabled={isSubmitDisabled(isSubmitting, dirty)}
                 label={primaryButtonLabel || t("labels.save")}
                 type="submit"
                 onClick={() => {
@@ -116,7 +123,7 @@ const Form = ({
               />
               {isSecondaryButtonVisible && (
                 <Button
-                  disabled={isSubmitting || !dirty}
+                  disabled={isSubmitDisabled(isSubmitting, dirty)}
                   style="secondary"
                   label={
                     secondaryButtonLabel || t("labels.saveAndAddNewQuestion")
