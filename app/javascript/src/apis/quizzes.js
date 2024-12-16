@@ -20,8 +20,6 @@ const deleteMultiple = slugs =>
 const updateMultiple = (slugs, updateFields) =>
   axios.put("/quizzes/bulk_update", { quizzes: { updateFields, slugs } });
 
-const fetchQuizStats = () => axios.get("quizzes/stats");
-
 const quizzesApi = {
   fetch,
   show,
@@ -31,7 +29,6 @@ const quizzesApi = {
   destroy,
   deleteMultiple,
   updateMultiple,
-  fetchQuizStats,
 };
 
 export default quizzesApi;

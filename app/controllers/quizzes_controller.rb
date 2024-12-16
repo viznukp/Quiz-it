@@ -9,9 +9,9 @@ class QuizzesController < ApplicationController
   before_action :authorize_if_user_is_admin_and_creator_of_quiz, only: %i[update destroy]
 
   def index
-    filtered_quizzes, @result_type = QuizFilterService.new(params[:filters]).filter_quizzes
-    filtered_quizzes = policy_scope(filtered_quizzes)
-    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).paginate
+    scoped_quizzes = policy_scope(Quiz.all)
+    @filtered_quizzes, @quizzes_metadata = QuizFilterService.new(params[:filters], scoped_quizzes).process!
+    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, @filtered_quizzes).paginate
   end
 
   def create
@@ -56,14 +56,6 @@ class QuizzesController < ApplicationController
     authorize cloned_quiz, :admin_and_creator?
     cloned_quiz.save!
     render_notice(t("successfully_cloned", entity: "Quiz"))
-  end
-
-  def stats
-    @stats = Quiz.group(:status).count
-
-    @stats[:total_quizzes] = Quiz.count
-    @stats[:published_quizzes] = @stats["published"] || 0
-    @stats[:draft_quizzes] = @stats["draft"] || 0
   end
 
   private
