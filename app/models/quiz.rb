@@ -25,11 +25,11 @@ class Quiz < ApplicationRecord
 
   before_validation :set_slug, on: :create
 
-  def set_slug
-    self.slug = SlugGeneratorService.new(self, :name, :slug).generate_slug
-  end
-
   private
+
+    def set_slug
+      self.slug = SlugGeneratorService.new(self, :name, :slug).generate_slug
+    end
 
     def slug_not_changed
       if slug_changed? && self.persisted?

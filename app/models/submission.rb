@@ -14,5 +14,5 @@ class Submission < ApplicationRecord
   validates :unanswered_count, numericality: { greater_than_or_equal_to: 0, only_integer: true }
   validates :status, inclusion: { in: statuses.keys }
   validates :answers, presence: true
-  validates :quiz_id, uniqueness: { scope: :user_id, message: "has already been attempted by this user" }
+  validates :quiz_id, uniqueness: { scope: :user_id }
 end
