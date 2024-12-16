@@ -6,7 +6,6 @@ export const useFetchQuizzes = queryParams =>
   useQuery({
     queryKey: ["quizzesPublic", queryParams],
     queryFn: () => publicApi.fetch(queryParams),
-    cacheTime: 0,
   });
 
 export const useShowQuiz = queryParams =>

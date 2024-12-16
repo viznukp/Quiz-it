@@ -5,8 +5,4 @@ json.quiz do
     :slug,
     :category,
     :status
-
-  json.questions @quiz.questions.map { |question|
-    question.attributes.except("answer_index")
-  }
 end

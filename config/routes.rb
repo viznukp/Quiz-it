@@ -3,9 +3,7 @@
 Rails.application.routes.draw do
   constraints(lambda { |request| request.format == :json }) do
     resources :quizzes, except: %i[new edit], param: :slug do
-      member do
-        post :clone
-      end
+      post :clone, on: :member
       collection do
         delete :bulk_destroy
         put :bulk_update
@@ -32,6 +30,7 @@ Rails.application.routes.draw do
     resources :categories, only: :index
     namespace :public do
       resources :quizzes, only: %i[index show], param: :slug
+      resources :questions, only: :show, param: :slug
     end
   end
 

@@ -19,8 +19,5 @@ json.extract! @quizzes_metadata,
   :total_quizzes,
   :published_quizzes,
   :draft_quizzes
-# json.total_quizzes @paginated_quizzes.count
-# json.published_quizzes @paginated_quizzes.select { |quiz| quiz.status == "published" }.size
-# json.draft_quizzes @paginated_quizzes.select { |quiz| quiz.status == "draft" }.size
 
 json.pagination_data @pagination_metadata

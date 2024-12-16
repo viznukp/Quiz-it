@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class SubmissionsController < ApplicationController
-  skip_before_action :authenticate_user_using_x_auth_token, only: %i[create result check ]
-  before_action :load_quiz, only: %i[create index result check]
-  before_action :load_user, only: %i[create result check]
+  skip_before_action :authenticate_user_using_x_auth_token, only: %i[create result ]
+  before_action :load_quiz, only: %i[create index result]
+  before_action :load_user, only: %i[create result]
 
   def create
     existing_submission = Submission.find_by(user: @user, quiz: @quiz)
@@ -26,16 +26,6 @@ class SubmissionsController < ApplicationController
   def result
     result = ResultService.new.generate_result(Submission.find_by!(user: @user, quiz: @quiz))
     render_json(result)
-  end
-
-  def check
-    submission = Submission.find_by(user: @user, quiz: @quiz)
-
-    if submission
-      render_error(t("user_already_attempted_quiz"), :conflict)
-    else
-      render_json({ access: "permitted" })
-    end
   end
 
   private

@@ -91,7 +91,8 @@
     "quiz_one": "{{count}} Quiz",
     "quiz_other": "{{count}} Quizzes",
     "selectedQuiz_one": "{{count}} quiz selected of {{total}}",
-    "selectedQuiz_other": "{{count}} quizzes selected of {{total}}"
+    "selectedQuiz_other": "{{count}} quizzes selected of {{total}}",
+    "tryOtherQuiz": "Try another quiz"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -113,7 +114,8 @@
       "minRequiredOptions": "At least {{count}} options are required!",
       "maxAllowedOptions": "No more than {{count}} options are allowed!",
       "uniqueOptions": "Duplicate options are not permitted!",
-      "failedToCopyLink": "Failed to copy the quiz link: {{error}}"
+      "failedToCopyLink": "Failed to copy the quiz link: {{error}}",
+      "invalidQuizLink": "Invalid quiz link"
     },
     "info": {
       "noEntityToShow": "There are no {{entity}} to show!",
