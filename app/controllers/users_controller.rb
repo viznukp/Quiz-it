@@ -5,13 +5,13 @@ class UsersController < ApplicationController
   before_action :load_organization
 
   def create
-    @organization.users.create!(user_params.merge(user_type: "admin"))
+    @current_organization.users.create!(user_params.merge(user_type: "admin"))
     render_notice(t("signup_successful"))
   end
 
   def create_standard_user
     @user = User.find_by(email: standard_user_params[:email].downcase)
-    @user = @organization.users.create!(standard_user_params) if @user.nil?
+    @user = @current_organization.users.create!(standard_user_params) if @user.nil?
   end
 
   private
@@ -32,6 +32,6 @@ class UsersController < ApplicationController
     end
 
     def load_organization
-      @organization = Organization.first
+      @current_organization = Organization.first
     end
 end
