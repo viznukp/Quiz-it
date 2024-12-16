@@ -10,13 +10,7 @@ import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
-import {
-  Container,
-  NavBar,
-  PageLoader,
-  NoData,
-  ContentWrapper,
-} from "components/commons";
+import { Container, NavBar, NoData, ContentWrapper } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { QUIZ_STATUSES, BASE_URL } from "components/constants";
 
@@ -58,8 +52,6 @@ const Show = () => {
     refetch: refetchQuiz,
   } = useShowQuiz(slug);
 
-  if (isLoading) return <PageLoader fullScreen />;
-
   return (
     <Container>
       <NavBar
@@ -69,7 +61,7 @@ const Show = () => {
         quizSlug={slug}
         title={quiz?.name}
       >
-        {!isEmpty(quiz.questions) && (
+        {!isEmpty(quiz?.questions) && (
           <div className="flex gap-3">
             {quiz?.status === STATUS_DRAFT && (
               <Typography className="italic text-gray-400">
@@ -104,7 +96,7 @@ const Show = () => {
           </div>
         )}
       </NavBar>
-      <ContentWrapper>
+      <ContentWrapper isLoading={isLoading}>
         <div className="flex justify-end">
           <Button
             label={t("labels.addNewQuestion")}
@@ -113,7 +105,7 @@ const Show = () => {
             }
           />
         </div>
-        {isEmpty(quiz.questions) ? (
+        {isEmpty(quiz?.questions) ? (
           <NoData
             message={t("messages.info.noEntityToShow", {
               entity: t("labels.questionsLower"),
@@ -122,9 +114,9 @@ const Show = () => {
         ) : (
           <div className="mb-12 mt-4 flex flex-col gap-4">
             <Typography>
-              {t("labels.questionsCount", { count: quiz.questions.length })}
+              {t("labels.questionsCount", { count: quiz?.questions.length })}
             </Typography>
-            {quiz.questions.map(question => (
+            {quiz?.questions.map(question => (
               <QuestionDisplayCard
                 key={question.id}
                 slug={slug}

@@ -1,49 +1,45 @@
 # frozen_string_literal: true
 
 class ResultService
-  def generate_result(submission)
-    quiz = submission.quiz
-    questions = quiz.questions
+  def initialize(params)
+    @params = params
+  end
 
-    correct_answers_count = 0
-    wrong_answers_count = 0
-    unanswered_count = 0
+  def process!
+    submission = fetch_submission
+    build_result(submission)
+  end
 
-    result = {
-      quiz_name: quiz.name,
-      total_questions: questions.count,
-      correct_answers_count: 0,
-      wrong_answers_count: 0,
-      unanswered_count: 0,
-      questions: []
-    }
+  private
 
-    questions.each do |question|
-      options = question.options
-      user_selected_choice = submission.answers.find { |answer|
-        answer["question_id"] == question.id.to_s }&.dig("selected_choice")
-
-      if user_selected_choice.nil? || user_selected_choice.zero?
-        unanswered_count += 1
-      elsif user_selected_choice == question.answer_index
-        correct_answers_count += 1
-      else
-        wrong_answers_count += 1
-      end
-
-      result[:questions] << {
-        id: question.id,
-        question: question.question,
-        options:,
-        correct_answer_index: question.answer_index,
-        user_selection_index: user_selected_choice
-      }
+    def fetch_submission
+      user = User.find(@params[:user_id])
+      @quiz = Quiz.find_by!(slug: @params[:submission_slug])
+      Submission.find_by!(user:, quiz: @quiz)
     end
 
-    result[:correct_answers_count] = correct_answers_count
-    result[:wrong_answers_count] = wrong_answers_count
-    result[:unanswered_count] = unanswered_count
+    def build_result(submission)
+      questions = @quiz.questions
 
-    result
-  end
+      submission.attributes
+        .slice("correct_answers_count", "wrong_answers_count", "unanswered_count")
+        .merge({
+          quiz_name: @quiz.name,
+          total_questions: questions.count,
+          questions: add_submitted_answer_to_each_question(questions, submission)
+        })
+    end
+
+    def add_submitted_answer_to_each_question(questions, submission)
+      questions.map do |question|
+        question_hash = question.attributes.slice("id", "question", "options", "answer_index")
+        question_hash["correct_answer_index"] = question.answer_index
+        question_hash["user_selection_index"] = find_user_selected_choice(question, submission)
+        question_hash
+      end
+    end
+
+    def find_user_selected_choice(question, submission)
+      submission.answers.find { |answer| answer["question_id"] == question.id.to_s }&.dig("selected_choice")
+    end
 end

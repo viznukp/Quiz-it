@@ -18,11 +18,13 @@ const QuizResult = () => {
 
   const {
     data: {
-      questions = [],
-      correctAnswersCount = 0,
-      wrongAnswersCount = 0,
-      unansweredCount = 0,
-      totalQuestions = 0,
+      result: {
+        questions = [],
+        correctAnswersCount = 0,
+        wrongAnswersCount = 0,
+        unansweredCount = 0,
+        totalQuestions = 0,
+      } = {},
     } = {},
   } = useFetchResult(slug, userId);
 

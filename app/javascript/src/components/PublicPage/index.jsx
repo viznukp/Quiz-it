@@ -43,8 +43,10 @@ const PublicPage = () => {
     );
   };
 
-  const { data: { organization, quizzes = [], paginationData } = {} } =
-    useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
+  const {
+    data: { organization, quizzes = [], paginationData } = {},
+    isLoading,
+  } = useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
 
   useEffect(() => {
     if (organization) setOrganizationName(organization);
@@ -77,6 +79,7 @@ const PublicPage = () => {
         {isEmpty(quizzes) ? (
           <NoData
             className="rounded-xl bg-blue-50"
+            isLoading={isLoading}
             message={t("messages.info.noEntityToShow", {
               entity: t("labels.quizzesLower"),
             })}

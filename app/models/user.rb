@@ -29,7 +29,6 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true
 
   before_validation :set_default_password_for_standard_user, if: :standard?
-  before_validation :build_organization_for_user
   before_save :email_to_lowercase
 
   def name
@@ -43,15 +42,6 @@ class User < ApplicationRecord
         self.password = DEFAULT_PASSWORD_FOR_STANDARD_USER
         self.password_confirmation = DEFAULT_PASSWORD_FOR_STANDARD_USER
       end
-    end
-
-    def build_organization_for_user
-      organization = Organization.first
-      if organization.nil?
-        organization = Organization.new(name: "Big Binary Academy")
-        organization.save!
-      end
-      self.organization = organization
     end
 
     def email_to_lowercase

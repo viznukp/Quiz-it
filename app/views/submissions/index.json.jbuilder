@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.quiz @quiz.name
+json.quiz @paginated_submissions.first&.quiz&.name
 json.submissions do
   json.array! @paginated_submissions do |submission|
     json.user do

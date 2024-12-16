@@ -15,13 +15,19 @@ class Question < ApplicationRecord
   private
 
     def validate_options_array
-      errors.add(
-        :question,
-        I18n.t("options.min_options", count: MIN_OPTIONS_COUNT)) if options.size < MIN_OPTIONS_COUNT
-      errors.add(
-        :question,
-        I18n.t("options.max_options", count: MAX_OPTIONS_COUNT)) if options.size > MAX_OPTIONS_COUNT
-      errors.add(:options, I18n.t("options.cannot_contain_empty_values")) if options.any?(&:blank?)
+      if options.size < MIN_OPTIONS_COUNT
+        errors.add(
+          :question,
+          I18n.t("options.min_options", count: MIN_OPTIONS_COUNT))
+      end
+      if options.size > MAX_OPTIONS_COUNT
+        errors.add(
+          :question,
+          I18n.t("options.max_options", count: MAX_OPTIONS_COUNT))
+      end
+      if options.any?(&:blank?)
+        errors.add(:options, I18n.t("options.cannot_contain_empty_values"))
+      end
     end
 
     def validate_answer_index

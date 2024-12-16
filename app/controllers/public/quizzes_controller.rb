@@ -3,7 +3,7 @@ class Public::QuizzesController < ApplicationController
 
   def index
     filtered_quizzes, = QuizFilterService.new(filter_params.merge(status: "published"), nil).process!
-    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).paginate
+    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).process!
     @organization = Organization.first
   end
 

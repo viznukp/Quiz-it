@@ -12,10 +12,6 @@ class QuizPolicy
     user.admin? && quiz.creator_id == user.id
   end
 
-  def stats?
-    user.admin?
-  end
-
   class Scope
     attr_reader :user, :scope
 

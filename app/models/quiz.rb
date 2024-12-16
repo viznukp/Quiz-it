@@ -22,18 +22,23 @@ class Quiz < ApplicationRecord
   validates :category_id, presence: true
   validates :slug, presence: true, uniqueness: true
   validate :slug_not_changed
+  validate :ensure_questions_present, if: :published?
 
   before_validation :set_slug, on: :create
 
-  def set_slug
-    self.slug = SlugGeneratorService.new(self, :name, :slug).generate_slug
-  end
-
   private
+
+    def set_slug
+      self.slug = SlugGeneratorService.new(self, :name, :slug).process!
+    end
 
     def slug_not_changed
       if slug_changed? && self.persisted?
         errors.add(:slug, I18n.t("quiz.slug.immutable"))
       end
+    end
+
+    def ensure_questions_present
+      errors.add(:base, I18n.t("cannot_be_published_without_questions")) if questions.empty?
     end
 end

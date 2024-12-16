@@ -9,7 +9,7 @@ class QuizFilterService
   end
 
   def process!
-    filter_quizzes
+    [filter_quizzes, quiz_metadata]
   end
 
   private
@@ -32,15 +32,15 @@ class QuizFilterService
       end
 
       quizzes = quizzes.order(created_at: :desc)
+    end
 
+    def quiz_metadata
       count_by_status = @scoped_quizzes.group(:status).count
-      quizzes_metadata = {
+      {
         result_type: filters[:status] || "all",
         total_quizzes: @scoped_quizzes.count,
         published_quizzes: count_by_status.fetch("published", 0),
         draft_quizzes: count_by_status.fetch("draft", 0)
       }
-
-      [quizzes, quizzes_metadata]
     end
 end
