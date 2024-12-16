@@ -8,13 +8,4 @@ class Organization < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: MAX_NAME_LENGTH }
   validates :slug, presence: true, uniqueness: true
-
-  before_validation :set_slug, on: :create
-
-  private
-
-    def set_slug
-      slug_service = SlugGeneratorService.new(self, :name, :slug)
-      self.slug = slug_service.generate_slug
-    end
 end

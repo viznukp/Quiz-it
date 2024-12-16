@@ -8,7 +8,7 @@ class OrganizationsController < ApplicationController
   end
 
   def update
-    @organization.update!(name: organization_params[:name].strip)
+    @organization.update!(name: new_name, slug: new_name.parameterize)
     render_notice(t("successfully_updated", entity: "Organization"))
   end
 
@@ -16,6 +16,10 @@ class OrganizationsController < ApplicationController
 
     def organization_params
       params.require(:organization).permit(:name)
+    end
+
+    def new_name
+      organization_params[:name].strip
     end
 
     def load_organization
