@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       post :create_standard_user, on: :collection
     end
     resources :questions, only: %i[create show update destroy] do
-      get :clone, on: :member
+      resource :clone, only: [:create], on: :member, module: :questions
     end
 
     resources :submissions, only: %i[index create], param: :slug do
