@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   constraints(lambda { |request| request.format == :json }) do
     resources :quizzes, except: %i[new edit], param: :slug do
-      resource :clone, only: [:create], on: :member, module: :quizzes
+      resource :clone, only: :create, on: :member, module: :quizzes
       collection do
         delete :bulk_destroy
         put :bulk_update
@@ -13,13 +13,13 @@ Rails.application.routes.draw do
       post :create_standard_user, on: :collection
     end
     resources :questions, only: %i[create show update destroy] do
-      resource :clone, only: [:create], on: :member, module: :questions
+      resource :clone, only: :create, on: :member, module: :questions
     end
 
     resources :submissions, only: %i[index create], param: :slug do
-      get :result, on: :member
+      resource :result, only: :show, on: :member, module: :submissions
       collection do
-        resource :report, only: %i[create], module: :submissions do
+        resource :report, only: :create, module: :submissions do
           get :download, on: :collection
         end
       end
