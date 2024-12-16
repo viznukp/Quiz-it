@@ -6,18 +6,18 @@ class EvaluationService
   end
 
   def process!
-    evaluate_submission
+    create_submission
+    evaluate_answers
+    @submission.save!
   end
 
   private
 
-    def evaluate_submission
+    def create_submission
       quiz = Quiz.find_by!(slug: @params[:slug])
       user = User.find(@params[:user_id])
       @questions = quiz.questions
       @submission = Submission.new(**submission_params, user:, quiz:)
-      calculate_answers
-      @submission.save!
     end
 
     def generate_answer_key
@@ -31,7 +31,7 @@ class EvaluationService
       answer_key
     end
 
-    def calculate_answers
+    def evaluate_answers
       correct_answers_count = 0
       wrong_answers_count = 0
 
