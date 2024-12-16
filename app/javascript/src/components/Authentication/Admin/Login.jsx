@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Form, Formik } from "formik";
+import { capitalize } from "neetocist";
 import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,10 @@ const Login = () => {
         authToken: responseData.authenticationToken,
         email: responseData.email,
         userId: responseData.id,
-        userName: [responseData.firstName, responseData.lastName]
+        userName: [
+          capitalize(responseData.firstName),
+          capitalize(responseData.lastName),
+        ]
           .join(" ")
           .trim(),
       });

@@ -10,7 +10,12 @@ import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
 import questionsApi from "apis/questions";
-import { Container, NavBar, PageLoader } from "components/commons";
+import {
+  Container,
+  NavBar,
+  PageLoader,
+  ContentWrapper,
+} from "components/commons";
 
 import Form from "./Form";
 
@@ -36,12 +41,15 @@ const Edit = () => {
   if (isLoading) return <PageLoader fullScreen />;
 
   return (
-    <Container navbar={<NavBar backButtonVisible title={quiz?.name} />}>
-      <Form
-        handleSubmit={handleSubmit}
-        initialValues={quiz.question || {}}
-        primaryButtonLabel={t("labels.update")}
-      />
+    <Container>
+      <NavBar backButtonVisible title={quiz?.name} />
+      <ContentWrapper>
+        <Form
+          handleSubmit={handleSubmit}
+          initialValues={quiz.question || {}}
+          primaryButtonLabel={t("labels.update")}
+        />
+      </ContentWrapper>
     </Container>
   );
 };

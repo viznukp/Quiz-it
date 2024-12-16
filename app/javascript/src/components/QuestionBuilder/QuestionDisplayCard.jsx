@@ -14,7 +14,7 @@ const QuestionDisplayCard = ({
   options,
   answerIndex,
   slug,
-  refetchQuizzes,
+  refetchQuiz,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -22,7 +22,16 @@ const QuestionDisplayCard = ({
   const handleQuestionDelete = async () => {
     try {
       await questionsApi.destroy(id);
-      refetchQuizzes();
+      refetchQuiz();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const handleQuestionClone = async () => {
+    try {
+      await questionsApi.clone(id);
+      refetchQuiz();
     } catch (error) {
       logger.error(error);
     }
@@ -48,13 +57,7 @@ const QuestionDisplayCard = ({
             <Button
               label={t("labels.clone")}
               style="text"
-              onClick={() =>
-                history.push(
-                  routes.quiz.question.clone
-                    .replace(":slug", slug)
-                    .replace(":id", id)
-                )
-              }
+              onClick={handleQuestionClone}
             />
             <Button
               label={t("labels.delete")}

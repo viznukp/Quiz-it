@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Filter as FilterIcon } from "neetoicons";
 import { Table, Typography, Button } from "neetoui";
@@ -9,12 +9,13 @@ import { useParams, useHistory } from "react-router-dom";
 import {
   Container,
   NavBar,
-  PageLoader,
   StatusTag,
   ColumnFilter,
   SearchBar,
   Pagination,
   NoData,
+  ActiveFilters,
+  ContentWrapper,
 } from "components/commons";
 import { TAB_IDS } from "components/commons/NavBar/constants";
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX } from "components/constants";
@@ -32,6 +33,7 @@ const SubmissionList = () => {
   const queryParams = useQueryParams();
   const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+  const [quizTitle, setQuizTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
@@ -42,10 +44,8 @@ const SubmissionList = () => {
     history.replace(buildUrl("", mergeLeft({ name: searchTerm }, queryParams)));
   };
 
-  const {
-    data: { submissions = [], paginationData = {}, quiz = "" } = {},
-    isLoading,
-  } = useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
+  const { data: { submissions = [], paginationData = {}, quiz } = {} } =
+    useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
 
   const transformSubmissionDataForTableDisplay = data =>
     data?.map(({ submission, user }) => ({
@@ -60,81 +60,88 @@ const SubmissionList = () => {
       status: <StatusTag label={submission.status} primaryLabel="completed" />,
     }));
 
-  if (isLoading) return <PageLoader fullScreen />;
+  useEffect(() => {
+    if (quiz) {
+      setQuizTitle(quiz);
+    }
+  }, [quiz]);
 
   return (
-    <Container
-      navbar={
-        <NavBar
-          backButtonVisible
-          isTabsEnabled
-          activeTab={TAB_IDS.submissions}
-          quizSlug={slug}
-          title={quiz}
-        />
-      }
-    >
-      {isEmpty(submissions) && isEmpty(queryParams) ? (
-        <NoData
-          message={t("messages.info.noEntityToShow", {
-            entity: t("labels.submissionsLower"),
-          })}
-        />
-      ) : (
-        <>
-          <div className="mb-3 flex justify-between gap-3">
-            <Typography style="h3">{t("labels.allSubmissions")}</Typography>
-            <SearchBar
-              placeholder={t("messages.info.searchName")}
-              searchTerm={searchTerm}
-              setSearchTerm={updateSearchTerm}
+    <Container>
+      <NavBar
+        backButtonVisible
+        isTabsEnabled
+        activeTab={TAB_IDS.submissions}
+        quizSlug={slug}
+        title={quizTitle}
+      />
+      <ContentWrapper>
+        {isEmpty(submissions) && isEmpty(queryParams) ? (
+          <NoData
+            message={t("messages.info.noEntityToShow", {
+              entity: t("labels.submissionsLower"),
+            })}
+          />
+        ) : (
+          <>
+            <div className="mb-3 flex justify-between gap-3">
+              <Typography style="h3">{t("labels.allSubmissions")}</Typography>
+              <SearchBar
+                placeholder={t("messages.info.searchName")}
+                searchTerm={searchTerm}
+                setSearchTerm={updateSearchTerm}
+              />
+            </div>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div className="flex gap-3">
+                <Typography style="h4">
+                  {t("labels.availableSubmissions", {
+                    count: submissions?.length,
+                  })}
+                </Typography>
+                <ActiveFilters filters={["email", "status", "name"]} />
+              </div>
+              <div className="flex gap-2">
+                <ReportDownloader slug={slug} />
+                <ColumnFilter
+                  schema={SUBMISSION_TABLE_SCHEMA}
+                  setVisibleColumns={setVisibleColumns}
+                />
+                <Button
+                  icon={FilterIcon}
+                  style="text"
+                  tooltipProps={{
+                    content: t("labels.filter"),
+                    position: "top",
+                  }}
+                  onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
+                />
+              </div>
+            </div>
+            <Table
+              rowSelection
+              columnData={visibleColumns}
+              scroll={{ x: "100%" }}
+              rowData={
+                submissions
+                  ? transformSubmissionDataForTableDisplay(submissions)
+                  : []
+              }
             />
-          </div>
-          <div className="mb-3 flex justify-between gap-3">
-            <div className="mb-3 flex gap-3">
-              <Typography style="h4">
-                {t("labels.availableSubmissions", {
-                  count: submissions?.length,
-                })}
-              </Typography>
-            </div>
-            <div className="flex gap-2">
-              <ReportDownloader slug={slug} />
-              <ColumnFilter
-                schema={SUBMISSION_TABLE_SCHEMA}
-                setVisibleColumns={setVisibleColumns}
-              />
-              <Button
-                icon={FilterIcon}
-                style="text"
-                tooltipProps={{ content: t("labels.filter"), position: "top" }}
-                onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
-              />
-            </div>
-          </div>
-          <Table
-            rowSelection
-            columnData={visibleColumns}
-            scroll={{ x: "100%" }}
-            rowData={
-              submissions
-                ? transformSubmissionDataForTableDisplay(submissions)
-                : []
-            }
-          />
-          <Pagination
-            className="mt-3"
-            page={page}
-            pageCount={paginationData.count}
-            pageNumberFromApi={Number(paginationData.page)}
-            pageSize={pageSize}
-          />
-          <Filter
-            closeFilter={() => setIsFilterPaneOpen(false)}
-            isOpen={isFilterPaneOpen}
-          />
-        </>
-      )}
+            <Pagination
+              className="mt-3"
+              page={page}
+              pageCount={paginationData.count || 0}
+              pageNumberFromApi={Number(paginationData.page)}
+              pageSize={pageSize}
+            />
+            <Filter
+              closeFilter={() => setIsFilterPaneOpen(false)}
+              isOpen={isFilterPaneOpen}
+            />
+          </>
+        )}
+      </ContentWrapper>
     </Container>
   );
 };

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 
 import { Typography, Button, Toastr } from "neetoui";
-import { includes } from "ramda";
+import { includes, isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
 import routes from "src/routes";
 
+import publicApi from "apis/public";
 import submissionsApi from "apis/submissions";
 import { RegisterStandardUser } from "components/Authentication";
-import { PageLoader } from "components/commons";
+import { PageLoader, NoData } from "components/commons";
 import { useShowQuiz } from "hooks/reactQuery/usePublicApi";
 import { buildRoute } from "utils/url";
 
@@ -22,18 +23,23 @@ const QuizAttempt = () => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userId, setUserId] = useState("");
-
-  const { data = {}, isLoading } = useShowQuiz(slug);
-
-  if (isLoading) {
-    return <PageLoader fullScreen />;
-  }
-
-  const { quiz = {} } = data;
-  const { questions = [] } = quiz;
+  const [questions, setQuestions] = useState([]);
   const questionCount = questions.length;
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questionCount - 1;
+
+  const { data = {}, isLoading } = useShowQuiz(slug);
+
+  const fetchQuestions = async userId => {
+    try {
+      const { quiz: { questions = [] } = {} } =
+        await publicApi.fetchQuestionsForAttempt(slug, userId);
+      setQuestions(questions);
+      setIsUserAuthenticated(true);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const checkIfUserHasAlreadyAttemptedQuiz = async registrationResponse => {
     if (registrationResponse.status !== "success") {
@@ -41,18 +47,8 @@ const QuizAttempt = () => {
 
       return;
     }
-
     setUserId(registrationResponse.id);
-
-    try {
-      const response = await submissionsApi.checkSubmissionExists(
-        slug,
-        registrationResponse.id
-      );
-      setIsUserAuthenticated(response?.access === "permitted");
-    } catch (error) {
-      logger.error(error);
-    }
+    fetchQuestions(registrationResponse.id);
   };
 
   const handleResponseSubmission = async () => {
@@ -97,11 +93,31 @@ const QuizAttempt = () => {
     });
   };
 
+  if (isLoading) {
+    return <PageLoader fullScreen />;
+  }
+
+  if (isEmpty(data)) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <NoData
+          message={t("messages.error.invalidQuizLink")}
+          buttonProps={{
+            label: t("labels.tryOtherQuiz"),
+            onClick: () => history.push(routes.publicPage),
+          }}
+        />
+      </div>
+    );
+  }
+
+  const { quiz: { name: quizName } = {} } = data;
+
   if (!isUserAuthenticated) {
     return (
       <div className="neeto-ui-bg-gray-100 flex h-screen items-center justify-center overflow-y-auto p-6">
         <div className=" max-w-6xl sm:max-w-md lg:max-w-xl ">
-          <Typography style="h1">{quiz.name}</Typography>
+          <Typography style="h1">{quizName}</Typography>
           <RegisterStandardUser
             afterRegistration={checkIfUserHasAlreadyAttemptedQuiz}
             className="mt-12"
@@ -122,7 +138,7 @@ const QuizAttempt = () => {
         </Typography>
         <ShowQuestion
           isOptionInAnswers={isOptionInAnswers}
-          questionId={currentQuestion.id}
+          questionId={currentQuestion?.id}
           onOptionSelect={handleOptionSelect}
           {...currentQuestion}
         />

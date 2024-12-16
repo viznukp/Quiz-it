@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-import { Form, Formik } from "formik";
 import { Pane, Button, Typography } from "neetoui";
-import { Input } from "neetoui/formik";
+import { Input, Form } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
@@ -10,7 +9,10 @@ import quizzesApi from "apis/quizzes";
 import { CategorySelector } from "components/commons";
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 
-import { CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA } from "./constants";
+import {
+  CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA,
+  NEW_QUIZ_FORM_INITIAL_VALUES,
+} from "./constants";
 
 const NewQuizPane = () => {
   const { t } = useTranslation();
@@ -43,13 +45,16 @@ const NewQuizPane = () => {
       <Pane isOpen={isPaneOpen} onClose={closePane}>
         <div className="flex h-full flex-col px-4 pb-4 pt-12">
           <Typography style="h2">{t("labels.addNewQuiz")}</Typography>
-          <Formik
-            initialValues={{ name: "" }}
-            validationSchema={CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA}
-            onSubmit={handleCreateNewQuiz}
+          <Form
+            className="flex flex-1 flex-col justify-between"
+            formikProps={{
+              initialValues: NEW_QUIZ_FORM_INITIAL_VALUES,
+              validationSchema: CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA,
+              onSubmit: handleCreateNewQuiz,
+            }}
           >
             {({ isSubmitting, dirty }) => (
-              <Form className="flex flex-1 flex-col justify-between">
+              <>
                 <div className="flex flex-col gap-3">
                   <Input
                     required
@@ -73,9 +78,9 @@ const NewQuizPane = () => {
                     onClick={closePane}
                   />
                 </div>
-              </Form>
+              </>
             )}
-          </Formik>
+          </Form>
         </div>
       </Pane>
     </>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { Delete, Filter as FilterIcon } from "neetoicons";
-import { Table, Button, Dropdown, Typography, Modal } from "neetoui";
-import { isEmpty, mergeLeft } from "ramda";
-import { useTranslation } from "react-i18next";
+import { Delete } from "neetoicons";
+import { Table, Button, Dropdown, Typography } from "neetoui";
+import { isEmpty, mergeLeft, find, propEq } from "ramda";
+import { useTranslation, Trans } from "react-i18next";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
@@ -14,6 +14,7 @@ import {
   StatusTag,
   NoData,
   Pagination,
+  ActiveFilters,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -23,10 +24,10 @@ import {
 import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
-import { dateFromTimeStamp } from "utils/dateTime";
 
 import ActionList from "./ActionList";
 import CategorySelector from "./CategorySelector";
+import ConfirmationModal from "./ConfirmationModal";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
 
@@ -38,7 +39,6 @@ const QuizList = () => {
     queryParams;
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
-  const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
@@ -46,9 +46,28 @@ const QuizList = () => {
   const closeDeleteConfirmationModal = () =>
     setIsDeleteConfirmationModalOpen(false);
 
+  const handleConfirmationMessage = () => {
+    const selectedQuizCount = selectedQuizzesSlugs.length;
+
+    if (selectedQuizCount === 0) return "";
+
+    const entity =
+      selectedQuizCount > 1
+        ? t("labels.quiz", { count: selectedQuizCount })
+        : find(propEq(selectedQuizzesSlugs[0], "slug"))(quizzes).name;
+
+    return (
+      <Trans
+        components={{ strong: <strong /> }}
+        i18nKey="messages.warnings.beforeDelete"
+        values={{ entity }}
+      />
+    );
+  };
+
   const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
     quizzes?.map(
-      ({ id, name, submissionsCount, status, updatedAt, category, slug }) => ({
+      ({ id, name, submissionsCount, status, createdOn, category, slug }) => ({
         id,
         slug,
         key: id,
@@ -61,7 +80,7 @@ const QuizList = () => {
         submissionsCount,
         status: <StatusTag label={status} primaryLabel="published" />,
         category,
-        createdOn: dateFromTimeStamp(updatedAt),
+        createdOn,
         actions: (
           <ActionList
             quizName={name}
@@ -110,11 +129,13 @@ const QuizList = () => {
 
   useEffect(() => {
     setResultType(resultType);
+    setSelectedQuizzesIds([]);
+    setSelectedQuizzesSlugs([]);
   }, [quizzes]);
 
   if (isLoading) return <PageLoader className="h-64" />;
 
-  return isEmpty(quizzes) ? (
+  return isEmpty(quizzes) && isEmpty(queryParams) ? (
     <NoData
       message={t("messages.info.noEntityToShow", {
         entity: t("labels.quizzesLower"),
@@ -123,21 +144,11 @@ const QuizList = () => {
   ) : (
     <>
       <div className="mb-3 flex justify-between gap-3">
-        <div className="mb-3 flex gap-3">
-          <Typography style="h4">
-            {selectedQuizzesIds.length > 0
-              ? t("messages.info.selectedRows", {
-                  selected: selectedQuizzesIds.length,
-                  total: quizzes?.length,
-                  entity: "quizzes",
-                })
-              : t("messages.info.availableQuizzes", {
-                  count: quizzes?.length,
-                })}
-          </Typography>
+        <div className="flex flex-col gap-3">
           {!isEmpty(selectedQuizzesSlugs) && (
             <div className="flex gap-3">
               <Dropdown
+                appendTo={() => document.body}
                 buttonStyle="secondary"
                 className="border"
                 label={t("labels.changeCategory")}
@@ -151,6 +162,7 @@ const QuizList = () => {
                 />
               </Dropdown>
               <Dropdown
+                appendTo={() => document.body}
                 buttonStyle="secondary"
                 className="border"
                 label={t("labels.status")}
@@ -184,18 +196,24 @@ const QuizList = () => {
               />
             </div>
           )}
+          <div className="mb-3 flex items-center gap-3">
+            <Typography style="h4">
+              {selectedQuizzesIds.length > 0
+                ? t("labels.selectedQuiz", {
+                    count: selectedQuizzesIds.length,
+                    total: quizzes?.length,
+                  })
+                : t("labels.quiz", { count: quizzes?.length })}
+            </Typography>
+            <ActiveFilters filters={["category", "status", "quizName"]} />
+          </div>
         </div>
         <div className="flex gap-2">
           <ColumnFilter
             schema={QUIZ_TABLE_SCHEMA}
             setVisibleColumns={setVisibleColumns}
           />
-          <Button
-            icon={FilterIcon}
-            style="text"
-            tooltipProps={{ content: t("labels.filter"), position: "top" }}
-            onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
-          />
+          <Filter />
         </div>
       </div>
       <Table
@@ -217,34 +235,25 @@ const QuizList = () => {
         pageNumberFromApi={Number(paginationData.page)}
         pageSize={pageSize}
       />
-      <Filter
-        closeFilter={() => setIsFilterPaneOpen(false)}
-        isOpen={isFilterPaneOpen}
-      />
-      <Modal
+      <ConfirmationModal
         isOpen={isDeleteConfirmationModalOpen}
+        primaryButtonLabel={t("labels.confirmDelete")}
+        primaryButtonStyle="danger"
+        primaryButtonAction={() => {
+          closeDeleteConfirmationModal();
+          handleDeleteMultipleQuizzes();
+        }}
         onClose={closeDeleteConfirmationModal}
       >
-        <div className="mt-3 p-4">
-          <Typography style="h3">
-            {t("messages.warnings.deleteMultiple", {
-              entity: t("labels.quizzesLower"),
+        <div className="p-4">
+          {handleConfirmationMessage()}
+          <Typography className="mt-4">
+            {t("messages.warnings.confirmDelete", {
+              count: selectedQuizzesSlugs.length,
             })}
           </Typography>
-          <Typography className="mt-4">
-            {t("messages.warnings.confirmDelete", { entity: "They" })}
-          </Typography>
-          <Button
-            className="mt-6"
-            label={t("labels.delete")}
-            style="danger"
-            onClick={() => {
-              closeDeleteConfirmationModal();
-              handleDeleteMultipleQuizzes();
-            }}
-          />
         </div>
-      </Modal>
+      </ConfirmationModal>
     </>
   );
 };

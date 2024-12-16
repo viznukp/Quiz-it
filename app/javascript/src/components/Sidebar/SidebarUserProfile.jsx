@@ -3,10 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { LeftArrow } from "neetoicons";
 import { Avatar, Typography, Button } from "neetoui";
-import { either, isEmpty, isNil } from "ramda";
 
 import authApi from "apis/authentication";
 import { resetAuthTokens } from "apis/axios";
+import { isLoggedIn } from "utils/auth";
 import {
   STORAGE_KEYS,
   getFromLocalStorage,
@@ -18,8 +18,6 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
   const profileRef = useRef(null);
   const userName = getFromLocalStorage(STORAGE_KEYS.USERNAME);
   const userEmail = getFromLocalStorage(STORAGE_KEYS.EMAIL);
-  const authToken = getFromLocalStorage(STORAGE_KEYS.TOKEN);
-  const isLoggedIn = !either(isNil, isEmpty)(authToken);
 
   const handleLogout = async () => {
     try {
@@ -50,7 +48,7 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
     };
   }, []);
 
-  if (!isLoggedIn) return false;
+  if (!isLoggedIn()) return false;
 
   return (
     <div className="relative w-full" ref={profileRef}>

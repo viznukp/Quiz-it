@@ -25,6 +25,7 @@ const ColumnFilter = ({ schema = [], setVisibleColumns }) => {
   return (
     <Dropdown
       buttonStyle="text"
+      closeOnSelect={false}
       icon={Column}
       buttonProps={{
         tooltipProps: { content: t("labels.columnFilter"), position: "top" },

@@ -7,3 +7,8 @@ export const CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required(requiredFieldErrorMessage),
   category: yup.object().required(requiredFieldErrorMessage),
 });
+
+export const NEW_QUIZ_FORM_INITIAL_VALUES = {
+  name: "",
+  category: "",
+};

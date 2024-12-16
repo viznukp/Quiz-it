@@ -9,6 +9,9 @@ class Question < ApplicationRecord
   validate :validate_options_array
   validate :validate_answer_index
 
+  after_save :touch_quiz
+  after_destroy :touch_quiz
+
   private
 
     def validate_options_array
@@ -25,5 +28,9 @@ class Question < ApplicationRecord
       if answer_index > options.size
         errors.add(:answer_index, I18n.t("answer_index.cannot_be_greater_than_number_of_options"))
       end
+    end
+
+    def touch_quiz
+      quiz.touch
     end
 end

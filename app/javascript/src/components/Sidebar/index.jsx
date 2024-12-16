@@ -70,7 +70,8 @@ const Sidebar = () => {
               toolTipEnabled
               icon={<Globe />}
               label={t("labels.publicPage")}
-              onClickRoute={routes.publicPage}
+              style="button"
+              onClickAction={() => window.open(routes.publicPage, "_blank")}
             />
           </div>
         </div>

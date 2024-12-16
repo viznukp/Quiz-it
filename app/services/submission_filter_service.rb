@@ -29,7 +29,7 @@ class SubmissionFilterService
       submissions = submissions.where(status: filter_params[:status])
     end
 
-    submissions
+    submissions.order(created_at: :desc)
   end
 
   def filter_params

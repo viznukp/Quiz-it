@@ -3,14 +3,14 @@ import React from "react";
 import { Modal, Button, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 
-const ActionModal = ({
+const ConfirmationModal = ({
   isOpen,
   onClose,
   title,
   primaryButtonLabel,
   primaryButtonAction,
   isPrimaryButtonDisabled = false,
-  primaryButtonStyle = "",
+  primaryButtonStyle = "primary",
   children,
 }) => {
   const { t } = useTranslation();
@@ -43,4 +43,4 @@ const ActionModal = ({
   );
 };
 
-export default ActionModal;
+export default ConfirmationModal;

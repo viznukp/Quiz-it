@@ -4,7 +4,12 @@ import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-import { Container, NavBar, SearchBar } from "components/commons";
+import {
+  Container,
+  NavBar,
+  SearchBar,
+  ContentWrapper,
+} from "components/commons";
 import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
 import { buildUrl } from "utils/url";
@@ -32,21 +37,20 @@ const Dashboard = () => {
   };
 
   return (
-    <Container
-      navbar={
-        <NavBar title={pageTitles[resultType]}>
-          <SearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={updateSearchTerm}
-            placeholder={t("messages.info.searchFor", {
-              entity: t("labels.quizzesLower"),
-            })}
-          />
-          <NewQuizPane />
-        </NavBar>
-      }
-    >
-      <QuizList />
+    <Container>
+      <NavBar title={pageTitles[resultType]}>
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={updateSearchTerm}
+          placeholder={t("messages.info.searchFor", {
+            entity: t("labels.quizzesLower"),
+          })}
+        />
+        <NewQuizPane />
+      </NavBar>
+      <ContentWrapper>
+        <QuizList />
+      </ContentWrapper>
     </Container>
   );
 };

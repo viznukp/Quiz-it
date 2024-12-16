@@ -86,7 +86,13 @@
     "newNameForQuiz": "Select new name for quiz",
     "submissionsCount": "Submission count",
     "filter": "Filter",
-    "columnFilter": "Column filter"
+    "appliedFilters": "Applied filters",
+    "columnFilter": "Column filter",
+    "quiz_one": "{{count}} Quiz",
+    "quiz_other": "{{count}} Quizzes",
+    "selectedQuiz_one": "{{count}} quiz selected of {{total}}",
+    "selectedQuiz_other": "{{count}} quizzes selected of {{total}}",
+    "tryOtherQuiz": "Try another quiz"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -108,7 +114,8 @@
       "minRequiredOptions": "At least {{count}} options are required!",
       "maxAllowedOptions": "No more than {{count}} options are allowed!",
       "uniqueOptions": "Duplicate options are not permitted!",
-      "failedToCopyLink": "Failed to copy the quiz link: {{error}}"
+      "failedToCopyLink": "Failed to copy the quiz link: {{error}}",
+      "invalidQuizLink": "Invalid quiz link"
     },
     "info": {
       "noEntityToShow": "There are no {{entity}} to show!",
@@ -124,8 +131,15 @@
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
-      "confirmDelete": "{{entity}} will be permanently deleted and we won't be able to recover!",
-      "deleteMultiple": "You are about to delete multiple {{entity}}"
+      "confirmDelete": "It will be permanently deleted and we won't be able to recover!",
+      "confirmDelete_other": "They will be permanently deleted and we won't be able to recover!"
     }
+  },
+  "filters": {
+    "category": "Category: {{category}} ",
+    "email": "Email: {{email}}",
+    "status": "status: {{status}}",
+    "quizName": "Quiz: {{quizName}}",
+    "name": "Name: {{name}}"
   }
 }
