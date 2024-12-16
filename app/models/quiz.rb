@@ -28,7 +28,7 @@ class Quiz < ApplicationRecord
   private
 
     def set_slug
-      self.slug = SlugGeneratorService.new(self, :name, :slug).generate_slug
+      self.slug = SlugGeneratorService.new(self, :name, :slug).process!
     end
 
     def slug_not_changed
