@@ -8,6 +8,7 @@ en:
   successfully_cloned: "%{entity} was successfully cloned!"
   submission_successfully_saved: "Your response is saved successfully!"
   signup_successful: "Signup successful. Please login to continue"
+  cannot_be_published_without_questions: "Quiz cannot be published without any questions"
   user_already_attempted_quiz: "Your response has already been recorded for this quiz!"
   session:
     could_not_auth: "Could not authenticate with the provided credentials."
