@@ -10,6 +10,6 @@ class SubmissionsController < ApplicationController
 
   def index
     filtered_submissions = SubmissionFilterService.new(params).filter_submissions
-    @pagination_metadata, @paginated_submissions = PaginationService.new(params, filtered_submissions).paginate
+    @pagination_metadata, @paginated_submissions = PaginationService.new(params, filtered_submissions).process!
   end
 end

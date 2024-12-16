@@ -9,7 +9,7 @@ class QuizzesController < ApplicationController
   def index
     scoped_quizzes = policy_scope(Quiz.all)
     @filtered_quizzes, @quizzes_metadata = QuizFilterService.new(params[:filters], scoped_quizzes).process!
-    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, @filtered_quizzes).paginate
+    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, @filtered_quizzes).process!
   end
 
   def create
