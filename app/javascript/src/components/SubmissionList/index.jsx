@@ -44,8 +44,10 @@ const SubmissionList = () => {
     history.replace(buildUrl("", mergeLeft({ name: searchTerm }, queryParams)));
   };
 
-  const { data: { submissions = [], paginationData = {}, quiz } = {} } =
-    useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
+  const {
+    data: { submissions = [], paginationData = {}, quiz } = {},
+    isLoading,
+  } = useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
 
   const transformSubmissionDataForTableDisplay = data =>
     data?.map(({ submission, user }) => ({
@@ -78,6 +80,7 @@ const SubmissionList = () => {
       <ContentWrapper>
         {isEmpty(submissions) && isEmpty(queryParams) ? (
           <NoData
+            isLoading={isLoading}
             message={t("messages.info.noEntityToShow", {
               entity: t("labels.submissionsLower"),
             })}
