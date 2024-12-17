@@ -49,7 +49,7 @@ def create_quizzes(categories, user)
     quiz = Quiz.create!(
       name: "#{category.name} Quiz",
       category: category,
-      status: %w[draft published].sample,
+      status: "draft",
       creator: user
     )
 
@@ -84,7 +84,7 @@ def sample_questions(category)
       { question: "What is 5 + 7?", options: ["11", "12", "13", "14"], answer_index: 2 },
       { question: "What is 9 * 8?", options: ["72", "64", "75", "78"], answer_index: 1 },
       { question: "What is the square root of 16?", options: ["2", "3", "4", "5"], answer_index: 3 },
-      { question: "What is 100 divided by 5?", options: ["10", "15", "20", "25"], answer_index: 1 },
+      { question: "What is 100 divided by 5?", options: ["10", "15", "20", "25"], answer_index: 3 },
       { question: "What is the result of 7^2?", options: ["49", "56", "64", "42"], answer_index: 1 }
     ]
   when "History"
@@ -130,25 +130,43 @@ def create_submissions_for_three_quizzes!(users)
   quizzes = Quiz.limit(3)
 
   quizzes.each do |quiz|
+    quiz.update!(status: "published")
     2.times do |i|
-      submission = Submission.create!(
-        user: users.sample,
+      submission = Submission.new(
+        user: users[i],
         quiz: quiz,
         status: "completed",
-        answers: create_random_answers(quiz)
       )
-      EvaluationService.new.evaluate_submission(submission)
-      submission.save!
+      create_random_answers(quiz, submission)
     end
   end
 
   puts "Two submissions have been added for each of the three selected quizzes."
 end
 
-def create_random_answers(quiz)
-  quiz.questions.map do |question|
-    {question_id: question.id, selected_choice: rand(1..4)}
+def create_random_answers(quiz, submission)
+  correct_answers_count = 0
+  wrong_answers_count = 0
+
+  answers = quiz.questions.map do |question|
+    selected_choice = rand(1..4)
+    correct_answer = question.answer_index
+
+    if selected_choice == correct_answer
+      correct_answers_count += 1
+    else
+      wrong_answers_count += 1
+    end
+
+    { question_id: question.id, selected_choice: selected_choice }
   end
+
+  submission.answers = answers
+  submission.total_questions = quiz.questions.count
+  submission.correct_answers_count = correct_answers_count
+  submission.wrong_answers_count = wrong_answers_count
+  submission.unanswered_count = quiz.questions.count - correct_answers_count - wrong_answers_count
+  submission.save!
 end
 
 
