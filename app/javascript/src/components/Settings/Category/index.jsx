@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import { Plus } from "neetoicons";
-import { Typography, Button } from "neetoui";
+import { Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +10,7 @@ import { Container, ContentWrapper, NavBar } from "components/commons";
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 
 import Card from "./Card";
+import Create from "./Create";
 
 import { SETTINGS_TABS, SETTINGS_TAB_IDS } from "../constants";
 
@@ -18,7 +18,7 @@ const Category = () => {
   const { t } = useTranslation();
   const [categoryList, setCategoryList] = useState([]);
 
-  const { data: { categories = [] } = {} } = useFetchCategories();
+  const { data: { categories = [] } = {}, refetch } = useFetchCategories();
 
   useEffect(() => {
     if (!isEmpty(categories)) setCategoryList(categories);
@@ -73,13 +73,7 @@ const Category = () => {
           <Typography>
             {t("labels.category", { count: categories.length })}
           </Typography>
-          <Button
-            className="text-blue-500"
-            icon={Plus}
-            iconPosition="left"
-            label={t("settings.categories.addNewCategory")}
-            style="text"
-          />
+          <Create refetchCategories={refetch} />
         </div>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="droppableArea">

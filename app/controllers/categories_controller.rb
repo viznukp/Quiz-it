@@ -7,6 +7,11 @@ class CategoriesController < ApplicationController
     @categories = Category.includes(:quizzes).order(:sort_order).all
   end
 
+  def create
+    Category.create!(category_params)
+    render_notice(t("successfully_created", entity: "Category"))
+  end
+
   def bulk_update
     bulk_update_params[:order].each do |item|
       puts item
@@ -17,6 +22,10 @@ class CategoriesController < ApplicationController
   end
 
   private
+
+    def category_params
+      params.require(:category).permit(:name)
+    end
 
     def bulk_update_params
       params.require(:categories).permit(order: [:id, :sort_order])

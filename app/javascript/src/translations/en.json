@@ -95,7 +95,10 @@
     "selectedQuiz_one": "{{count}} quiz selected of {{total}}",
     "selectedQuiz_other": "{{count}} quizzes selected of {{total}}",
     "tryOtherQuiz": "Try another quiz",
-    "general": "General"
+    "general": "General",
+    "add": "Add",
+    "categoryName": "Category name",
+    "newCategory": "New category"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -152,5 +155,8 @@
       "subTitle": "Create and configure the categories of the quizzes",
       "addNewCategory": "Add new category"
     }
+  },
+  "placeHolders": {
+    "enterCategoryName": "Enter category name"
   }
 }
