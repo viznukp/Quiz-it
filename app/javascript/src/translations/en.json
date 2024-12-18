@@ -130,7 +130,8 @@
       "customizeQuizSiteName": "Customize the quiz site name",
       "searchFor": "Search for {{entity}}",
       "searchName": "Search name",
-      "linkCopied": "Quiz link copied to clipboard!"
+      "linkCopied": "Quiz link copied to clipboard!",
+      "rearrangeOrder": "Drag and drop to rearrange order"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
