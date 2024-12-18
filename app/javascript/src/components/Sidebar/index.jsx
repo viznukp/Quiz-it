@@ -64,7 +64,7 @@ const Sidebar = () => {
               toolTipEnabled
               icon={<SettingsIcon />}
               label={t("labels.settings")}
-              onClickRoute={routes.settings}
+              onClickRoute={routes.settings.general}
             />
             <SidebarNavItem
               toolTipEnabled

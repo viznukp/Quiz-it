@@ -11,8 +11,12 @@ import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
 import { Container, NavBar, NoData, ContentWrapper } from "components/commons";
-import { TAB_IDS } from "components/commons/NavBar/constants";
-import { QUIZ_STATUSES, BASE_URL } from "components/constants";
+import {
+  QUIZ_STATUSES,
+  BASE_URL,
+  QUIZ_TABS,
+  QUIZ_TAB_IDS,
+} from "components/constants";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
 
@@ -57,8 +61,9 @@ const Show = () => {
       <NavBar
         backButtonVisible
         isTabsEnabled
-        activeTab={TAB_IDS.questions}
+        activeTab={QUIZ_TAB_IDS.questions}
         quizSlug={slug}
+        tabs={QUIZ_TABS}
         title={quiz?.name}
       >
         {!isEmpty(quiz?.questions) && (

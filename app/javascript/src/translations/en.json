@@ -4,6 +4,8 @@
     "quizzesLower": "quizzes",
     "name": "Name",
     "category": "Category",
+    "category_one": "{{count}} Category",
+    "category_other": "{{count}} Categories",
     "status": "Status",
     "createdOn": "Created on",
     "expand": "Expand",
@@ -92,7 +94,8 @@
     "quiz_other": "{{count}} Quizzes",
     "selectedQuiz_one": "{{count}} quiz selected of {{total}}",
     "selectedQuiz_other": "{{count}} quizzes selected of {{total}}",
-    "tryOtherQuiz": "Try another quiz"
+    "tryOtherQuiz": "Try another quiz",
+    "general": "General"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -141,5 +144,12 @@
     "status": "status: {{status}}",
     "quizName": "Quiz: {{quizName}}",
     "name": "Name: {{name}}"
+  },
+  "settings": {
+    "categories": {
+      "title": "Manage Categories",
+      "subTitle": "Create and configure the categories of the quizzes",
+      "addNewCategory": "Add new category"
+    }
   }
 }
