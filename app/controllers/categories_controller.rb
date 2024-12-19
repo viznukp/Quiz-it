@@ -2,6 +2,7 @@
 
 class CategoriesController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token, only: :index
+  before_action :load_category, only: :update
 
   def index
     @categories = Category.includes(:quizzes).order(:sort_order).all
@@ -10,6 +11,11 @@ class CategoriesController < ApplicationController
   def create
     Category.create!(category_params)
     render_notice(t("successfully_created", entity: "Category"))
+  end
+
+  def update
+    @category.update!(category_params)
+    render_notice(t("successfully_updated", entity: "Category"))
   end
 
   def bulk_update
@@ -29,5 +35,9 @@ class CategoriesController < ApplicationController
 
     def bulk_update_params
       params.require(:categories).permit(order: [:id, :sort_order])
+    end
+
+    def load_category
+      @category = Category.find(params[:id])
     end
 end

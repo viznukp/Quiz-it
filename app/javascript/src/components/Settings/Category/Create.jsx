@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 
 import { Plus } from "neetoicons";
-import { Input, Button } from "neetoui";
-import { isEmpty } from "ramda";
+import { Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 
 import categoriesApi from "apis/categories";
-import { ConfirmationModal } from "components/commons";
+
+import Form from "./Form";
 
 const Create = ({ refetchCategories }) => {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
 
-  const handleCategoryCreate = async () => {
+  const handleCategoryCreate = async inputValue => {
     try {
       await categoriesApi.create({ name: inputValue.trim() });
       refetchCategories();
@@ -32,21 +31,11 @@ const Create = ({ refetchCategories }) => {
         style="text"
         onClick={() => setIsModalOpen(true)}
       />
-      <ConfirmationModal
+      <Form
         isOpen={isModalOpen}
-        isPrimaryButtonDisabled={isEmpty(inputValue.trim())}
-        primaryButtonAction={handleCategoryCreate}
-        primaryButtonLabel={t("labels.add")}
-        title={t("labels.newCategory")}
+        submitAction={handleCategoryCreate}
         onClose={() => setIsModalOpen(false)}
-      >
-        <Input
-          label={t("labels.categoryName")}
-          placeholder={t("placeHolders.enterCategoryName")}
-          value={inputValue}
-          onChange={event => setInputValue(event.target.value)}
-        />
-      </ConfirmationModal>
+      />
     </>
   );
 };

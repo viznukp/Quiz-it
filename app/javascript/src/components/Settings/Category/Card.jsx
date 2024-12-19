@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import classNames from "classnames";
 import { capitalize } from "neetocist";
-import { MenuHorizontal, Drag } from "neetoicons";
-import { Typography, Dropdown, Button, Tooltip } from "neetoui";
+import { Drag } from "neetoicons";
+import { Typography, Tooltip } from "neetoui";
 import { useTranslation } from "react-i18next";
+
+import ActionList from "./ActionList";
 
 const Card = ({ id, name, quizCount, index }) => {
   const { t } = useTranslation();
@@ -50,12 +52,7 @@ const Card = ({ id, name, quizCount, index }) => {
               </div>
             </div>
             <div>
-              <Dropdown buttonProps={{ style: "text" }} icon={MenuHorizontal}>
-                <div className="flex flex-col">
-                  <Button label={t("labels.edit")} style="text" />
-                  <Button label={t("labels.delete")} style="text" />
-                </div>
-              </Dropdown>
+              <ActionList category={{ id, name }} />
             </div>
           </div>
         </div>

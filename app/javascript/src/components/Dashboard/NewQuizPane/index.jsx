@@ -30,6 +30,7 @@ const NewQuizPane = () => {
         categoryId: formData.category.value.id,
       });
       queryClient.invalidateQueries("quizzes");
+      queryClient.invalidateQueries("categories");
       closePane();
     } catch (error) {
       logger.error(error);
