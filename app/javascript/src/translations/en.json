@@ -101,7 +101,9 @@
     "newCategory": "New category",
     "proceed": "Proceed",
     "thisQuiz": "this quiz",
-    "thisQuiz_other": "these quizzes"
+    "thisQuiz_other": "these quizzes",
+    "configure": "Configure",
+    "quizSettings": "Quiz settings"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -167,5 +169,23 @@
   },
   "placeHolders": {
     "enterCategoryName": "Enter category name"
+  },
+  "configurationCards": {
+    "visibility": {
+      "title": "Quiz visibility",
+      "description": "Settings for showing quiz on the public home page"
+    },
+    "timing": {
+      "title": "Quiz timing",
+      "description": "Settings related to timers for the quiz"
+    },
+    "questionsAndOptions": {
+      "title": "Questions & options",
+      "description": "Settings to configure options and questions preferences"
+    },
+    "emailNotification": {
+      "title": "Email notification",
+      "description": "Configure email notifications"
+    }
   }
 }

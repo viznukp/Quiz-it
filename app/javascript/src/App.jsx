@@ -15,6 +15,7 @@ import {
   EditQuestion,
 } from "components/QuestionBuilder";
 import QuizAttempt from "components/QuizAttempt";
+import QuizConfiguration from "components/QuizConfiguration";
 import QuizResult from "components/QuizResult";
 import { General, Category } from "components/Settings";
 import SubmissionList from "components/SubmissionList";
@@ -34,6 +35,11 @@ const App = () => (
         <Route exact component={General} path={routes.settings.general} />
         <Route exact component={Category} path={routes.settings.categories} />
         <Route exact component={ShowQuestions} path={routes.quiz.questions} />
+        <Route
+          exact
+          component={QuizConfiguration}
+          path={routes.quiz.configure}
+        />
         <Route
           exact
           component={CreateQuestion}

@@ -9,6 +9,7 @@ class SubmissionsController < ApplicationController
   end
 
   def index
+    @quiz = Quiz.find_by!(slug: params[:slug])
     filtered_submissions = SubmissionFilterService.new(params).process!
     @pagination_metadata, @paginated_submissions = PaginationService.new(params, filtered_submissions).process!
   end

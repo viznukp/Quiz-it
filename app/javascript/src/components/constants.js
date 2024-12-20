@@ -14,6 +14,7 @@ export const SUBMISSION_STATUSES = {
 export const QUIZ_TAB_IDS = {
   questions: "questions",
   submissions: "submissions",
+  configure: "configure",
 };
 
 export const QUIZ_TABS = [
@@ -26,6 +27,11 @@ export const QUIZ_TABS = [
     label: i18n.t("labels.submissions"),
     id: QUIZ_TAB_IDS.submissions,
     path: routes.quiz.submissions,
+  },
+  {
+    label: i18n.t("labels.configure"),
+    id: QUIZ_TAB_IDS.configure,
+    path: routes.quiz.configure,
   },
 ];
 
