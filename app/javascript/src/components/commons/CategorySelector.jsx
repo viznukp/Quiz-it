@@ -1,28 +1,30 @@
 import React from "react";
 
 import { Select } from "neetoui/formik";
-import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
-const CategorySelector = ({ categories = [] }) => {
+import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
+
+const CategorySelector = ({ excludedCategoryIds = [], label = "" }) => {
   const { t } = useTranslation();
+  const { data: { categories = [] } = {} } = useFetchCategories();
+
+  const filteredCategories = categories.filter(
+    category => !excludedCategoryIds.includes(category.id)
+  );
 
   return (
     <Select
       isClearable
       isSearchable
-      label={t("labels.category")}
+      label={label || t("labels.category")}
       name="category"
-      options={categories?.map(category => ({
-        label: category.name,
+      options={filteredCategories?.map(category => ({
+        label: category?.name,
         value: category,
       }))}
     />
   );
-};
-
-CategorySelector.propTypes = {
-  categories: PropTypes.array,
 };
 
 export default CategorySelector;

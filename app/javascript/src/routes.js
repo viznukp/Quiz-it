@@ -14,7 +14,11 @@ const routes = {
   publicPage: "/public",
   registerStandardUser: "/user/standard/register/:slug",
   attemptQuiz: "/quiz/:slug",
-  settings: "/settings",
+  settings: {
+    base: "/settings",
+    general: "/settings/general",
+    categories: "/settings/categories",
+  },
 };
 
 export default routes;

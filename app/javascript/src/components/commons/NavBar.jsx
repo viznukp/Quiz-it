@@ -6,14 +6,13 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-import { TABS, TAB_IDS } from "./constants";
-
 const NavBar = ({
   title,
   backButtonVisible = false,
-  activeTab = TAB_IDS.questions,
+  activeTab,
   isTabsEnabled = false,
   quizSlug = "",
+  tabs = [],
   children,
 }) => {
   const history = useHistory();
@@ -22,7 +21,11 @@ const NavBar = ({
     <div className="h-18 grid w-full grid-cols-[1fr_auto_1fr] items-center gap-3 border-b px-12 py-4">
       <div className="flex items-center gap-3">
         {backButtonVisible && (
-          <Button style="text" onClick={() => history.goBack()}>
+          <Button
+            className="rounded-full"
+            style="text"
+            onClick={() => history.goBack()}
+          >
             <LeftArrow />
           </Button>
         )}
@@ -31,7 +34,7 @@ const NavBar = ({
       <div className="flex justify-center gap-3">
         {isTabsEnabled && (
           <Tab noUnderline>
-            {TABS.map(({ label, path, id }) => (
+            {tabs.map(({ label, path, id }) => (
               <Tab.Item active={id === activeTab} key={id}>
                 <Link to={path.replace(":slug", quizSlug)}> {label}</Link>
               </Tab.Item>

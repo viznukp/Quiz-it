@@ -4,6 +4,8 @@
     "quizzesLower": "quizzes",
     "name": "Name",
     "category": "Category",
+    "category_one": "{{count}} Category",
+    "category_other": "{{count}} Categories",
     "status": "Status",
     "createdOn": "Created on",
     "expand": "Expand",
@@ -92,7 +94,14 @@
     "quiz_other": "{{count}} Quizzes",
     "selectedQuiz_one": "{{count}} quiz selected of {{total}}",
     "selectedQuiz_other": "{{count}} quizzes selected of {{total}}",
-    "tryOtherQuiz": "Try another quiz"
+    "tryOtherQuiz": "Try another quiz",
+    "general": "General",
+    "add": "Add",
+    "categoryName": "Category name",
+    "newCategory": "New category",
+    "proceed": "Proceed",
+    "thisQuiz": "this quiz",
+    "thisQuiz_other": "these quizzes"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -127,12 +136,19 @@
       "customizeQuizSiteName": "Customize the quiz site name",
       "searchFor": "Search for {{entity}}",
       "searchName": "Search name",
-      "linkCopied": "Quiz link copied to clipboard!"
+      "linkCopied": "Quiz link copied to clipboard!",
+      "rearrangeOrder": "Drag and drop to rearrange order"
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
       "confirmDelete": "It will be permanently deleted and we won't be able to recover!",
-      "confirmDelete_other": "They will be permanently deleted and we won't be able to recover!"
+      "confirmDelete_other": "They will be permanently deleted and we won't be able to recover!",
+      "deleteCategory": "Delete category?",
+      "deleteCategoryDescription": "You are permanently deleting the <strong>{{category}}</strong> category. This action cannot be undone. Are you sure you wish to continue?",
+      "moveToNewCategory": "Category <strong>{{category}}</strong> has {{entity}}. Before this category can be deleted, {{entityDescription}} will be moved to <strong>General</strong> category.",
+      "moveToNewCategory_other": "Category <strong>{{category}}</strong> has {{entity}}. Before these categories can be deleted, {{entityDescription}} needs to be moved to a new category.",
+      "selectCategoryToMove": "Select a category to move these quizzes into",
+      "cannotDeleteGeneralCategory": "Create another category to move quizzes from general category"
     }
   },
   "filters": {
@@ -141,5 +157,15 @@
     "status": "status: {{status}}",
     "quizName": "Quiz: {{quizName}}",
     "name": "Name: {{name}}"
+  },
+  "settings": {
+    "categories": {
+      "title": "Manage Categories",
+      "subTitle": "Create and configure the categories of the quizzes",
+      "addNewCategory": "Add new category"
+    }
+  },
+  "placeHolders": {
+    "enterCategoryName": "Enter category name"
   }
 }

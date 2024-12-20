@@ -1,6 +1,7 @@
 import ActiveFilters from "./ActiveFilters";
 import CategorySelector from "./CategorySelector";
 import ColumnFilter from "./ColumnFilter";
+import ConfirmationModal from "./ConfirmationModal";
 import Container from "./Container";
 import ContentWrapper from "./ContentWrapper";
 import LabelToLink from "./LabelToLink";
@@ -17,19 +18,20 @@ import StatusTag from "./StatusTag";
 
 export {
   Option,
-  NavBar,
-  StatusTag,
   Container,
   PageLoader,
+  NoData,
+  SearchBar,
+  LabelToLink,
   PrivateRoute,
-  ActiveFilters,
-  CategorySelector,
-  ContentWrapper,
+  NavBar,
+  StatusTag,
+  Pagination,
+  ProgressBar,
   PageNotFound,
   ColumnFilter,
-  ProgressBar,
-  LabelToLink,
-  Pagination,
-  SearchBar,
-  NoData,
+  ActiveFilters,
+  ContentWrapper,
+  CategorySelector,
+  ConfirmationModal,
 };

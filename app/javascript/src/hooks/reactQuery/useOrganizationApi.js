@@ -6,6 +6,4 @@ export const useShowOrganization = () =>
   useQuery({
     queryKey: ["organization"],
     queryFn: () => organizationApi.show(),
-    staleTime: 0,
-    cacheTime: 0,
   });

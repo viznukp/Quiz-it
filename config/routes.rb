@@ -26,7 +26,9 @@ Rails.application.routes.draw do
     end
     resource :session, only: %i[create destroy]
     resource :organization, only: %i[show update]
-    resources :categories, only: :index
+    resources :categories, only: %i[index create update destroy] do
+      put :bulk_update, on: :collection
+    end
     namespace :public do
       resources :quizzes, only: %i[index show], param: :slug
       resources :questions, only: :show, param: :slug

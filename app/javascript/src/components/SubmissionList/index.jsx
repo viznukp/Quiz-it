@@ -17,8 +17,12 @@ import {
   ActiveFilters,
   ContentWrapper,
 } from "components/commons";
-import { TAB_IDS } from "components/commons/NavBar/constants";
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX } from "components/constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_INDEX,
+  QUIZ_TABS,
+  QUIZ_TAB_IDS,
+} from "components/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
@@ -73,8 +77,9 @@ const SubmissionList = () => {
       <NavBar
         backButtonVisible
         isTabsEnabled
-        activeTab={TAB_IDS.submissions}
+        activeTab={QUIZ_TAB_IDS.submissions}
         quizSlug={slug}
+        tabs={QUIZ_TABS}
         title={quizTitle}
       />
       <ContentWrapper>

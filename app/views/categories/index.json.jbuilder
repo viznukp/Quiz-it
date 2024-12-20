@@ -5,6 +5,7 @@ json.categories do
     json.extract! category,
       :id,
       :name
+    json.quiz_count category.quizzes.count
 
   end
 end

@@ -7,7 +7,6 @@ import { useQueryClient } from "react-query";
 
 import quizzesApi from "apis/quizzes";
 import { CategorySelector } from "components/commons";
-import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 
 import {
   CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA,
@@ -21,8 +20,6 @@ const NewQuizPane = () => {
 
   const closePane = () => setIsPaneOpen(false);
 
-  const { data: { categories = [] } = {} } = useFetchCategories();
-
   const handleCreateNewQuiz = async formData => {
     try {
       await quizzesApi.create({
@@ -30,6 +27,7 @@ const NewQuizPane = () => {
         categoryId: formData.category.value.id,
       });
       queryClient.invalidateQueries("quizzes");
+      queryClient.invalidateQueries("categories");
       closePane();
     } catch (error) {
       logger.error(error);
@@ -63,7 +61,7 @@ const NewQuizPane = () => {
                     name="name"
                     placeholder={t("labels.exampleQuizName")}
                   />
-                  <CategorySelector categories={categories} />
+                  <CategorySelector />
                 </div>
                 <div className="flex gap-3">
                   <Button
