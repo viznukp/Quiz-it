@@ -183,9 +183,32 @@
       "title": "Questions & options",
       "description": "Settings to configure options and questions preferences"
     },
+    "emailNotifications": {
+      "title": "Email notifications",
+      "description": "Configure email notifications"
+    }
+  },
+  "featureToggles": {
+    "showQuiz": {
+      "title": "Show quiz on the homepage",
+      "description": "Add this quiz to the public homepage. This will allow everyone to see the quiz and to take it.",
+      "warning": "Accessibility can only be configured if the quiz is published!"
+    },
+    "quizTiming": {
+      "title": "Add timer for the entire quiz",
+      "description": "Set a time limit for candidates to complete the quiz."
+    },
+    "randomizeChoices": {
+      "title": "Randomize choices",
+      "description": "Choices will be randomly shuffled each time a new candidate takes the quiz."
+    },
+    "randomizeQuestions": {
+      "title": "Randomize questions",
+      "description": "Questions shown will be randomly shuffled each time a new candidate takes the quiz."
+    },
     "emailNotification": {
       "title": "Email notification",
-      "description": "Configure email notifications"
+      "description": "Receive an email when a quiz is submitted."
     }
   }
 }

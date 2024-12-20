@@ -27,6 +27,10 @@ class QuizFilterService
         quizzes = quizzes.where(status: filters[:status])
       end
 
+      if filters[:accessibility].present?
+        quizzes = quizzes.where(accessibility: filters[:accessibility])
+      end
+
       if filters[:quiz_name].present?
         quizzes = quizzes.where("LOWER(quizzes.name) LIKE ?", "%#{filters[:quiz_name].downcase}%")
       end

@@ -45,7 +45,7 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:name, :category_id, :status)
+      params.require(:quiz).permit(:name, :category_id, :status, :accessibility)
     end
 
     def bulk_update_params
