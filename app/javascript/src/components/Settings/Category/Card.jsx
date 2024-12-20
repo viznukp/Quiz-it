@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 
 import ActionList from "./ActionList";
 
-const Card = ({ id, name, quizCount, index }) => {
+const Card = ({ id, name, quizCount, categoryCount, index }) => {
   const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -52,7 +52,7 @@ const Card = ({ id, name, quizCount, index }) => {
               </div>
             </div>
             <div>
-              <ActionList category={{ id, name }} />
+              <ActionList category={{ id, name, quizCount, categoryCount }} />
             </div>
           </div>
         </div>

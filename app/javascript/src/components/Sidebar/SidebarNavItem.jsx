@@ -14,12 +14,18 @@ const SidebarNavItem = ({
   toolTipEnabled = false,
   icon,
   onClickRoute = "",
+  baseRoute = "",
   onClickAction,
   style = "link",
 }) => {
   const { pathname: currentRoute } = useLocation();
   const [isExpanded] = useContext(SidebarContext);
-  const isActive = currentRoute === onClickRoute && !isEmpty(onClickRoute);
+  const isActive =
+    currentRoute === onClickRoute ||
+    (currentRoute.includes(baseRoute) &&
+      !isEmpty(onClickRoute) &&
+      !isEmpty(baseRoute));
+
   const renderContent = (
     <div
       className={classNames(

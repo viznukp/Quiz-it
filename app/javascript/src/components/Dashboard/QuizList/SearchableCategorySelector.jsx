@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 
-const CategorySelector = ({ onSelect }) => {
+const SearchableCategorySelector = ({ onSelect }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [matches, setMatches] = useState([]);
@@ -70,4 +70,4 @@ const CategorySelector = ({ onSelect }) => {
   );
 };
 
-export default CategorySelector;
+export default SearchableCategorySelector;

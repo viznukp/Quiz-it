@@ -26,10 +26,10 @@ import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
 
 import ActionList from "./ActionList";
-import CategorySelector from "./CategorySelector";
 import ConfirmationModal from "./ConfirmationModal";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
+import SearchableCategorySelector from "./SearchableCategorySelector";
 
 const QuizList = () => {
   const { t } = useTranslation();
@@ -153,7 +153,7 @@ const QuizList = () => {
                 className="border"
                 label={t("labels.changeCategory")}
               >
-                <CategorySelector
+                <SearchableCategorySelector
                   onSelect={selectedCategory => {
                     handleUpdateMultipleQuizzes({
                       categoryId: selectedCategory,

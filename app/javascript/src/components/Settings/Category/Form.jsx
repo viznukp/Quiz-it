@@ -20,7 +20,10 @@ const Form = ({ submitAction, initialValue = "", isOpen, onClose }) => {
         isEmpty,
         equals(initialValue)
       )(inputValue.trim())}
-      onClose={onClose}
+      onClose={() => {
+        setInputValue(initialValue);
+        onClose();
+      }}
     >
       <Input
         label={t("labels.categoryName")}

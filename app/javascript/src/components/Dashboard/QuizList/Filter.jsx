@@ -76,7 +76,7 @@ const Filter = () => {
           }}
         >
           <Input label={t("labels.name")} name="quizName" />
-          <CategorySelector categories={categories} />
+          <CategorySelector />
           <Select
             isClearable
             label={t("labels.status")}

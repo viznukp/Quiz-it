@@ -98,7 +98,10 @@
     "general": "General",
     "add": "Add",
     "categoryName": "Category name",
-    "newCategory": "New category"
+    "newCategory": "New category",
+    "proceed": "Proceed",
+    "thisQuiz": "this quiz",
+    "thisQuiz_other": "these quizzes"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -139,7 +142,13 @@
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
       "confirmDelete": "It will be permanently deleted and we won't be able to recover!",
-      "confirmDelete_other": "They will be permanently deleted and we won't be able to recover!"
+      "confirmDelete_other": "They will be permanently deleted and we won't be able to recover!",
+      "deleteCategory": "Delete category?",
+      "deleteCategoryDescription": "You are permanently deleting the <strong>{{category}}</strong> category. This action cannot be undone. Are you sure you wish to continue?",
+      "moveToNewCategory": "Category <strong>{{category}}</strong> has {{entity}}. Before this category can be deleted, {{entityDescription}} will be moved to <strong>General</strong> category.",
+      "moveToNewCategory_other": "Category <strong>{{category}}</strong> has {{entity}}. Before these categories can be deleted, {{entityDescription}} needs to be moved to a new category.",
+      "selectCategoryToMove": "Select a category to move these quizzes into",
+      "cannotDeleteGeneralCategory": "Create another category to move quizzes from general category"
     }
   },
   "filters": {

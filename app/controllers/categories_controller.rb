@@ -2,7 +2,7 @@
 
 class CategoriesController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token, only: :index
-  before_action :load_category, only: :update
+  before_action :load_category, only: %i[update destroy]
 
   def index
     @categories = Category.includes(:quizzes).order(:sort_order).all
@@ -20,11 +20,15 @@ class CategoriesController < ApplicationController
 
   def bulk_update
     bulk_update_params[:order].each do |item|
-      puts item
       category = Category.find(item[:id])
       category.update(sort_order: item[:sort_order])
     end
     render_notice(t("order_updated"))
+  end
+
+  def destroy
+    DeleteCategoryService.new(@category, params).process!
+    render_notice(t("successfully_deleted", entity: "Category"))
   end
 
   private

@@ -84,7 +84,12 @@ const Category = () => {
                 {...provided.droppableProps}
               >
                 {categoryList.map((category, index) => (
-                  <Card key={category.id} {...category} index={index} />
+                  <Card
+                    key={category.id}
+                    {...category}
+                    categoryCount={categories.length}
+                    index={index}
+                  />
                 ))}
                 {provided.placeholder}
               </div>

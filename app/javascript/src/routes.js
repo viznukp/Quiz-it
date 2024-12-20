@@ -15,6 +15,7 @@ const routes = {
   registerStandardUser: "/user/standard/register/:slug",
   attemptQuiz: "/quiz/:slug",
   settings: {
+    base: "/settings",
     general: "/settings/general",
     categories: "/settings/categories",
   },

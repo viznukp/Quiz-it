@@ -1,6 +1,6 @@
   # frozen_string_literal: true
 
-json.organization @organization.name
+json.organization @organization&.name
 
 json.quizzes do
   json.array! @paginated_quizzes do |quiz|
@@ -11,7 +11,7 @@ json.quizzes do
       :slug,
       :questions_count,
       :updated_at
-    json.category quiz.category.name
+    json.category quiz&.category&.name
   end
 end
 
