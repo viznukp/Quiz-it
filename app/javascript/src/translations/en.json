@@ -103,7 +103,9 @@
     "thisQuiz": "this quiz",
     "thisQuiz_other": "these quizzes",
     "configure": "Configure",
-    "quizSettings": "Quiz settings"
+    "quizSettings": "Quiz settings",
+    "hours": "Hours",
+    "minutes": "Minutes"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",

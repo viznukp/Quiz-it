@@ -8,11 +8,14 @@ import { QUIZ_TABS, QUIZ_TAB_IDS } from "components/constants";
 
 import { CONFIGURATION_PANELS } from "./constants";
 import Dashboard from "./Dashboard";
+import QuizTime from "./QuizTime";
 import Visibility from "./Visibility";
 
 const QuizConfiguration = () => {
   const { slug } = useParams();
-  const [activePanel, setActivePanel] = useState("dashboard");
+  const [activePanel, setActivePanel] = useState(
+    CONFIGURATION_PANELS.dashboard
+  );
 
   const { data: { quiz } = {} } = useShowQuiz(slug);
 
@@ -27,11 +30,14 @@ const QuizConfiguration = () => {
         title={quiz?.name}
       />
       <ContentWrapper>
-        {activePanel === CONFIGURATION_PANELS.dashboard && (
+        {activePanel.id === CONFIGURATION_PANELS.dashboard.id && (
           <Dashboard setActivePanel={setActivePanel} />
         )}
-        {activePanel === CONFIGURATION_PANELS.visibility && (
+        {activePanel.id === CONFIGURATION_PANELS.visibility.id && (
           <Visibility setActivePanel={setActivePanel} {...quiz} />
+        )}
+        {activePanel.id === CONFIGURATION_PANELS.quizTiming.id && (
+          <QuizTime setActivePanel={setActivePanel} {...quiz} />
         )}
       </ContentWrapper>
     </Container>

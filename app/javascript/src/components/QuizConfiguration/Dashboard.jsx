@@ -26,6 +26,7 @@ const Dashboard = ({ setActivePanel }) => {
           description={t("configurationCards.timing.description")}
           icon={<Clock />}
           title={t("configurationCards.timing.title")}
+          onClick={() => setActivePanel(CONFIGURATION_PANELS.quizTiming)}
         />
         <Card
           description={t("configurationCards.questionsAndOptions.description")}
