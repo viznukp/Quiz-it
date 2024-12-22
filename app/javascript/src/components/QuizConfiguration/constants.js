@@ -14,6 +14,10 @@ export const CONFIGURATION_PANELS = {
     id: "quizTiming",
     title: i18n.t("configurationCards.timing.title"),
   },
+  email: {
+    id: "email",
+    title: i18n.t("configurationCards.emailNotifications.title"),
+  },
 };
 
 export const FORM_VALIDATION_SCHEMA = yup.object().shape({
