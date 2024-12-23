@@ -19,6 +19,7 @@ const routes = {
     base: "/settings",
     general: "/settings/general",
     categories: "/settings/categories",
+    redirections: "/settings/redirections",
   },
 };
 

@@ -26,3 +26,24 @@ export const buildUrl = (route, params) => {
 
 export const buildRoute = (route, params) =>
   route.replace(/:(\w+)/g, (match, key) => params[key] || match);
+
+export const prefixUrl = (url, baseUrl, prefixStrict) => {
+  if (!/^https?:\/\//i.test(url)) {
+    url = `https://${url}`;
+  }
+
+  try {
+    const urlObj = new URL(url);
+    if (prefixStrict) {
+      const path = urlObj.pathname + urlObj.search + urlObj.hash;
+
+      return `${baseUrl}${path}`;
+    }
+
+    return url;
+  } catch {
+    const path = url.split("/").slice(1).join("/");
+
+    return `${baseUrl}/${path}`;
+  }
+};

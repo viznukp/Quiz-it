@@ -17,7 +17,7 @@ import {
 import QuizAttempt from "components/QuizAttempt";
 import QuizConfiguration from "components/QuizConfiguration";
 import QuizResult from "components/QuizResult";
-import { General, Category } from "components/Settings";
+import { General, Category, Redirection } from "components/Settings";
 import SubmissionList from "components/SubmissionList";
 import { isLoggedIn } from "utils/auth";
 import queryClient from "utils/queryClient";
@@ -34,6 +34,11 @@ const App = () => (
         <Route exact component={QuizResult} path={routes.quiz.result} />
         <Route exact component={General} path={routes.settings.general} />
         <Route exact component={Category} path={routes.settings.categories} />
+        <Route
+          exact
+          component={Redirection}
+          path={routes.settings.redirections}
+        />
         <Route exact component={ShowQuestions} path={routes.quiz.questions} />
         <Route
           exact

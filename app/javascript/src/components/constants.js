@@ -39,4 +39,4 @@ export const DEFAULT_PAGE_SIZE = 5;
 export const DEFAULT_PAGE_SIZE_PUBLIC = 5;
 export const DEFAULT_PAGE_INDEX = 1;
 
-export const BASE_URL = "localhost:3000";
+export const BASE_URL = "https://localhost:3000";
