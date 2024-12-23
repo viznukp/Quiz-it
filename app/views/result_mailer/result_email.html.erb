@@ -1,2 +1,6 @@
-<h1>Hi!</h1>
-<p>Here is the result of your response to the quiz -----------<br></p>
+<h1>Hi! <%= @user.name %></h1>
+<p>Here is the result of your response to the quiz: <strong><%= @quiz.name %></strong><br></p>
+<p>Total questions: <%= @submission.total_questions %></p>
+<p>Correct answers: <%= @submission.correct_answers_count %></p>
+<p>Wrong answers: <%= @submission.wrong_answers_count %></p>
+<p>Unanswered: <%= @submission.unanswered_count %></p>

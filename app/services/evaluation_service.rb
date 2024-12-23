@@ -9,15 +9,16 @@ class EvaluationService
     create_submission
     evaluate_answers
     @submission.save!
+    EmailJob.perform_async(@submission.id)
   end
 
   private
 
     def create_submission
       quiz = Quiz.find_by!(slug: @params[:slug])
-      user = User.find(@params[:user_id])
+      @user = User.find(@params[:user_id])
       @questions = quiz.questions
-      @submission = Submission.new(**submission_params, user:, quiz:)
+      @submission = Submission.new(**submission_params, user: @user, quiz:)
     end
 
     def generate_answer_key

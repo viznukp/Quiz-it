@@ -3,6 +3,7 @@
 class EmailJob
   include Sidekiq::Job
 
-  def perform
+  def perform(submission_id)
+    ResultMailer.result_email(submission_id).deliver_later
   end
 end

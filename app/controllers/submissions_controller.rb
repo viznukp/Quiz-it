@@ -8,11 +8,6 @@ class SubmissionsController < ApplicationController
     render_notice(t("submission_successfully_saved"))
   end
 
-  def result_email
-    ResultMailer.result_email().deliver_now
-    render_notice("mail sent successfully")
-  end
-
   def index
     @quiz = Quiz.find_by!(slug: params[:slug])
     filtered_submissions = SubmissionFilterService.new(params).process!

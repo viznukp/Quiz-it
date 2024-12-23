@@ -14,9 +14,6 @@ const generatePdf = slug =>
 const download = () =>
   axios.get("/submissions/report/download", { responseType: "blob" });
 
-// const email = ()=> axios.get("/submissions/result_email");
-// email();
-
 const submissionsApi = {
   fetch,
   create,
