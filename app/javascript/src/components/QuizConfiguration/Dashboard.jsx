@@ -37,7 +37,7 @@ const Dashboard = ({ setActivePanel }) => {
           description={t("configurationCards.emailNotifications.description")}
           icon={<Notification />}
           title={t("configurationCards.emailNotifications.title")}
-          onClick={() => setActivePanel(CONFIGURATION_PANELS.email)}
+          onClick={() => setActivePanel(CONFIGURATION_PANELS.emailNotification)}
         />
       </div>
     </>

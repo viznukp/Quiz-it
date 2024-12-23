@@ -7,6 +7,7 @@ json.quiz do
     :status,
     :accessibility,
     :time_limit,
+    :email_notification,
     :questions
   json.last_updated_at date_and_time_from_timestamp(@quiz.updated_at)
 end

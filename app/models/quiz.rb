@@ -11,6 +11,7 @@ class Quiz < ApplicationRecord
   belongs_to :category
   has_many :questions, dependent: :delete_all
   has_many :submissions, dependent: :delete_all
+  has_one :configuration, dependent: :destroy
 
   validates :name,
     presence: true,
@@ -20,6 +21,7 @@ class Quiz < ApplicationRecord
     presence: true,
     inclusion: { in: statuses.keys }
   validates :accessibility, inclusion: { in: %w[discoverable hidden] }
+  validates :email_notification, inclusion: { in: [true, false] }
   validates :creator_id, presence: true
   validates :category_id, presence: true
   validates :slug, presence: true, uniqueness: true

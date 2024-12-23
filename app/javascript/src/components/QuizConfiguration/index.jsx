@@ -8,7 +8,7 @@ import { QUIZ_TABS, QUIZ_TAB_IDS } from "components/constants";
 
 import { CONFIGURATION_PANELS } from "./constants";
 import Dashboard from "./Dashboard";
-import Email from "./Email";
+import EmailNotification from "./EmailNotification";
 import QuizTime from "./QuizTime";
 import Visibility from "./Visibility";
 
@@ -40,8 +40,8 @@ const QuizConfiguration = () => {
         {activePanel.id === CONFIGURATION_PANELS.quizTiming.id && (
           <QuizTime setActivePanel={setActivePanel} {...quiz} />
         )}
-        {activePanel.id === CONFIGURATION_PANELS.email.id && (
-          <Email setActivePanel={setActivePanel} {...quiz} />
+        {activePanel.id === CONFIGURATION_PANELS.emailNotification.id && (
+          <EmailNotification setActivePanel={setActivePanel} {...quiz} />
         )}
       </ContentWrapper>
     </Container>

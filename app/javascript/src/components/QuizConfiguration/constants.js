@@ -14,8 +14,8 @@ export const CONFIGURATION_PANELS = {
     id: "quizTiming",
     title: i18n.t("configurationCards.timing.title"),
   },
-  email: {
-    id: "email",
+  emailNotification: {
+    id: "emailNotification",
     title: i18n.t("configurationCards.emailNotifications.title"),
   },
 };
