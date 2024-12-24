@@ -6,7 +6,7 @@ en:
   successfully_updated: "%{entity} was successfully updated!"
   successfully_deleted: "%{entity} was successfully deleted!"
   successfully_cloned: "%{entity} was successfully cloned!"
-  submission_successfully_saved: "Your response is saved successfully!"
+  submission_successfully_saved: "Your response is saved"
   signup_successful: "Signup successful. Please login to continue"
   cannot_be_published_without_questions: "Quiz cannot be published without any questions"
   order_updated: "Order changed successfully"
@@ -16,12 +16,6 @@ en:
     incorrect_credentials: "Incorrect credentials, try again."
   authorization:
     denied: "Access denied. You are not authorized to perform this action."
-  options:
-    cannot_contain_empty_values: "cannot contain empty values"
-    min_options: "must have at least %{count} options"
-    max_options: "can have at most %{count} options"
-  answer_index:
-    cannot_be_greater_than_number_of_options: "cannot be grater than number of options"
   quiz:
     slug:
      immutable: "is immutable"

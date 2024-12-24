@@ -4,6 +4,7 @@ import ColumnFilter from "./ColumnFilter";
 import ConfirmationModal from "./ConfirmationModal";
 import Container from "./Container";
 import ContentWrapper from "./ContentWrapper";
+import FeatureToggle from "./FeatureToggle";
 import LabelToLink from "./LabelToLink";
 import NavBar from "./NavBar";
 import NoData from "./NoData";
@@ -34,4 +35,5 @@ export {
   ContentWrapper,
   CategorySelector,
   ConfirmationModal,
+  FeatureToggle,
 };

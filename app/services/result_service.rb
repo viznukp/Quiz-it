@@ -32,9 +32,10 @@ class ResultService
 
     def add_submitted_answer_to_each_question(questions, submission)
       questions.map do |question|
-        question_hash = question.attributes.slice("id", "question", "options", "answer_index")
-        question_hash["correct_answer_index"] = question.answer_index
-        question_hash["user_selection_index"] = find_user_selected_choice(question, submission)
+        question_hash = question.attributes.slice("id", "question")
+        question_hash["options"] = question.options["options"]
+        question_hash["correct_answer_id"] = question.answer_id
+        question_hash["user_selection_id"] = find_user_selected_choice(question, submission)
         question_hash
       end
     end

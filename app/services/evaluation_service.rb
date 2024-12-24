@@ -9,24 +9,24 @@ class EvaluationService
     create_submission
     evaluate_answers
     @submission.save!
+    EmailJob.perform_async(@submission.id) if @quiz.email_notification if submission_params[:status] == "completed"
   end
 
   private
 
     def create_submission
-      quiz = Quiz.find_by!(slug: @params[:slug])
+      @quiz = Quiz.find_by!(slug: @params[:slug])
       user = User.find(@params[:user_id])
-      @questions = quiz.questions
-      @submission = Submission.new(**submission_params, user:, quiz:)
+      @questions = @quiz.questions
+      @submission = Submission.find_or_initialize_by(user:, quiz: @quiz)
+      @submission.answers = submission_params[:answers]
+      @submission.status = submission_params[:status]
     end
 
     def generate_answer_key
       answer_key = {}
       @questions.each do |question|
-        answer_key[question.id] = {
-          answer_index: question.answer_index,
-          option_count: question.options.count
-        }
+        answer_key[question.id] = question.answer_id
       end
       answer_key
     end
@@ -40,11 +40,11 @@ class EvaluationService
       @submission.answers.each do |answer|
         question_id = answer["question_id"]
         selected_choice = answer["selected_choice"]
-        correct_answer = answer_key[question_id][:answer_index]
+        correct_answer = answer_key[question_id]
 
         if selected_choice == correct_answer
           correct_answers_count += 1
-        elsif (1...answer_key[question_id][:options_count]).include?(selected_choice)
+        else
           wrong_answers_count += 1
         end
       end

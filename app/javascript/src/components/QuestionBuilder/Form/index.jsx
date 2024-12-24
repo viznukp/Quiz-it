@@ -24,14 +24,19 @@ const Form = ({
 }) => {
   const { t } = useTranslation();
   const submissionSource = useRef("primary");
-  const initialAnswerIndex = initialValues?.answerIndex - 1 || 0;
-  const [correctAnswerIndex, setCorrectAnswerIndex] =
+  const initialAnswerIndex = initialValues?.answerId - 1 || 0;
+  const [selectedOptionIndex, setSelectedOptionIndex] =
     useState(initialAnswerIndex);
+
+  const initialValuesFormattedForFormikForm = {
+    ...initialValues,
+    options: initialValues?.options?.map(entry => entry.option),
+  };
 
   const [formInitialValues, setFormInitialValues] = useState(() =>
     isEmpty(initialValues)
       ? QUESTION_BUILDER_FORM_INITIAL_VALUES
-      : initialValues
+      : initialValuesFormattedForFormikForm
   );
 
   const isSubmitDisabled = (isSubmitting, isDirty) =>
@@ -39,17 +44,29 @@ const Form = ({
     (!isDirty &&
       (isEmpty(initialValues)
         ? !isDirty
-        : correctAnswerIndex === initialAnswerIndex));
+        : selectedOptionIndex === initialAnswerIndex));
+
+  const prepareFormDataBeforeSubmit = formData => {
+    const formattedOptions = formData.options.map((option, index) => ({
+      id: index + 1,
+      option,
+    }));
+
+    return {
+      ...formData,
+      answerId: selectedOptionIndex + 1,
+      options: { options: formattedOptions },
+    };
+  };
 
   return (
     <div className="py-12">
       <Formik
-        enableReinitialize
         initialValues={formInitialValues}
         validationSchema={QUESTION_BUILDER_FORM_VALIDATION_SCHEMA}
         onSubmit={(values, { resetForm }) =>
           handleSubmit({
-            formData: { ...values, answerIndex: correctAnswerIndex + 1 },
+            formData: prepareFormDataBeforeSubmit(values),
             resetForm,
             submissionSource: submissionSource.current,
           })
@@ -71,7 +88,7 @@ const Form = ({
                       <div key={index}>
                         <Option
                           number={index + 1}
-                          style={correctAnswerIndex === index ? "correct" : ""}
+                          style={selectedOptionIndex === index ? "correct" : ""}
                           deleteSelf={() => {
                             if (values.options.length > MIN_OPTIONS_COUNT) {
                               remove(index);
@@ -80,7 +97,7 @@ const Form = ({
                           isRemovable={
                             values.options.length > MIN_OPTIONS_COUNT
                           }
-                          onSelectCorrect={() => setCorrectAnswerIndex(index)}
+                          onSelectCorrect={() => setSelectedOptionIndex(index)}
                         />
                         {Array.isArray(errors.options) &&
                           errors.options[index] &&
@@ -131,7 +148,7 @@ const Form = ({
                   onClick={async () => {
                     submissionSource.current = "secondary";
                     await submitForm();
-                    setCorrectAnswerIndex(0);
+                    setSelectedOptionIndex(0);
                     setFormInitialValues(QUESTION_BUILDER_FORM_INITIAL_VALUES);
                   }}
                 />

@@ -26,7 +26,7 @@ class QuestionsController < ApplicationController
   private
 
     def question_params
-      params.require(:question).permit(:question, :answer_index, options: [])
+      params.require(:question).permit(:question, :answer_id, options: {})
     end
 
     def load_question

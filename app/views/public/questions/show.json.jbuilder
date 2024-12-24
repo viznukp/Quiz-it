@@ -3,10 +3,12 @@ json.quiz do
     :id,
     :name,
     :slug,
-    :category,
-    :status
+    :time_limit
 
-  json.questions @quiz.questions.map { |question|
-    question.attributes.except("answer_index")
-  }
+  json.questions @questions do |question|
+    json.extract! question,
+      :id,
+      :question
+    json.options question.options["options"].shuffle
+  end
 end

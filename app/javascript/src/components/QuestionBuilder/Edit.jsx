@@ -1,12 +1,9 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import {
-  useHistory,
-  useParams,
-} from "react-router-dom/cjs/react-router-dom.min";
+import { useQueryClient } from "react-query";
+import { useHistory, useParams } from "react-router-dom";
 import { useShowQuestion } from "src/hooks/reactQuery/useQuestionsApi";
-import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
 import questionsApi from "apis/questions";
@@ -23,15 +20,14 @@ const Edit = () => {
   const history = useHistory();
   const { slug, id } = useParams();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const { data: { quiz } = {}, isLoading } = useShowQuestion(slug, id);
-
-  const { refetch: reloadQuizzes } = useShowQuiz(slug);
 
   const handleSubmit = async ({ formData }) => {
     try {
       await questionsApi.update(id, formData);
-      reloadQuizzes();
+      queryClient.invalidateQueries("quiz");
       history.push(routes.quiz.questions.replace(":slug", slug));
     } catch (error) {
       logger.error(error);

@@ -10,6 +10,7 @@ const routes = {
     },
     submissions: "/:slug/submissions",
     result: "/submissions/:slug/:userId/result",
+    configure: "/:slug/configure",
   },
   publicPage: "/public",
   registerStandardUser: "/user/standard/register/:slug",
