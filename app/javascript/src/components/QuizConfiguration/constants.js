@@ -18,6 +18,10 @@ export const CONFIGURATION_PANELS = {
     id: "emailNotification",
     title: i18n.t("configurationCards.emailNotifications.title"),
   },
+  questionsAndOptions: {
+    id: "questionsAndOptions",
+    title: i18n.t("configurationCards.questionsAndOptions.title"),
+  },
 };
 
 export const FORM_VALIDATION_SCHEMA = yup.object().shape({

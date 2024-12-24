@@ -10,6 +10,6 @@ json.quiz do
     json.extract! question,
       :id,
       :question
-    json.options question.options["options"]
+    json.options question.options["options"].shuffle
   end
 end

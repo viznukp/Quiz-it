@@ -18,7 +18,7 @@ const PanelWrapper = ({
   const breadcrumbsClassNames = "cursor-pointer hover:text-blue-500";
 
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <div className="flex gap-2 text-gray-500">
         <Typography
           className={breadcrumbsClassNames}

@@ -9,7 +9,9 @@ json.quiz do
     :status,
     :accessibility,
     :time_limit,
-    :email_notification
+    :email_notification,
+    :randomize_questions,
+    :randomize_options
 
   json.questions @quiz.questions.map do |question|
     json.extract! question,

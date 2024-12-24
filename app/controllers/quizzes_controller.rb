@@ -45,7 +45,16 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:name, :category_id, :status, :accessibility, :time_limit, :email_notification)
+      params.require(:quiz).permit(
+        :name,
+        :category_id,
+        :status,
+        :accessibility,
+        :time_limit,
+        :email_notification,
+        :randomize_questions,
+        :randomize_options
+      )
     end
 
     def bulk_update_params

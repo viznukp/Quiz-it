@@ -32,6 +32,9 @@ const Dashboard = ({ setActivePanel }) => {
           description={t("configurationCards.questionsAndOptions.description")}
           icon={<SettingsIcon />}
           title={t("configurationCards.questionsAndOptions.title")}
+          onClick={() =>
+            setActivePanel(CONFIGURATION_PANELS.questionsAndOptions)
+          }
         />
         <Card
           description={t("configurationCards.emailNotifications.description")}
