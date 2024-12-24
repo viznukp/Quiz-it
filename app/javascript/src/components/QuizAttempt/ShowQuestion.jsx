@@ -14,22 +14,26 @@ const ShowQuestion = ({
 }) => (
   <>
     <Typography style="h3">{question} </Typography>
-    <Formik enableReinitialize initialValues={{ options }}>
-      {({ values }) => (
+    <Formik
+      enableReinitialize
+      initialValues={{ options: options.map(entry => entry.option) }}
+      key={questionId}
+    >
+      {() => (
         <FormikForm>
           <div className="mt-4 flex flex-col gap-4">
             <FieldArray name="options">
               {() =>
-                values?.options?.map((_, index) => (
+                options?.map((option, index) => (
                   <Option
                     isDisabled
-                    key={index}
+                    key={option.id}
                     number={index + 1}
                     style={
-                      isOptionInAnswers(questionId, index + 1) ? "correct" : ""
+                      isOptionInAnswers(questionId, option.id) ? "correct" : ""
                     }
                     onSelectCorrect={() =>
-                      onOptionSelect(questionId, index + 1)
+                      onOptionSelect(questionId, option.id)
                     }
                   />
                 ))

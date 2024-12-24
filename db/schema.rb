@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_23_120202) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_23_181753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -83,11 +83,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_23_120202) do
 
   create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "question", null: false
-    t.string "options", default: [], array: true
-    t.integer "answer_index", null: false
+    t.integer "answer_id", null: false
     t.uuid "quiz_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "options", default: {}, null: false
   end
 
   create_table "quizzes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -103,6 +103,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_23_120202) do
     t.string "accessibility", default: "discoverable"
     t.integer "time_limit", default: 0
     t.boolean "email_notification", default: false
+    t.boolean "randomize_questions", default: false
+    t.boolean "randomize_options", default: false
     t.index ["category_id"], name: "index_quizzes_on_category_id"
   end
 

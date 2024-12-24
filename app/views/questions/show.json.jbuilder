@@ -3,14 +3,12 @@
 json.quiz do
   json.extract! @current_quiz,
     :name,
-    :slug,
-    :category,
-    :status
+    :slug
 
   json.question do
     json.extract! @question,
       :question,
-      :options,
-      :answer_index
+      :answer_id
+    json.options @question.options["options"]
   end
 end

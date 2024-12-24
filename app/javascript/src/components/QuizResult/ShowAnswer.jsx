@@ -13,31 +13,31 @@ const ShowAnswer = ({
   questionCount,
   question,
   options,
-  correctAnswerIndex,
-  userSelectionIndex,
+  correctAnswerId,
+  userSelectionId,
 }) => {
   const { t } = useTranslation();
 
   const getQuestionStatus = () => {
-    if (!userSelectionIndex) return STATUSES.unanswered;
+    if (!userSelectionId) return STATUSES.unanswered;
 
-    if (correctAnswerIndex === userSelectionIndex) return STATUSES.correct;
+    if (correctAnswerId === userSelectionId) return STATUSES.correct;
 
     return STATUSES.wrong;
   };
 
-  const handleOptionStyle = option => {
-    if (option === correctAnswerIndex) return "correct";
+  const handleOptionStyle = id => {
+    if (id === correctAnswerId) return "correct";
 
-    if (option === userSelectionIndex && option !== correctAnswerIndex) {
+    if (id === userSelectionId && id !== correctAnswerId) {
       return "wrong";
     }
 
     return "";
   };
 
-  const handleOptionStatusLabel = option => {
-    const optionStatus = handleOptionStyle(option);
+  const handleOptionStatusLabel = optionId => {
+    const optionStatus = handleOptionStyle(optionId);
     if (optionStatus === "correct") return t("labels.correctAnswer");
 
     if (optionStatus === "wrong") return t("labels.yourAnswer");
@@ -51,27 +51,23 @@ const ShowAnswer = ({
         {t("labels.nthQuestion", { count: questionCount })}{" "}
       </Typography>
       <Typography style="h3">{question} </Typography>
-      <Formik initialValues={{ options }}>
-        {({ values }) => (
+      <Formik initialValues={{ options: options.map(entry => entry.option) }}>
+        {() => (
           <FormikForm>
             <div className="mt-4 flex flex-col gap-4">
               <FieldArray name="options">
                 {() =>
-                  values?.options?.map((_, index) => {
-                    const optionNumber = index + 1;
-
-                    return (
-                      <Option
-                        isDisabled
-                        isStatusLabelEnabled
-                        key={index}
-                        number={optionNumber}
-                        statusLabel={handleOptionStatusLabel(optionNumber)}
-                        statusLabelStyle={handleOptionStyle(optionNumber)}
-                        style={handleOptionStyle(optionNumber)}
-                      />
-                    );
-                  })
+                  options?.map((option, index) => (
+                    <Option
+                      isDisabled
+                      isStatusLabelEnabled
+                      key={option.id}
+                      number={index + 1}
+                      statusLabel={handleOptionStatusLabel(option.id)}
+                      statusLabelStyle={handleOptionStyle(option.id)}
+                      style={handleOptionStyle(option.id)}
+                    />
+                  ))
                 }
               </FieldArray>
             </div>

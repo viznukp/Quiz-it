@@ -12,7 +12,7 @@ const QuestionDisplayCard = ({
   question,
   id,
   options,
-  answerIndex,
+  answerId,
   slug,
   refetchQuiz,
 }) => {
@@ -68,10 +68,10 @@ const QuestionDisplayCard = ({
         </Dropdown>
       </div>
       <Radio stacked>
-        {options?.map((option, index) => (
+        {options?.map(({ id, option }) => (
           <Radio.Item
-            checked={options[answerIndex - 1] === option}
-            key={index}
+            checked={answerId === id}
+            key={id}
             label={option}
             value={option}
           />
