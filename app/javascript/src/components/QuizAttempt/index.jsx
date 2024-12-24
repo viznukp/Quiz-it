@@ -14,27 +14,29 @@ import { useShowQuiz } from "hooks/reactQuery/usePublicApi";
 import { buildRoute } from "utils/url";
 
 import ShowQuestion from "./ShowQuestion";
+import Timer from "./Timer";
 
 const QuizAttempt = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const history = useHistory();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState([]);
+  const [userAnswers, setUserAnswers] = useState([{}]);
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userId, setUserId] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [timeLimit, setTimeLimit] = useState(0);
   const questionCount = questions.length;
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questionCount - 1;
 
   const { data = {}, isLoading } = useShowQuiz(slug);
-
   const fetchQuestions = async userId => {
     try {
-      const { quiz: { questions = [] } = {} } =
+      const { quiz: { questions = [], timeLimit = 0 } = {} } =
         await publicApi.fetchQuestionsForAttempt(slug, userId);
       setQuestions(questions);
+      setTimeLimit(timeLimit);
       setIsUserAuthenticated(true);
     } catch (error) {
       logger.error(error);
@@ -51,17 +53,19 @@ const QuizAttempt = () => {
     fetchQuestions(registrationResponse.id);
   };
 
-  const handleResponseSubmission = async () => {
+  const handleResponseSubmission = async status => {
     try {
       await submissionsApi.create({
         submission: {
-          status: "completed",
+          status,
           answers: userAnswers,
         },
         slug,
         userId,
       });
-      history.replace(buildRoute(routes.quiz.result, { slug, userId }));
+      if (status === "completed") {
+        history.replace(buildRoute(routes.quiz.result, { slug, userId }));
+      }
     } catch (error) {
       logger.error(error);
     }
@@ -130,6 +134,14 @@ const QuizAttempt = () => {
   return (
     <div className="neeto-ui-bg-gray-200 flex h-screen items-center justify-center overflow-y-auto p-6">
       <div className="flex w-full max-w-lg flex-col gap-2 rounded-3xl bg-white p-16 sm:max-w-xl md:max-w-2xl lg:max-w-3xl">
+        {timeLimit > 0 && (
+          <Timer
+            callbackIntervalInSeconds={60}
+            totalTimeInMinutes={timeLimit}
+            onFixedInterval={() => handleResponseSubmission("incomplete")}
+            onTimerEnd={() => handleResponseSubmission("completed")}
+          />
+        )}
         <Typography weight="semibold">
           {t("labels.questionFromPool", {
             current: currentQuestionIndex + 1,
@@ -156,7 +168,7 @@ const QuizAttempt = () => {
           {isLastQuestion && (
             <Button
               label={t("labels.saveAndSubmit")}
-              onClick={handleResponseSubmission}
+              onClick={() => handleResponseSubmission("completed")}
             />
           )}
         </div>

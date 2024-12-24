@@ -9,7 +9,7 @@ class EvaluationService
     create_submission
     evaluate_answers
     @submission.save!
-    EmailJob.perform_async(@submission.id) if @quiz.email_notification
+    EmailJob.perform_async(@submission.id) if @quiz.email_notification if submission_params[:status] == "completed"
   end
 
   private
@@ -18,7 +18,9 @@ class EvaluationService
       @quiz = Quiz.find_by!(slug: @params[:slug])
       user = User.find(@params[:user_id])
       @questions = @quiz.questions
-      @submission = Submission.new(**submission_params, user:, quiz: @quiz)
+      @submission = Submission.find_or_initialize_by(user:, quiz: @quiz)
+      @submission.answers = submission_params[:answers]
+      @submission.status = submission_params[:status]
     end
 
     def generate_answer_key

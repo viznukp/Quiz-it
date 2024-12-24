@@ -3,8 +3,7 @@ json.quiz do
     :id,
     :name,
     :slug,
-    :category,
-    :status
+    :time_limit
 
   json.questions @questions do |question|
     json.extract! question,
