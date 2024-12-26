@@ -10,19 +10,28 @@ import redirectionsApi from "apis/redirections";
 import { BASE_URL } from "components/constants";
 import { prefixUrl } from "utils/url";
 
-import { URL_VALIDATION_SCHEMA } from "./constants";
+import {
+  URL_VALIDATION_SCHEMA,
+  CREATE_REDIRECTION_FORM_INITIAL_VALUES,
+} from "./constants";
 import UrlPreview from "./UrlPreview";
 
-const Create = ({ onClose }) => {
+const CreateOrEdit = ({ id, initialValues, onClose, mode = "create" }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const handleCreateRedirection = async ({ fromUrl, toUrl }) => {
     try {
-      await redirectionsApi.create({
+      const payload = {
         source: prefixUrl(fromUrl, BASE_URL, true),
         destination: prefixUrl(toUrl, BASE_URL),
-      });
+      };
+
+      if (mode === "update") {
+        await redirectionsApi.update(id, payload);
+      } else {
+        await redirectionsApi.create(payload);
+      }
       queryClient.invalidateQueries("redirections");
       onClose();
     } catch (error) {
@@ -32,14 +41,14 @@ const Create = ({ onClose }) => {
 
   return (
     <Form
-      className="grid w-full grid-cols-2 items-start gap-4 py-2"
+      className="grid w-full grid-cols-2 items-start gap-12 py-2"
       formikProps={{
-        initialValues: { fromUrl: "/", toUrl: "" },
+        initialValues: initialValues || CREATE_REDIRECTION_FORM_INITIAL_VALUES,
         validationSchema: URL_VALIDATION_SCHEMA,
         onSubmit: handleCreateRedirection,
       }}
     >
-      {({ values }) => (
+      {({ values, dirty }) => (
         <>
           <div className="flex flex-col gap-2">
             <UrlPreview url={prefixUrl(values.fromUrl, BASE_URL, true)} />
@@ -65,7 +74,9 @@ const Create = ({ onClose }) => {
                 tooltipProps={{ content: t("labels.save"), position: "top" }}
                 type="submit"
                 disabled={
-                  values.fromUrl.trim() === "" || values.toUrl.trim() === ""
+                  values.fromUrl.trim() === "" ||
+                  values.toUrl.trim() === "" ||
+                  !dirty
                 }
               />
               <Button
@@ -84,4 +95,4 @@ const Create = ({ onClose }) => {
   );
 };
 
-export default Create;
+export default CreateOrEdit;

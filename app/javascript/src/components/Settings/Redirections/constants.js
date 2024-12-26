@@ -27,3 +27,8 @@ export const URL_VALIDATION_SCHEMA = yup.object().shape({
   fromUrl: urlValidation,
   toUrl: urlValidation,
 });
+
+export const CREATE_REDIRECTION_FORM_INITIAL_VALUES = {
+  fromUrl: "/",
+  toUrl: "",
+};

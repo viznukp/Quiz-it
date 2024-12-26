@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Container, ContentWrapper, NavBar } from "components/commons";
 import { useFetchRedirections } from "hooks/reactQuery/useRedirectionsApi";
 
-import Create from "./Create";
+import CreateOrEdit from "./CreateOrEdit";
 import UrlCard from "./UrlCard";
 
 import { SETTINGS_TABS, SETTINGS_TAB_IDS } from "../constants";
@@ -31,7 +31,7 @@ const Redirection = () => {
         <Typography>{t("redirectionsDescription")}</Typography>
         <div className="mt-12 flex flex-col gap-3">
           {!isEmpty(redirections) && (
-            <div className="grid grid-cols-2 gap-4 border-b pb-2">
+            <div className="grid grid-cols-2 gap-12 border-b pb-2">
               <Typography weight="semibold">{t("labels.from")}</Typography>
               <Typography weight="semibold">{t("labels.to")}</Typography>
             </div>
@@ -41,7 +41,7 @@ const Redirection = () => {
           ))}
           {isCreatingRedirection && (
             <div className="bg-white p-4 shadow-sm">
-              <Create onClose={() => setIsCreatingRedirection(false)} />
+              <CreateOrEdit onClose={() => setIsCreatingRedirection(false)} />
             </div>
           )}
         </div>

@@ -6,14 +6,13 @@ import { useTranslation } from "react-i18next";
 
 import { TruncatedLabel } from "components/commons";
 
-const Show = ({ source, destination }) => {
+const Show = ({ source, destination, onEdit }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="grid w-full grid-cols-2 gap-4 py-2">
-      {/* <Typography className=" break-words">{source}</Typography> */}
+    <div className="grid w-full grid-cols-2 gap-12 py-2">
       <TruncatedLabel className="text-gray-500" label={source} />
-      <div className="flex w-full flex-1 justify-between">
+      <div className="flex w-full flex-1 justify-between gap-2">
         <TruncatedLabel className="text-gray-500" label={destination} />
         <div className="h-8 w-8">
           <Dropdown
@@ -23,7 +22,7 @@ const Show = ({ source, destination }) => {
             }}
           >
             <div className="flex flex-col">
-              <Button label={t("labels.edit")} style="text" />
+              <Button label={t("labels.edit")} style="text" onClick={onEdit} />
               <Button label={t("labels.delete")} style="text" />
             </div>
           </Dropdown>

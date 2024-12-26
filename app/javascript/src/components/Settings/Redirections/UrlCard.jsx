@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
-import Create from "./Create";
+import CreateOrEdit from "./CreateOrEdit";
 import Show from "./Show";
 
-const UrlCard = ({ status, redirectionData }) => (
-  <div className="bg-white p-4 shadow-sm">
-    {status === "edit" ? <Create /> : <Show {...redirectionData} />}
-  </div>
-);
+const UrlCard = ({ redirectionData }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  return (
+    <div className="bg-white p-4 shadow-sm">
+      {isEditing ? (
+        <CreateOrEdit
+          id={redirectionData.id}
+          mode="update"
+          initialValues={{
+            fromUrl: redirectionData.source,
+            toUrl: redirectionData.destination,
+          }}
+          onClose={() => setIsEditing(false)}
+        />
+      ) : (
+        <Show {...redirectionData} onEdit={() => setIsEditing(true)} />
+      )}
+    </div>
+  );
+};
 
 export default UrlCard;

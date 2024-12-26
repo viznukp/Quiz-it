@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       resources :quizzes, only: %i[index show], param: :slug
       resources :questions, only: :show, param: :slug
     end
-    resources :redirections, only: %i[index create]
+    resources :redirections, only: %i[index create update]
   end
 
   root "home#index"
