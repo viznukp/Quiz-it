@@ -13,7 +13,7 @@ import { prefixUrl } from "utils/url";
 import { URL_VALIDATION_SCHEMA } from "./constants";
 import UrlPreview from "./UrlPreview";
 
-const CreateUrl = ({ onClose }) => {
+const Create = ({ onClose }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
@@ -84,4 +84,4 @@ const CreateUrl = ({ onClose }) => {
   );
 };
 
-export default CreateUrl;
+export default Create;

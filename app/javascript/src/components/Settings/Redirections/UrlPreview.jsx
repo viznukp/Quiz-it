@@ -1,15 +1,18 @@
 import React from "react";
 
-import { Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
+
+import { TruncatedLabel } from "components/commons";
 
 const UrlPreview = ({ url }) => {
   const { t } = useTranslation();
 
   return (
-    <Typography className="overflow-x-auto italic text-gray-400" style="body3">
-      {t("labels.preview")}: {url}
-    </Typography>
+    <TruncatedLabel
+      className="w-full italic text-gray-400"
+      label={`${t("labels.preview")}: ${url}`}
+      typographyStyle="body3"
+    />
   );
 };
 

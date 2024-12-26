@@ -1,11 +1,11 @@
 import React from "react";
 
-import CreateUrl from "./CreateUrl";
-import ShowUrl from "./ShowUrl";
+import Create from "./Create";
+import Show from "./Show";
 
 const UrlCard = ({ status, redirectionData }) => (
   <div className="bg-white p-4 shadow-sm">
-    {status === "edit" ? <CreateUrl /> : <ShowUrl {...redirectionData} />}
+    {status === "edit" ? <Create /> : <Show {...redirectionData} />}
   </div>
 );
 
