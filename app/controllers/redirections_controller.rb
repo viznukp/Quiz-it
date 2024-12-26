@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RedirectionsController < ApplicationController
-  before_action :load_redirection, only: :update
+  before_action :load_redirection, only: %i[update destroy]
 
   def create
     Redirection.create!(redirection_params)
@@ -13,8 +13,13 @@ class RedirectionsController < ApplicationController
   end
 
   def update
-    @redirection.update(redirection_params)
+    @redirection.update!(redirection_params)
     render_notice(t("successfully_updated", entity: "Redirection"))
+  end
+
+  def destroy
+    @redirection.destroy!
+    render_notice(t("successfully_deleted", entity: "Redirection"))
   end
 
   private

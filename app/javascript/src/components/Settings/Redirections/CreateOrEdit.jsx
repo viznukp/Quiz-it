@@ -20,7 +20,7 @@ const CreateOrEdit = ({ id, initialValues, onClose, mode = "create" }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const handleCreateRedirection = async ({ fromUrl, toUrl }) => {
+  const handleCreateOrUpdateRedirection = async ({ fromUrl, toUrl }) => {
     try {
       const payload = {
         source: prefixUrl(fromUrl, BASE_URL, true),
@@ -45,7 +45,7 @@ const CreateOrEdit = ({ id, initialValues, onClose, mode = "create" }) => {
       formikProps={{
         initialValues: initialValues || CREATE_REDIRECTION_FORM_INITIAL_VALUES,
         validationSchema: URL_VALIDATION_SCHEMA,
-        onSubmit: handleCreateRedirection,
+        onSubmit: handleCreateOrUpdateRedirection,
       }}
     >
       {({ values, dirty }) => (

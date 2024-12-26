@@ -25,7 +25,7 @@ const ConfirmationModal = ({
         <div className="flex gap-3">
           <Button
             disabled={isPrimaryButtonDisabled}
-            label={primaryButtonLabel}
+            label={primaryButtonLabel || t("labels.confirm")}
             style={primaryButtonStyle}
             onClick={() => {
               primaryButtonAction();
