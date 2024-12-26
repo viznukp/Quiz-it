@@ -20,10 +20,11 @@ const CreateUrl = ({ onClose }) => {
   const handleCreateRedirection = async ({ fromUrl, toUrl }) => {
     try {
       await redirectionsApi.create({
-        source: fromUrl,
-        destination: toUrl,
+        source: prefixUrl(fromUrl, BASE_URL, true),
+        destination: prefixUrl(toUrl, BASE_URL),
       });
       queryClient.invalidateQueries("redirections");
+      onClose();
     } catch (error) {
       logger.error(error);
     }
