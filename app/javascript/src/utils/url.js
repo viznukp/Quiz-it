@@ -27,23 +27,22 @@ export const buildUrl = (route, params) => {
 export const buildRoute = (route, params) =>
   route.replace(/:(\w+)/g, (match, key) => params[key] || match);
 
-export const prefixUrl = (url, baseUrl, prefixStrict) => {
-  if (!/^https?:\/\//i.test(url)) {
-    url = `https://${url}`;
+export const prefixUrl = (url, baseUrl, replaceDomain = false) => {
+  if (replaceDomain) {
+    const urlSegments = url.replace(/^https?:\/\//i, "").split("/");
+    const path = urlSegments.slice(1).join("/");
+
+    return `${baseUrl}/${path.replace(/^\/+/, "")}`;
   }
 
-  try {
-    const urlObj = new URL(url);
-    if (prefixStrict) {
-      const path = urlObj.pathname + urlObj.search + urlObj.hash;
+  if (/^https?:\/\//i.test(url)) return url;
 
-      return `${baseUrl}${path}`;
-    }
+  const urlSegments = url.split("/");
+  const isSubdomainPresent = urlSegments[0].split(".").length > 1;
 
-    return url;
-  } catch {
-    const path = url.split("/").slice(1).join("/");
-
-    return `${baseUrl}/${path}`;
+  if (isSubdomainPresent) {
+    return `https://${url}`;
   }
+
+  return `${baseUrl}/${url.replace(/^\/+/, "")}`;
 };

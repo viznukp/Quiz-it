@@ -1,65 +1,85 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Close, Check } from "neetoicons";
-import { Input, Button } from "neetoui";
+import { Button } from "neetoui";
+import { Form, Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
-// import { useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 
-// import redirectionsApi from "apis/redirections";
+import redirectionsApi from "apis/redirections";
 import { BASE_URL } from "components/constants";
+import { prefixUrl } from "utils/url";
+
+import { URL_VALIDATION_SCHEMA } from "./constants";
+import UrlPreview from "./UrlPreview";
 
 const CreateUrl = ({ onClose }) => {
   const { t } = useTranslation();
-  // const queryClient = useQueryClient();
-  const [fromUrl, setFromUrl] = useState(BASE_URL);
-  const [toUrl, setToUrl] = useState("");
+  const queryClient = useQueryClient();
 
-  const handleCreateRedirection = async () => {
+  const handleCreateRedirection = async ({ fromUrl, toUrl }) => {
     try {
-      // console.log(replaceBaseUrl(fromUrl, BASE_URL));
-      // await redirectionsApi.create({ source: fromUrl, destination: toUrl });
-      // queryClient.invalidateQueries("redirections");
+      await redirectionsApi.create({
+        source: fromUrl,
+        destination: toUrl,
+      });
+      queryClient.invalidateQueries("redirections");
     } catch (error) {
       logger.error(error);
     }
   };
 
   return (
-    <>
-      <Input
-        className="w-full"
-        name="from"
-        placeholder={t("placeHolders.enterSourceUrl")}
-        value={fromUrl}
-        onChange={event => setFromUrl(event.target.value)}
-      />
-      <div className="flex items-center gap-2">
-        <Input
-          className="flex-grow"
-          name="to"
-          placeholder={t("placeHolders.enterDestinationUrl")}
-          value={toUrl}
-          onChange={event => setToUrl(event.target.value)}
-        />
-        <Button
-          className="text-green-500"
-          disabled={fromUrl.trim() === "" || toUrl.trim() === ""}
-          icon={Check}
-          size="small"
-          style="text"
-          tooltipProps={{ content: t("labels.save"), position: "top" }}
-          onClick={handleCreateRedirection}
-        />
-        <Button
-          className="text-red-500"
-          icon={Close}
-          size="small"
-          style="text"
-          tooltipProps={{ content: t("labels.cancel"), position: "top" }}
-          onClick={onClose}
-        />
-      </div>
-    </>
+    <Form
+      className="grid w-full grid-cols-2 items-start gap-4 py-2"
+      formikProps={{
+        initialValues: { fromUrl: "/", toUrl: "" },
+        validationSchema: URL_VALIDATION_SCHEMA,
+        onSubmit: handleCreateRedirection,
+      }}
+    >
+      {({ values }) => (
+        <>
+          <div className="flex flex-col gap-2">
+            <UrlPreview url={prefixUrl(values.fromUrl, BASE_URL, true)} />
+            <Input
+              className="w-full"
+              name="fromUrl"
+              placeholder={t("placeHolders.enterSourceUrl")}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <UrlPreview url={prefixUrl(values.toUrl, BASE_URL)} />
+            <div className="flex items-start gap-2">
+              <Input
+                className="flex-grow"
+                name="toUrl"
+                placeholder={t("placeHolders.enterDestinationUrl")}
+              />
+              <Button
+                className="text-green-500"
+                icon={Check}
+                size="small"
+                style="text"
+                tooltipProps={{ content: t("labels.save"), position: "top" }}
+                type="submit"
+                disabled={
+                  values.fromUrl.trim() === "" || values.toUrl.trim() === ""
+                }
+              />
+              <Button
+                className="text-red-500"
+                icon={Close}
+                size="small"
+                style="text"
+                tooltipProps={{ content: t("labels.cancel"), position: "top" }}
+                onClick={onClose}
+              />
+            </div>
+          </div>
+        </>
+      )}
+    </Form>
   );
 };
 

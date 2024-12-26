@@ -14,7 +14,11 @@ export const QUESTION_BUILDER_FORM_VALIDATION_SCHEMA = yup.object({
   question: yup
     .string()
     .trim()
-    .required(i18n.t("messages.error.requiredQuestion")),
+    .required(
+      i18n.t("messages.error.requiredEntity", {
+        entity: i18n.t("labels.question"),
+      })
+    ),
   options: yup
     .array()
     .of(yup.string().trim().required(i18n.t("messages.error.nonEmptyOption")))

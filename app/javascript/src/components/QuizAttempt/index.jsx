@@ -21,7 +21,7 @@ const QuizAttempt = () => {
   const { slug } = useParams();
   const history = useHistory();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState([{}]);
+  const [userAnswers, setUserAnswers] = useState([]);
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userId, setUserId] = useState("");
   const [questions, setQuestions] = useState([]);

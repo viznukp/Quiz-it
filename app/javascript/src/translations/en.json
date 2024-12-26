@@ -105,7 +105,13 @@
     "redirections": "Redirections",
     "addNewRedirection": "Add new redirection",
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "configure": "Configure",
+    "quizSettings": "Quiz settings",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "preview": "Preview",
+    "question": "Question"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -122,13 +128,14 @@
       "invalidEmail": "Invalid email address!",
       "matchPassword": "Passwords must match!",
       "requiredField": "This field is required!",
-      "requiredQuestion": "Question is required!",
+      "requiredEntity": "{{entity}} is required!",
       "nonEmptyOption": "Option cannot be empty!",
       "minRequiredOptions": "At least {{count}} options are required!",
       "maxAllowedOptions": "No more than {{count}} options are allowed!",
       "uniqueOptions": "Duplicate options are not permitted!",
       "failedToCopyLink": "Failed to copy the quiz link: {{error}}",
-      "invalidQuizLink": "Invalid quiz link"
+      "invalidQuizLink": "Invalid quiz link",
+      "enterValidUrl": "Please enter a valid URL"
     },
     "info": {
       "noEntityToShow": "There are no {{entity}} to show!",
@@ -214,5 +221,6 @@
       "title": "Email notification",
       "description": "Receive an email when a quiz is submitted."
     }
-  }
+  },
+  "redirectionsDescription": "Create and configure redirection rules to send users from old public quiz links to the new links"
 }

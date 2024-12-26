@@ -9,7 +9,7 @@ import { Container, ContentWrapper, NavBar } from "components/commons";
 import { useFetchRedirections } from "hooks/reactQuery/useRedirectionsApi";
 
 import CreateUrl from "./CreateUrl";
-import Entry from "./Entry";
+import UrlCard from "./UrlCard";
 
 import { SETTINGS_TABS, SETTINGS_TAB_IDS } from "../constants";
 
@@ -37,13 +37,11 @@ const Redirection = () => {
             </div>
           )}
           {redirections.map(redirection => (
-            <Entry key={redirection.id} redirectionData={redirection} />
+            <UrlCard key={redirection.id} redirectionData={redirection} />
           ))}
           {isCreatingRedirection && (
             <div className="bg-white p-4 shadow-sm">
-              <div className="grid w-full grid-cols-2  items-start gap-4 py-2">
-                <CreateUrl onClose={() => setIsCreatingRedirection(false)} />
-              </div>
+              <CreateUrl onClose={() => setIsCreatingRedirection(false)} />
             </div>
           )}
         </div>
