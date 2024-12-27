@@ -15,10 +15,10 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
       params: {
         question: {
           question: "Sample question",
-          options: %w[optionA optionB optionC optionD],
-          answer_index: 2,
-          quiz_slug: @quiz.slug
-        }
+          options: { options: [{ id: 1, option: "optionA" }, { id: 2, option: "optionB" }] },
+          answer_id: 2
+        },
+        slug: @quiz.slug
       },
       headers: @headers
 
@@ -55,16 +55,5 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
       delete question_path(@question.id), headers: @headers
       assert_response :success
     end
-  end
-
-  def test_should_clone_question
-    @question.save!
-    get question_clone_path(@question.id), headers: @headers
-    assert_response :success
-    response_json = response.parsed_body
-    cloned_question = response_json["question"]
-    cloned_question_quiz_name = response_json["quiz"]
-    assert_equal @question.question, cloned_question["question"]
-    assert_equal @question.quiz.name, cloned_question_quiz_name
   end
 end

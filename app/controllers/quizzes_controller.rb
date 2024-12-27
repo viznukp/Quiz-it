@@ -8,12 +8,12 @@ class QuizzesController < ApplicationController
 
   def index
     scoped_quizzes = policy_scope(Quiz.all)
-    @filtered_quizzes, @quizzes_metadata = QuizFilterService.new(params[:filters], scoped_quizzes).process!
+    @filtered_quizzes, @quizzes_metadata = QuizFilterService.new(filter_params, scoped_quizzes).process!
     @pagination_metadata, @paginated_quizzes = PaginationService.new(params, @filtered_quizzes).process!
   end
 
   def create
-    current_user.quizzes.create(quiz_params)
+    current_user.quizzes.create!(quiz_params)
     render_notice(t("successfully_created", entity: "Quiz"))
   end
 
@@ -69,5 +69,9 @@ class QuizzesController < ApplicationController
     def load_quizzes
       @quizzes = Quiz.where(slug: params[:quizzes][:slugs])
       render_error(t("not_found", entity: "Quizzes")) if @quizzes.empty?
+    end
+
+    def filter_params
+      params[:filters] || {}
     end
 end

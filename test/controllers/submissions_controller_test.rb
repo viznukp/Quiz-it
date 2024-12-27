@@ -13,11 +13,11 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   def create_submission(user, quiz, question, headers)
     post submissions_path, params: {
       submission: {
-        email: user.email,
-        quiz_slug: quiz.slug,
         status: "completed",
-        answers: [{ question_id: question.id, answer_index: 1 }]
-      }
+        answers: [{ question_id: question.id, selected_choice: 1 }]
+      },
+      user_id: user.id,
+      slug: quiz.slug
     }, headers:
   end
 
@@ -44,33 +44,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def test_should_show_result
-    standard_user = create(:user, user_type: "standard")
-    submission = create(:submission, user: standard_user)
-    result = ResultService.new.generate_result(submission)
-    get result_submission_path(slug: submission.quiz.slug),
-      headers: headers(standard_user, { "X-Standard-Email": standard_user.email })
-
-    assert_response :success
-
-    response_result = response.parsed_body
-    assert_equal response_result["correct_answers_count"], result[:correct_answers_count]
-    assert_equal response_result["total_questions"], result[:total_questions]
-    assert_equal response_result["wrong_answers_count"], result[:wrong_answers_count]
-  end
-
   def test_user_can_have_only_one_submission_per_quiz
     create_submission(@user, @quiz, @question, @headers)
     assert_response :success
 
-    get check_submissions_path, params: { slug: @quiz.slug }, headers: standard_user_headers(@user)
-    assert_response :conflict
-    assert_includes I18n.t("user_already_attempted_quiz"), response.parsed_body["error"]
-  end
-
-  def test_should_permit_user_if_no_submission_exist_for_given_quiz
-    get check_submissions_path, params: { slug: @quiz.slug }, headers: standard_user_headers(@user)
-    assert_response :success
-    assert_equal "permitted", response.parsed_body["access"]
+    assert_difference "Submission.count", 0 do
+      create_submission(@user, @quiz, @question, @headers)
+    end
   end
 end

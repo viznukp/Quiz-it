@@ -5,7 +5,7 @@ class Quiz < ApplicationRecord
   VALID_NAME_REGEX = /\A.*[a-zA-Z0-9].*\z/i
 
   enum :status, { draft: "draft", published: "published" }, default: :draft
-  enum :accessibility, { discoverable: "discoverable", hidden: "hidden" }, default: :public
+  enum :accessibility, { discoverable: "discoverable", hidden: "hidden" }, default: :discoverable
 
   belongs_to :creator, foreign_key: "creator_id", class_name: "User"
   belongs_to :category

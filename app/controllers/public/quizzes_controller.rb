@@ -9,7 +9,7 @@ class Public::QuizzesController < ApplicationController
 
   def show
     @quiz = Quiz.find_by!(slug: params[:slug])
-    render_error("Invalid link") if @quiz.draft?
+    render_error(t("invalid_link")) if @quiz.draft?
   end
 
   private
