@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { MenuHorizontal } from "neetoicons";
 import { Radio, Typography, Button, Dropdown } from "neetoui";
@@ -7,6 +7,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import routes from "src/routes";
 
 import questionsApi from "apis/questions";
+
+import Delete from "./Delete";
 
 const QuestionDisplayCard = ({
   question,
@@ -18,15 +20,7 @@ const QuestionDisplayCard = ({
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
-
-  const handleQuestionDelete = async () => {
-    try {
-      await questionsApi.destroy(id);
-      refetchQuiz();
-    } catch (error) {
-      logger.error(error);
-    }
-  };
+  const [isDeleteActive, setIsDeleteActive] = useState(false);
 
   const handleQuestionClone = async () => {
     try {
@@ -62,7 +56,7 @@ const QuestionDisplayCard = ({
             <Button
               label={t("labels.delete")}
               style="danger-text"
-              onClick={handleQuestionDelete}
+              onClick={() => setIsDeleteActive(true)}
             />
           </div>
         </Dropdown>
@@ -77,6 +71,13 @@ const QuestionDisplayCard = ({
           />
         ))}
       </Radio>
+      {isDeleteActive && (
+        <Delete
+          id={id}
+          isActive={isDeleteActive}
+          onCancel={() => setIsDeleteActive(false)}
+        />
+      )}
     </div>
   );
 };

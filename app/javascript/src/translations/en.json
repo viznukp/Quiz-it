@@ -112,7 +112,9 @@
     "minutes": "Minutes",
     "preview": "Preview",
     "question": "Question",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "redirectionLower": "redirection",
+    "questionLower": "question"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -161,7 +163,7 @@
       "moveToNewCategory_other": "Category <strong>{{category}}</strong> has {{entity}}. Before these categories can be deleted, {{entityDescription}} needs to be moved to a new category.",
       "selectCategoryToMove": "Select a category to move these quizzes into",
       "cannotDeleteGeneralCategory": "Create another category to move quizzes from general category",
-      "confirmDeleteRedirection": "Delete redirection?"
+      "confirmDeleteEntity": "Delete {{entity}}?"
     }
   },
   "filters": {

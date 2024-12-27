@@ -3,17 +3,17 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import redirectionsApi from "apis/redirections";
+import questionsApi from "apis/questions";
 import { ConfirmationModal } from "components/commons";
 
 const Delete = ({ id, isActive, onCancel }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const handleDeleteRedirection = async () => {
+  const handleQuestionDelete = async () => {
     try {
-      await redirectionsApi.destroy(id);
-      queryClient.invalidateQueries("redirections");
+      await questionsApi.destroy(id);
+      queryClient.invalidateQueries("quiz");
     } catch (error) {
       logger.error(error);
     }
@@ -22,10 +22,10 @@ const Delete = ({ id, isActive, onCancel }) => {
   return (
     <ConfirmationModal
       isOpen={isActive}
-      primaryButtonAction={handleDeleteRedirection}
+      primaryButtonAction={handleQuestionDelete}
       primaryButtonStyle="danger"
       title={t("messages.warnings.confirmDeleteEntity", {
-        entity: t("labels.redirectionLower"),
+        entity: t("labels.questionLower"),
       })}
       onClose={onCancel}
     />
