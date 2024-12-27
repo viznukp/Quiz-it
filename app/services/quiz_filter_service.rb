@@ -15,7 +15,7 @@ class QuizFilterService
   private
 
     def filter_quizzes
-      quizzes = @scoped_quizzes
+      quizzes = @scoped_quizzes.includes([:category])
 
       if filters[:category].present?
         quizzes = quizzes
@@ -33,6 +33,10 @@ class QuizFilterService
 
       if filters[:quiz_name].present?
         quizzes = quizzes.where("LOWER(quizzes.name) LIKE ?", "%#{filters[:quiz_name].downcase}%")
+      end
+
+      if filters[:order_by_category].present?
+        quizzes = quizzes.joins(:category).order("categories.sort_order")
       end
 
       quizzes = quizzes.order(created_at: :desc)

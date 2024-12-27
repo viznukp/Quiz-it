@@ -5,7 +5,7 @@ class CategoriesController < ApplicationController
   before_action :load_category, only: %i[update destroy]
 
   def index
-    @categories = Category.includes(:quizzes).order(:sort_order).all
+    @categories = Category.order(:sort_order).all
   end
 
   def create
