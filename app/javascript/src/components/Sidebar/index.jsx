@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import classNames from "classnames";
 import {
   List,
-  RightArrow,
-  LeftArrow,
+  Expand,
+  Collapse,
   Globe,
   Settings as SettingsIcon,
 } from "neetoicons";
@@ -44,9 +44,9 @@ const Sidebar = () => {
               toolTipLabel={t("labels.expand")}
               icon={
                 isExpanded ? (
-                  <LeftArrow color="#ff0000" />
+                  <Collapse color="#ff0000" />
                 ) : (
-                  <RightArrow color="#22C55E" />
+                  <Expand color="#22C55E" />
                 )
               }
               onClickAction={() => setIsExpanded(!isExpanded)}

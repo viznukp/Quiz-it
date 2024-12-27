@@ -1,12 +1,11 @@
 import React from "react";
 
-import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 import { DEFAULT_PAGE_SIZE } from "components/constants";
-import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
+import useQuizzesStore from "stores/useQuizzesStore";
 import { buildUrl } from "utils/url";
 
 import SubNavItem from "./SubNavItem";
@@ -17,11 +16,14 @@ const QuizFilter = ({ isVisible = false }) => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
   const history = useHistory();
+  const { quizCounts } = useQuizzesStore();
   const { status = STATUSES.ALL } = queryParams;
   const { pageSize = DEFAULT_PAGE_SIZE } = queryParams;
-
-  const { data: { totalQuizzes, draftQuizzes, publishedQuizzes } = {} } =
-    useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
+  const {
+    totalQuizzes = 0,
+    draftQuizzes = 0,
+    publishedQuizzes = 0,
+  } = quizCounts;
 
   const handleFilterSubmit = status =>
     history.replace(buildUrl("", { pageSize, status }));

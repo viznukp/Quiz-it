@@ -36,7 +36,7 @@ const QuizList = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
   const queryClient = useQueryClient();
-  const { setResultType } = useQuizzesStore();
+  const { setResultType, setQuizCounts } = useQuizzesStore();
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
@@ -126,7 +126,14 @@ const QuizList = () => {
   };
 
   const {
-    data: { quizzes, paginationData = {}, resultType = "all" } = {},
+    data: {
+      quizzes,
+      totalQuizzes = 0,
+      draftQuizzes = 0,
+      publishedQuizzes = 0,
+      paginationData = {},
+      resultType = "all",
+    } = {},
     isLoading,
     refetch: reloadQuizzes,
   } = useFetchQuizzes({ filters: mergeLeft({ pageSize }, queryParams) });
@@ -135,6 +142,7 @@ const QuizList = () => {
     setResultType(resultType);
     setSelectedQuizzesIds([]);
     setSelectedQuizzesSlugs([]);
+    setQuizCounts({ totalQuizzes, draftQuizzes, publishedQuizzes });
   }, [quizzes]);
 
   if (isLoading) return <PageLoader className="h-64" />;
@@ -234,10 +242,10 @@ const QuizList = () => {
       />
       <Pagination
         className="mt-3"
-        page={page}
+        page={Number(page)}
         pageCount={paginationData.count}
         pageNumberFromApi={Number(paginationData.page)}
-        pageSize={pageSize}
+        pageSize={Number(pageSize)}
       />
       <ConfirmationModal
         isOpen={isDeleteConfirmationModalOpen}
