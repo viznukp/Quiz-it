@@ -50,8 +50,7 @@ end
 def standard_user_headers(user, options = {})
   {
     Accept: "application/json",
-    "Content_Type" => "application/json",
-    "X-Standard-Email" => user.email
+    "Content_Type" => "application/json"
   }.merge(options)
 end
 

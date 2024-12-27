@@ -4,18 +4,17 @@ require "test_helper"
 require "sidekiq/testing"
 
 class Submissions::ResultsControllerTest < ActionDispatch::IntegrationTest
-  # def test_should_show_result
-  #   standard_user = create(:user, user_type: "standard")
-  #   submission = create(:submission, user: standard_user)
-  #   result = ResultService.new.generate_result(submission)
-  #   get result_submission_path(slug: submission.quiz.slug),
-  #     headers: headers(standard_user, { "X-Standard-Email": standard_user.email })
+  def test_should_show_result
+    standard_user = create(:user, user_type: "standard")
+    quiz = create(:quiz, creator: standard_user)
+    question = create(:question, quiz:)
+    answers = [{ question_id: question.id, selected_choice: 1 }]
+    submission = create(:submission, quiz:, user: standard_user, answers:)
+    headers = standard_user_headers(standard_user)
+    get(
+      submission_result_path(submission_slug: submission.quiz.slug),
+      params: { user_id: standard_user.id }, headers:)
 
-  #   assert_response :success
-
-  #   response_result = response.parsed_body
-  #   assert_equal response_result["correct_answers_count"], result[:correct_answers_count]
-  #   assert_equal response_result["total_questions"], result[:total_questions]
-  #   assert_equal response_result["wrong_answers_count"], result[:wrong_answers_count]
-  # end
+    assert_response :success
+  end
 end
