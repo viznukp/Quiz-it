@@ -30,7 +30,7 @@ const QuizFilter = ({ isVisible = false }) => {
 
   return (
     isVisible && (
-      <div className="flex flex-col gap-2 border-b py-2 pl-6">
+      <div className="flex w-full flex-col gap-2 border-b py-2 pl-6">
         <SubNavItem
           count={totalQuizzes}
           isActive={status === STATUSES.ALL}
