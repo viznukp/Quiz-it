@@ -16,6 +16,7 @@ import {
   Pagination,
   ActiveFilters,
   TruncatedLabel,
+  ConfirmationModal,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -27,7 +28,6 @@ import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
 
 import ActionList from "./ActionList";
-import ConfirmationModal from "./ConfirmationModal";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
 import SearchableCategorySelector from "./SearchableCategorySelector";

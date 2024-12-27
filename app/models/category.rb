@@ -10,6 +10,7 @@ class Category < ApplicationRecord
 
   validates :name,
     presence: true,
+    uniqueness: true,
     length: { maximum: MAX_NAME_LENGTH },
     format: { with: VALID_NAME_REGEX }
 end
