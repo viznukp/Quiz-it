@@ -5,11 +5,6 @@ task setup: [:environment, "db:drop", "db:create", "db:migrate"] do
   Rake::Task["reset_and_populate_sample_data"].invoke if Rails.env.development?
 end
 
-# desc "drops the db, creates db, migrates db and populates sample data"
-# task setup: [:environment] do
-#   Rake::Task["reset_and_populate_sample_data"].invoke if Rails.env.development?
-# end
-
 desc "Populates sample data without resetting the database first"
 task populate_sample_data: [:environment] do
   create_sample_data!
@@ -39,6 +34,7 @@ def delete_all_records_from_all_tables
     raise "deleting all records in production is not allowed"
   else
     Rake::Task["db:schema:load"].invoke
+    Question.reset_column_information
   end
 end
 
@@ -62,6 +58,7 @@ def create_quizzes(categories, user)
     questions = sample_questions(category)
 
     questions.each do |question|
+      # puts Question.new.inspect
       Question.create!(
         question: question[:question],
         options: question[:options],
@@ -92,16 +89,10 @@ def create_submissions_for_three_quizzes!(users)
   quizzes.each do |quiz|
     quiz.update!(status: "published")
     2.times do |i|
-      # submission = Submission.new(
-      #   user: users[i],
-      #   quiz: quiz,
-      #   status: "completed",
-      # )
       answers = create_random_answers(quiz)
       submission_params = ActionController::Parameters.new(
         {submission: { status: "completed", answers:}, user_id: users[i].id, slug: quiz.slug,}
       )
-      # puts submission_params
       EvaluationService.new(submission_params).process!
     end
   end
@@ -118,32 +109,6 @@ def create_random_answers(quiz)
   end
   answers
 end
-
-# def create_random_answers(quiz, submission)
-#   correct_answers_count = 0
-#   wrong_answers_count = 0
-
-#   answers = quiz.questions.map do |question|
-#     selected_choice = rand(1..4)
-#     correct_answer = question.answer_id
-
-#     if selected_choice == correct_answer
-#       correct_answers_count += 1
-#     else
-#       wrong_answers_count += 1
-#     end
-
-#     { question_id: question.id, selected_choice: selected_choice }
-#   end
-
-#   submission.answers = answers
-#   submission.total_questions = quiz.questions.count
-#   submission.correct_answers_count = correct_answers_count
-#   submission.wrong_answers_count = wrong_answers_count
-#   submission.unanswered_count = quiz.questions.count - correct_answers_count - wrong_answers_count
-#   submission.save!
-# end
-
 
 def create_sample_data!
   organization =  Organization.create!({name: "Big Binary Academy", slug: "Big-Binary-Academy"})
