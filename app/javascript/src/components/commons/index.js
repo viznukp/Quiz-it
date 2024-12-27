@@ -5,7 +5,6 @@ import ConfirmationModal from "./ConfirmationModal";
 import Container from "./Container";
 import ContentWrapper from "./ContentWrapper";
 import FeatureToggle from "./FeatureToggle";
-import LabelToLink from "./LabelToLink";
 import NavBar from "./NavBar";
 import NoData from "./NoData";
 import Option from "./Option";
@@ -16,6 +15,7 @@ import PrivateRoute from "./PrivateRoute";
 import ProgressBar from "./ProgressBar";
 import SearchBar from "./SearchBar";
 import StatusTag from "./StatusTag";
+import TruncatedLabel from "./TruncatedLabel";
 
 export {
   Option,
@@ -23,7 +23,6 @@ export {
   PageLoader,
   NoData,
   SearchBar,
-  LabelToLink,
   PrivateRoute,
   NavBar,
   StatusTag,
@@ -36,4 +35,5 @@ export {
   CategorySelector,
   ConfirmationModal,
   FeatureToggle,
+  TruncatedLabel,
 };

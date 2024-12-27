@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_23_181753) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_22_115155) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -105,6 +105,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_23_181753) do
     t.boolean "email_notification", default: false
     t.boolean "randomize_questions", default: false
     t.boolean "randomize_options", default: false
+
     t.index ["category_id"], name: "index_quizzes_on_category_id"
   end
 

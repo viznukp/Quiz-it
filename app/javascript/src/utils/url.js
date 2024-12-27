@@ -2,6 +2,8 @@ import { keysToSnakeCase } from "neetocist";
 import { stringify } from "qs";
 import { toPairs, pipe, omit, reject, isNil } from "ramda";
 
+const PROTOCOL_REGEXP = /^https?:\/\//i;
+
 export const buildUrl = (route, params) => {
   const paramsExcludingEmpty = reject(
     value => isNil(value) || value === "",
@@ -26,3 +28,23 @@ export const buildUrl = (route, params) => {
 
 export const buildRoute = (route, params) =>
   route.replace(/:(\w+)/g, (match, key) => params[key] || match);
+
+export const prefixUrl = (url, baseUrl, replaceDomain = false) => {
+  if (replaceDomain) {
+    const urlSegments = url.replace(PROTOCOL_REGEXP, "").split("/");
+    const path = urlSegments.slice(1).join("/");
+
+    return `${baseUrl}/${path.replace(/^\/+/, "")}`;
+  }
+
+  if (PROTOCOL_REGEXP.test(url)) return url;
+
+  const urlSegments = url.split("/");
+  const isSubdomainPresent = urlSegments[0].split(".").length > 1;
+
+  if (isSubdomainPresent) {
+    return `http://${url}`;
+  }
+
+  return `${baseUrl}/${url.replace(/^\/+/, "")}`;
+};

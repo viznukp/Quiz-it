@@ -8,13 +8,13 @@ import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
 import {
-  LabelToLink,
   PageLoader,
   ColumnFilter,
   StatusTag,
   NoData,
   Pagination,
   ActiveFilters,
+  TruncatedLabel,
 } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -72,9 +72,10 @@ const QuizList = () => {
         slug,
         key: id,
         name: (
-          <LabelToLink
+          <TruncatedLabel
+            isLink
             label={name}
-            pathTo={routes.quiz.questions.replace(":slug", slug)}
+            pathForLink={routes.quiz.questions.replace(":slug", slug)}
           />
         ),
         submissionsCount,

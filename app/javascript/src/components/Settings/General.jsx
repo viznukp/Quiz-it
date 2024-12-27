@@ -69,6 +69,7 @@ const General = () => {
               onClick={handleSiteUpdate}
             />
             <Button
+              disabled={initialName === siteName}
               label={t("labels.cancel")}
               style="secondary"
               onClick={() => setSiteName(initialName)}
