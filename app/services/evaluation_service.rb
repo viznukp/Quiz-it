@@ -9,7 +9,7 @@ class EvaluationService
     create_submission
     evaluate_answers
     @submission.save!
-    EmailJob.perform_async(@submission.id) if @quiz.email_notification if submission_params[:status] == "completed"
+    EmailJob.perform_async(@submission.id) if @quiz.email_notification && submission_params[:status] == "completed"
   end
 
   private

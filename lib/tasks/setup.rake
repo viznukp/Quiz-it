@@ -31,9 +31,10 @@ end
 #
 def delete_all_records_from_all_tables
   if Rails.env.production?
-    raise "deleting all records in production is not alllowed"
+    raise "deleting all records in production is not allowed"
   else
     Rake::Task["db:schema:load"].invoke
+    Question.reset_column_information
   end
 end
 
@@ -50,7 +51,8 @@ def create_quizzes(categories, user)
       name: "#{category.name} Quiz",
       category: category,
       status: "draft",
-      creator: user
+      creator: user,
+      accessibility: "discoverable",
     )
 
     questions = sample_questions(category)
@@ -59,59 +61,13 @@ def create_quizzes(categories, user)
       Question.create!(
         question: question[:question],
         options: question[:options],
-        answer_index: question[:answer_index],
+        answer_id: question[:answer_id],
         quiz: quiz
       )
     end
     quiz
   end
   created_quizzes
-end
-
-
-def sample_questions(category)
-  case category.name
-  when "Science"
-    [
-      { question: "What is the chemical symbol for water?", options: ["H2O", "CO2", "O2", "N2"], answer_index: 1 },
-      { question: "What planet is known as the Red Planet?", options: ["Earth", "Mars", "Venus", "Jupiter"], answer_index: 2 },
-      { question: "What is the process by which plants make their food?", options: ["Respiration", "Photosynthesis", "Digestion", "Absorption"], answer_index: 2 },
-      { question: "What is the atomic number of Carbon?", options: ["6", "8", "12", "14"], answer_index: 1 },
-      { question: "What is the hardest natural substance on Earth?", options: ["Gold", "Diamond", "Iron", "Steel"], answer_index: 2 }
-    ]
-  when "Math"
-    [
-      { question: "What is 5 + 7?", options: ["11", "12", "13", "14"], answer_index: 2 },
-      { question: "What is 9 * 8?", options: ["72", "64", "75", "78"], answer_index: 1 },
-      { question: "What is the square root of 16?", options: ["2", "3", "4", "5"], answer_index: 3 },
-      { question: "What is 100 divided by 5?", options: ["10", "15", "20", "25"], answer_index: 3 },
-      { question: "What is the result of 7^2?", options: ["49", "56", "64", "42"], answer_index: 1 }
-    ]
-  when "History"
-    [
-      { question: "Who was the first president of the United States?", options: ["George Washington", "Abraham Lincoln", "Thomas Jefferson", "Andrew Jackson"], answer_index: 1 },
-      { question: "In which year did World War I begin?", options: ["1912", "1914", "1916", "1918"], answer_index: 2 },
-      { question: "Who was the leader of Nazi Germany during World War II?", options: ["Adolf Hitler", "Joseph Stalin", "Winston Churchill", "Franklin D. Roosevelt"], answer_index: 1 },
-      { question: "Which ancient civilization built the pyramids?", options: ["Romans", "Greeks", "Egyptians", "Aztecs"], answer_index: 3 },
-      { question: "Who wrote the Declaration of Independence?", options: ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "Benjamin Franklin"], answer_index: 2 }
-    ]
-  when "Literature"
-    [
-      { question: "Who wrote 'Romeo and Juliet'?", options: ["Shakespeare", "Dickens", "Austen", "Hemingway"], answer_index: 1 },
-      { question: "What is the title of the first Harry Potter book?", options: ["The Philosopher's Stone", "The Chamber of Secrets", "The Prisoner of Azkaban", "The Goblet of Fire"], answer_index: 1 },
-      { question: "Who wrote 'Moby-Dick'?", options: ["Herman Melville", "Mark Twain", "Ernest Hemingway", "John Steinbeck"], answer_index: 1 },
-      { question: "What is the name of the hobbit in 'The Hobbit'?", options: ["Frodo Baggins", "Samwise Gamgee", "Bilbo Baggins", "Gandalf"], answer_index: 3 },
-      { question: "Who wrote 'Pride and Prejudice'?", options: ["Charlotte Brontë", "Jane Austen", "Emily Dickinson", "Virginia Woolf"], answer_index: 2 }
-    ]
-  when "Technology"
-    [
-      { question: "Who is known as the father of the computer?", options: ["Charles Babbage", "Alan Turing", "Bill Gates", "Steve Jobs"], answer_index: 1 },
-      { question: "What year was the first iPhone released?", options: ["2005", "2007", "2009", "2010"], answer_index: 2 },
-      { question: "What does HTML stand for?", options: ["HyperText Markup Language", "HighText Markup Language", "HyperTool Markup Language", "HyperText Management Language"], answer_index: 1 },
-      { question: "Who invented the first practical telephone?", options: ["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "Michael Faraday"], answer_index: 2 },
-      { question: "What is the main programming language used for iOS development?", options: ["Java", "Swift", "C#", "Python"], answer_index: 2 }
-    ]
-  end
 end
 
 def create_user!(options = {})
@@ -132,43 +88,26 @@ def create_submissions_for_three_quizzes!(users)
   quizzes.each do |quiz|
     quiz.update!(status: "published")
     2.times do |i|
-      submission = Submission.new(
-        user: users[i],
-        quiz: quiz,
-        status: "completed",
+      answers = create_random_answers(quiz)
+      submission_params = ActionController::Parameters.new(
+        {submission: { status: "completed", answers:}, user_id: users[i].id, slug: quiz.slug,}
       )
-      create_random_answers(quiz, submission)
+      EvaluationService.new(submission_params).process!
     end
   end
 
   puts "Two submissions have been added for each of the three selected quizzes."
 end
 
-def create_random_answers(quiz, submission)
-  correct_answers_count = 0
-  wrong_answers_count = 0
-
+def create_random_answers(quiz)
   answers = quiz.questions.map do |question|
-    selected_choice = rand(1..4)
-    correct_answer = question.answer_index
-
-    if selected_choice == correct_answer
-      correct_answers_count += 1
-    else
-      wrong_answers_count += 1
-    end
+    options = question.options["options"]
+    selected_choice = options.sample["id"]
 
     { question_id: question.id, selected_choice: selected_choice }
   end
-
-  submission.answers = answers
-  submission.total_questions = quiz.questions.count
-  submission.correct_answers_count = correct_answers_count
-  submission.wrong_answers_count = wrong_answers_count
-  submission.unanswered_count = quiz.questions.count - correct_answers_count - wrong_answers_count
-  submission.save!
+  answers
 end
-
 
 def create_sample_data!
   organization =  Organization.create!({name: "Big Binary Academy", slug: "Big-Binary-Academy"})
@@ -183,4 +122,327 @@ def create_sample_data!
   create_submissions_for_three_quizzes!([luna, sam])
 
   puts "Sample data has been added."
+end
+
+
+def sample_questions(category)
+  case category.name
+  when "Science"
+    [
+      {
+        "question": "What is the chemical symbol for water?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "H2O" },
+            { "id": 2, "option": "CO2" },
+            { "id": 3, "option": "O2" },
+            { "id": 4, "option": "N2" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "What planet is known as the Red Planet?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Earth" },
+            { "id": 2, "option": "Mars" },
+            { "id": 3, "option": "Venus" },
+            { "id": 4, "option": "Jupiter" }
+          ]
+        },
+        "answer_id": 2
+      },
+      {
+        "question": "What is the process by which plants make their food?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Respiration" },
+            { "id": 2, "option": "Photosynthesis" },
+            { "id": 3, "option": "Digestion" },
+            { "id": 4, "option": "Absorption" }
+          ]
+        },
+        "answer_id": 2
+      },
+      {
+        "question": "What is the atomic number of Carbon?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "6" },
+            { "id": 2, "option": "8" },
+            { "id": 3, "option": "12" },
+            { "id": 4, "option": "14" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "What is the hardest natural substance on Earth?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Gold" },
+            { "id": 2, "option": "Diamond" },
+            { "id": 3, "option": "Iron" },
+            { "id": 4, "option": "Steel" }
+          ]
+        },
+        "answer_id": 2
+      }
+    ]
+  when "Math"
+    [
+      {
+        "question": "What is 5 + 7?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "11" },
+            { "id": 2, "option": "12" },
+            { "id": 3, "option": "13" },
+            { "id": 4, "option": "14" }
+          ]
+        },
+        "answer_id": 2
+      },
+      {
+        "question": "What is 9 * 8?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "72" },
+            { "id": 2, "option": "64" },
+            { "id": 3, "option": "75" },
+            { "id": 4, "option": "78" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "What is the square root of 16?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "2" },
+            { "id": 2, "option": "3" },
+            { "id": 3, "option": "4" },
+            { "id": 4, "option": "5" }
+          ]
+        },
+        "answer_id": 3
+      },
+      {
+        "question": "What is 100 divided by 5?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "10" },
+            { "id": 2, "option": "15" },
+            { "id": 3, "option": "20" },
+            { "id": 4, "option": "25" }
+          ]
+        },
+        "answer_id": 3
+      },
+      {
+        "question": "What is the result of 7^2?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "49" },
+            { "id": 2, "option": "56" },
+            { "id": 3, "option": "64" },
+            { "id": 4, "option": "42" }
+          ]
+        },
+        "answer_id": 1
+      }
+    ]
+
+  when "History"
+    [
+      {
+        "question": "Who was the first president of the United States?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "George Washington" },
+            { "id": 2, "option": "Abraham Lincoln" },
+            { "id": 3, "option": "Thomas Jefferson" },
+            { "id": 4, "option": "Andrew Jackson" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "In which year did World War I begin?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "1912" },
+            { "id": 2, "option": "1914" },
+            { "id": 3, "option": "1916" },
+            { "id": 4, "option": "1918" }
+          ]
+        },
+        "answer_id": 2
+      },
+      {
+        "question": "Who was the leader of Nazi Germany during World War II?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Adolf Hitler" },
+            { "id": 2, "option": "Joseph Stalin" },
+            { "id": 3, "option": "Winston Churchill" },
+            { "id": 4, "option": "Franklin D. Roosevelt" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "Which ancient civilization built the pyramids?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Romans" },
+            { "id": 2, "option": "Greeks" },
+            { "id": 3, "option": "Egyptians" },
+            { "id": 4, "option": "Aztecs" }
+          ]
+        },
+        "answer_id": 3
+      },
+      {
+        "question": "Who wrote the Declaration of Independence?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "George Washington" },
+            { "id": 2, "option": "Thomas Jefferson" },
+            { "id": 3, "option": "Abraham Lincoln" },
+            { "id": 4, "option": "Benjamin Franklin" }
+          ]
+        },
+        "answer_id": 2
+      }
+    ]
+  when "Literature"
+    [
+      {
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Shakespeare" },
+            { "id": 2, "option": "Dickens" },
+            { "id": 3, "option": "Austen" },
+            { "id": 4, "option": "Hemingway" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "What is the title of the first Harry Potter book?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "The Philosopher's Stone" },
+            { "id": 2, "option": "The Chamber of Secrets" },
+            { "id": 3, "option": "The Prisoner of Azkaban" },
+            { "id": 4, "option": "The Goblet of Fire" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "Who wrote 'Moby-Dick'?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Herman Melville" },
+            { "id": 2, "option": "Mark Twain" },
+            { "id": 3, "option": "Ernest Hemingway" },
+            { "id": 4, "option": "John Steinbeck" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "What is the name of the hobbit in 'The Hobbit'?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Frodo Baggins" },
+            { "id": 2, "option": "Samwise Gamgee" },
+            { "id": 3, "option": "Bilbo Baggins" },
+            { "id": 4, "option": "Gandalf" }
+          ]
+        },
+        "answer_id": 3
+      },
+      {
+        "question": "Who wrote 'Pride and Prejudice'?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Charlotte Brontë" },
+            { "id": 2, "option": "Jane Austen" },
+            { "id": 3, "option": "Emily Dickinson" },
+            { "id": 4, "option": "Virginia Woolf" }
+          ]
+        },
+        "answer_id": 2
+      }
+    ]
+
+  when "Technology"
+    [
+      {
+        "question": "Who is known as the father of the computer?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Charles Babbage" },
+            { "id": 2, "option": "Alan Turing" },
+            { "id": 3, "option": "Bill Gates" },
+            { "id": 4, "option": "Steve Jobs" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "What year was the first iPhone released?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "2005" },
+            { "id": 2, "option": "2007" },
+            { "id": 3, "option": "2009" },
+            { "id": 4, "option": "2010" }
+          ]
+        },
+        "answer_id": 2
+      },
+      {
+        "question": "What does HTML stand for?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "HyperText Markup Language" },
+            { "id": 2, "option": "HighText Markup Language" },
+            { "id": 3, "option": "HyperTool Markup Language" },
+            { "id": 4, "option": "HyperText Management Language" }
+          ]
+        },
+        "answer_id": 1
+      },
+      {
+        "question": "Who invented the first practical telephone?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Thomas Edison" },
+            { "id": 2, "option": "Alexander Graham Bell" },
+            { "id": 3, "option": "Nikola Tesla" },
+            { "id": 4, "option": "Michael Faraday" }
+          ]
+        },
+        "answer_id": 2
+      },
+      {
+        "question": "What is the main programming language used for iOS development?",
+        "options": {
+          "options": [
+            { "id": 1, "option": "Java" },
+            { "id": 2, "option": "Swift" },
+            { "id": 3, "option": "C#" },
+            { "id": 4, "option": "Python" }
+          ]
+        },
+        "answer_id": 2
+      }
+    ]
+  end
 end
