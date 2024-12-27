@@ -6,9 +6,8 @@ import { useTranslation, Trans } from "react-i18next";
 import { useQueryClient } from "react-query";
 
 import quizzesApi from "apis/quizzes";
+import { ConfirmationModal } from "components/commons";
 import { QUIZ_STATUSES } from "components/constants";
-
-import ConfirmationModal from "./ConfirmationModal";
 
 const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
   const { t } = useTranslation();
