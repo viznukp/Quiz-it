@@ -8,4 +8,12 @@ class Organization < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: MAX_NAME_LENGTH }
   validates :slug, presence: true, uniqueness: true
+
+  before_validation :set_slug, on: [:create, :update]
+
+  private
+
+    def set_slug
+      self.slug = name.parameterize if name.present?
+    end
 end

@@ -11,7 +11,6 @@ class Quiz < ApplicationRecord
   belongs_to :category
   has_many :questions, dependent: :delete_all
   has_many :submissions, dependent: :delete_all
-  has_one :configuration, dependent: :destroy
 
   validates :name,
     presence: true,

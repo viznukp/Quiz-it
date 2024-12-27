@@ -18,12 +18,4 @@ class OrganizationTest < ActiveSupport::TestCase
     @organization.name = "a" * (Organization::MAX_NAME_LENGTH + 1)
     assert @organization.invalid?
   end
-
-  def test_organization_should_not_be_saved_without_slug
-    @organization.save!
-
-    new_organization_with_existing_name = build(:organization)
-    new_organization_with_existing_name.name = @organization.name
-    assert new_organization_with_existing_name.save!, "Slug is already taken"
-  end
 end

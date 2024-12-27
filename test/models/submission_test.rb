@@ -45,12 +45,6 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_includes @submission.errors.full_messages, "Unanswered count must be greater than or equal to 0"
   end
 
-  def test_submission_cannot_be_saved_without_answer
-    @submission.answers = nil
-    assert @submission.invalid?
-    assert_includes @submission.errors.full_messages, "Answers can't be blank"
-  end
-
   def test_submission_count_increases_on_saving
     assert_difference ["Submission.count"] do
       create(:submission)

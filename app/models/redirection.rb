@@ -20,7 +20,6 @@ class Redirection < ApplicationRecord
 
     def cycle_detected?(source, destination)
       current_redirection = Redirection.find_by(source: destination)
-
       while current_redirection
         return true if current_redirection.destination == source
 
