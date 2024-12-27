@@ -18,7 +18,7 @@ const Category = () => {
   const { t } = useTranslation();
   const [categoryList, setCategoryList] = useState([]);
 
-  const { data: { categories = [] } = {}, refetch } = useFetchCategories();
+  const { data: { categories = [] } = {} } = useFetchCategories();
 
   useEffect(() => {
     if (!isEmpty(categories)) setCategoryList(categories);
@@ -73,7 +73,7 @@ const Category = () => {
           <Typography>
             {t("labels.category", { count: categories.length })}
           </Typography>
-          <Create refetchCategories={refetch} />
+          <Create />
         </div>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="droppableArea">

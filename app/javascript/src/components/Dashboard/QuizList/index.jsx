@@ -4,6 +4,7 @@ import { Delete } from "neetoicons";
 import { Table, Button, Dropdown, Typography } from "neetoui";
 import { isEmpty, mergeLeft, find, propEq } from "ramda";
 import { useTranslation, Trans } from "react-i18next";
+import { useQueryClient } from "react-query";
 import routes from "src/routes";
 
 import quizzesApi from "apis/quizzes";
@@ -34,6 +35,7 @@ import SearchableCategorySelector from "./SearchableCategorySelector";
 const QuizList = () => {
   const { t } = useTranslation();
   const queryParams = useQueryParams();
+  const queryClient = useQueryClient();
   const { setResultType } = useQuizzesStore();
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
@@ -102,6 +104,7 @@ const QuizList = () => {
     reloadQuizzes();
     setSelectedQuizzesIds([]);
     setSelectedQuizzesSlugs([]);
+    queryClient.invalidateQueries("categories");
   };
 
   const handleDeleteMultipleQuizzes = async () => {
