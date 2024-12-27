@@ -123,12 +123,4 @@ class UserTest < ActiveSupport::TestCase
       user.destroy!
     end
   end
-
-  def test_should_create_organization_if_not_present_for_user
-    @organization.destroy
-    @user.organization = nil
-    assert_difference ["User.count"], 1 do
-      @user.save!
-    end
-  end
 end

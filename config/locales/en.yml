@@ -25,3 +25,4 @@ en:
     render: "Rendering the report"
     generate: "Generating the PDF report"
     ready: "Report ready to download"
+  invalid_link: "Invalid link"

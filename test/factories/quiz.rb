@@ -3,8 +3,9 @@
 FactoryBot.define do
   factory :quiz do
     name { Faker::Lorem.sentence(word_count: 3) }
-    status { %w[published draft].sample }
+    status { "draft" }
     questions_count { 0 }
+    accessibility { "discoverable" }
     association :creator, factory: :user
     association :category, factory: :category
   end

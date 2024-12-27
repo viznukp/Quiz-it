@@ -4,13 +4,15 @@ require "test_helper"
 
 class QuizTest < ActiveSupport::TestCase
   def setup
-    build_quiz
-  end
-
-  def build_quiz
     @user = create(:user)
     category = create(:category)
     @quiz = build(:quiz, creator: @user, category:)
+  end
+
+  def build_quiz
+    user = create(:user)
+    category = create(:category)
+    build(:quiz, creator: user, category:)
   end
 
   def test_name_should_not_be_empty
@@ -104,5 +106,13 @@ class QuizTest < ActiveSupport::TestCase
     assert_difference "Quiz.count", -1 do
       creator.destroy
     end
+  end
+
+  def test_cannot_be_published_without_questions
+    quiz = build_quiz
+    quiz.status = "published"
+
+    assert quiz.invalid?
+    assert_includes quiz.errors.full_messages, "Quiz cannot be published without any questions"
   end
 end

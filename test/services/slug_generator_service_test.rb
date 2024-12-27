@@ -9,13 +9,9 @@ class SlugGeneratorServiceTest < ActionDispatch::IntegrationTest
     @quiz = build(:quiz, creator: user, category:)
   end
 
-  def generate_slug(entity, field, target_field)
-    SlugGeneratorService.new(entity, field, target_field).generate_slug
-  end
-
   def test_slug_is_parameterized_field
     name = @quiz.name
-    slug = generate_slug(@quiz, :name, :slug)
+    slug = SlugGeneratorService.new(@quiz, :name, :slug).process!
 
     assert_equal name.parameterize, slug
   end
