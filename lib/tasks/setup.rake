@@ -58,7 +58,6 @@ def create_quizzes(categories, user)
     questions = sample_questions(category)
 
     questions.each do |question|
-      # puts Question.new.inspect
       Question.create!(
         question: question[:question],
         options: question[:options],
