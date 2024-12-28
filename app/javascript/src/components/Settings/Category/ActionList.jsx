@@ -10,7 +10,7 @@ import Edit from "./Edit";
 const ActionList = ({ category, categoryCount }) => {
   const { t } = useTranslation();
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(category.name === "Math");
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   return (
     <>

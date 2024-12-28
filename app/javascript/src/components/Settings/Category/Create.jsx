@@ -3,19 +3,22 @@ import React, { useState } from "react";
 import { Plus } from "neetoicons";
 import { Button } from "neetoui";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "react-query";
 
 import categoriesApi from "apis/categories";
 
 import Form from "./Form";
 
-const Create = ({ refetchCategories }) => {
+const Create = () => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCategoryCreate = async inputValue => {
     try {
       await categoriesApi.create({ name: inputValue.trim() });
-      refetchCategories();
+      queryClient.invalidateQueries("categories");
     } catch (error) {
       logger.error(error);
     }

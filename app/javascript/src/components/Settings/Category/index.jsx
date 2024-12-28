@@ -18,28 +18,21 @@ const Category = () => {
   const { t } = useTranslation();
   const [categoryList, setCategoryList] = useState([]);
 
-  const { data: { categories = [] } = {}, refetch } = useFetchCategories();
+  const { data: { categories = [] } = {} } = useFetchCategories();
 
   useEffect(() => {
     if (!isEmpty(categories)) setCategoryList(categories);
   }, [categories]);
 
-  const fetchUpdatedOrder = list =>
-    list.map((category, index) => ({
-      id: category.id,
-      sortOrder: index + 1,
-    }));
-
-  const handleUpdateOrder = async list => {
+  const handleUpdateOrder = async (draggableId, position) => {
     try {
-      setCategoryList(list);
-      await categoriesApi.updateOrder(fetchUpdatedOrder(list));
+      await categoriesApi.updateOrder(draggableId, position);
     } catch (error) {
       logger.error(error);
     }
   };
 
-  const handleOnDragEnd = ({ source, destination }) => {
+  const handleOnDragEnd = ({ draggableId, source, destination }) => {
     if (!destination) return;
 
     if (
@@ -52,7 +45,8 @@ const Category = () => {
     const reorderedCategoryList = [...categoryList];
     const sourceItem = reorderedCategoryList.splice(source.index, 1);
     reorderedCategoryList.splice(destination.index, 0, sourceItem[0]);
-    handleUpdateOrder(reorderedCategoryList);
+    setCategoryList(reorderedCategoryList);
+    handleUpdateOrder(draggableId, destination.index + 1);
   };
 
   return (
@@ -73,7 +67,7 @@ const Category = () => {
           <Typography>
             {t("labels.category", { count: categories.length })}
           </Typography>
-          <Create refetchCategories={refetch} />
+          <Create />
         </div>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="droppableArea">

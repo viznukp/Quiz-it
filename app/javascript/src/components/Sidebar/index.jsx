@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
 import classNames from "classnames";
+import { motion } from "framer-motion";
 import {
   List,
-  RightArrow,
-  LeftArrow,
+  Expand,
+  Collapse,
   Globe,
   Settings as SettingsIcon,
 } from "neetoicons";
@@ -26,27 +27,33 @@ const Sidebar = () => {
 
   return (
     <SidebarContext.Provider value={[isExpanded]}>
-      <div
-        className={classNames(
-          "flex flex-col items-center justify-between gap-3 border-r p-3 transition-all duration-300 ease-in",
-          {
-            "w-64": isExpanded,
-            "w-16": !isExpanded,
-          }
-        )}
+      <motion.div
+        className="flex flex-col items-center justify-between gap-3 border-r bg-white py-4"
+        initial={false}
+        transition={{ duration: 0.3 }}
+        animate={{
+          width: isExpanded ? "16rem" : "4rem",
+          paddingLeft: isExpanded ? "4px" : "0",
+          paddingRight: isExpanded ? "4px" : "0",
+        }}
       >
-        <div className="w-full">
+        <div className="flex w-full flex-col items-center ">
           <QuizItLogo isExpanded={isExpanded} />
-          <div className="mt-4 flex w-full flex-col gap-2">
+          <div
+            className={classNames("mt-4 flex w-full flex-col items-center", {
+              "gap-2": !isExpanded,
+            })}
+          >
             <SidebarNavItem
               toolTipEnabled
+              className={classNames({ "mb-2": isExpanded })}
               style="button"
               toolTipLabel={t("labels.expand")}
               icon={
                 isExpanded ? (
-                  <LeftArrow color="#ff0000" />
+                  <Collapse color="#ff0000" />
                 ) : (
-                  <RightArrow color="#22C55E" />
+                  <Expand color="#22C55E" />
                 )
               }
               onClickAction={() => setIsExpanded(!isExpanded)}
@@ -77,7 +84,7 @@ const Sidebar = () => {
           </div>
         </div>
         <SidebarUserProfile isExpanded={isExpanded} />
-      </div>
+      </motion.div>
     </SidebarContext.Provider>
   );
 };

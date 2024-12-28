@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import { MenuHorizontal } from "neetoicons";
 import { Dropdown, Button, Typography, Input } from "neetoui";
 import { useTranslation, Trans } from "react-i18next";
+import { useQueryClient } from "react-query";
 
 import quizzesApi from "apis/quizzes";
+import { ConfirmationModal } from "components/commons";
 import { QUIZ_STATUSES } from "components/constants";
-
-import ConfirmationModal from "./ConfirmationModal";
 
 const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isCloneModalOpen, setIsCloneModalOpen] = useState(false);
   const [newQuizName, setNewQuizName] = useState(quizName);
@@ -33,7 +34,7 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
       await quizzesApi.update(slug, {
         status: updatedStatus,
       });
-      reloadQuizzes();
+      queryClient.invalidateQueries("quizzes");
     } catch (error) {
       logger.error(error);
     }
@@ -43,6 +44,7 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
     try {
       await quizzesApi.destroy(slug);
       reloadQuizzes();
+      queryClient.invalidateQueries("categories");
     } catch (error) {
       logger.error(error);
     }

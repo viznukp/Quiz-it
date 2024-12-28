@@ -22,9 +22,9 @@ const Filter = () => {
   };
 
   return (
-    <div>
-      <Dropdown buttonStyle="text" icon={FilterIcon}>
-        <Typography className=" px-2 py-1" style="h4">
+    <Dropdown buttonStyle="text" icon={FilterIcon}>
+      <div className="p-4">
+        <Typography className="px-2 py-1" style="h4">
           {t("labels.selectCategory")}
         </Typography>
         {categories?.map(({ id, name }) => (
@@ -36,8 +36,8 @@ const Filter = () => {
             {name}
           </div>
         ))}
-      </Dropdown>
-    </div>
+      </div>
+    </Dropdown>
   );
 };
 

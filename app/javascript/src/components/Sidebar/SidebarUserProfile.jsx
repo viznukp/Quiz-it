@@ -51,7 +51,10 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
   if (!isLoggedIn()) return false;
 
   return (
-    <div className="relative w-full" ref={profileRef}>
+    <div
+      className={classNames("relative", { "w-full": isExpanded })}
+      ref={profileRef}
+    >
       {!isExpanded && (
         <Avatar
           className="cursor-pointer"

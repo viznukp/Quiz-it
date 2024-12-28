@@ -122,3 +122,5 @@ gem "redis", "~> 4.0"
 group :test do
   gem "rails-controller-testing"
 end
+
+gem "acts_as_list"

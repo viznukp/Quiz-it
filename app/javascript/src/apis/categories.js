@@ -10,8 +10,8 @@ const update = (id, payload) =>
 const destroy = (id, payload) =>
   axios.delete(`/categories/${id}`, { params: payload });
 
-const updateOrder = order =>
-  axios.put("/categories/bulk_update", { categories: { order } });
+const updateOrder = (id, position) =>
+  axios.put(`/categories/${id}/order`, { position });
 
 const categoriesApi = { fetch, create, update, destroy, updateOrder };
 

@@ -17,6 +17,7 @@ const SidebarNavItem = ({
   baseRoute = "",
   onClickAction,
   style = "link",
+  className,
 }) => {
   const { pathname: currentRoute } = useLocation();
   const [isExpanded] = useContext(SidebarContext);
@@ -29,10 +30,11 @@ const SidebarNavItem = ({
   const renderContent = (
     <div
       className={classNames(
-        "flex h-10 items-center gap-3 rounded-md hover:bg-gray-300",
+        "flex h-10 items-center gap-3 rounded-md hover:bg-gray-200",
         { "justify-start border-b px-2": isExpanded },
         { "w-10 justify-center": !isExpanded },
-        { "bg-blue-500": isActive }
+        { "bg-blue-500": isActive },
+        [className]
       )}
     >
       {icon}
@@ -46,9 +48,17 @@ const SidebarNavItem = ({
       disabled={!toolTipEnabled || isExpanded}
     >
       {style === "link" ? (
-        <Link to={onClickRoute}>{renderContent}</Link>
+        <Link
+          className={classNames({ "w-full": isExpanded })}
+          to={onClickRoute}
+        >
+          {renderContent}
+        </Link>
       ) : (
-        <button className="w-full" onClick={onClickAction}>
+        <button
+          className={classNames({ "w-full": isExpanded })}
+          onClick={onClickAction}
+        >
           {renderContent}
         </button>
       )}
@@ -64,6 +74,7 @@ SidebarNavItem.propTypes = {
   style: PropTypes.oneOf(["link", "button"]),
   onClickRoute: PropTypes.string,
   onClickAction: PropTypes.func,
+  className: PropTypes.string,
 };
 
 export default SidebarNavItem;

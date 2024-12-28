@@ -33,24 +33,6 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal updated_name, updated_category.name
   end
 
-  def test_should_successfully_rearrange_categories
-    categories = create_list(:category, 3)
-    updated_order = [
-      { id: categories[2].id, sort_order: 1 },
-      { id: categories[0].id, sort_order: 2 },
-      { id: categories[1].id, sort_order: 3 }
-    ]
-
-    put bulk_update_categories_path,
-      params: { categories: { order: updated_order } },
-      headers: @headers
-
-    assert_response :success
-
-    categories.each(&:reload)
-    assert_equal [1, 2, 3], categories.sort_by(&:updated_at).pluck(:sort_order)
-  end
-
   def test_associated_quizzes_should_not_be_deleted_when_category_is_deleted
     delete category_path(@category.id), headers: @headers
     assert_response :success
