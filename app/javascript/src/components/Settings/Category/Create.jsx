@@ -5,23 +5,22 @@ import { Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import categoriesApi from "apis/categories";
+import { useCreateCategory } from "hooks/reactQuery/useCategoriesApi";
 
 import Form from "./Form";
 
 const Create = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { mutate: createCategory } = useCreateCategory();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCategoryCreate = async inputValue => {
-    try {
-      await categoriesApi.create({ name: inputValue.trim() });
-      queryClient.invalidateQueries("categories");
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleCreate = name => {
+    createCategory(
+      { name: name.trim() },
+      { onSuccess: () => queryClient.invalidateQueries("categories") }
+    );
   };
 
   return (
@@ -36,7 +35,7 @@ const Create = () => {
       />
       <Form
         isOpen={isModalOpen}
-        submitAction={handleCategoryCreate}
+        submitAction={handleCreate}
         onClose={() => setIsModalOpen(false)}
       />
     </>
