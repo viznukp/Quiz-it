@@ -220,6 +220,9 @@ const QuizList = () => {
           closeDeleteConfirmationModal();
           handleDeleteMultipleQuizzes();
         }}
+        title={t("labels.confirmDeleteTitle", {
+          count: selectedQuizzesSlugs.length,
+        })}
         onClose={closeDeleteConfirmationModal}
       >
         <div className="p-4">

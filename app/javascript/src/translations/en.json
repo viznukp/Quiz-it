@@ -27,6 +27,7 @@
     "delete": "Delete",
     "confirmDelete": "Yes, delete",
     "confirmDeleteTitle": "Delete quiz?",
+    "confirmDeleteTitle_other": "Delete quizzes?",
     "update": "Update",
     "draft": "Draft",
     "publish": "Publish",
