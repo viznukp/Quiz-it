@@ -3,14 +3,16 @@ import React, { useState, useEffect } from "react";
 import { Typography, Button, Input } from "neetoui";
 import { useTranslation } from "react-i18next";
 
-import organizationApi from "apis/organization";
 import {
   Container,
   PageLoader,
   ContentWrapper,
   NavBar,
 } from "components/commons";
-import { useShowOrganization } from "hooks/reactQuery/useOrganizationApi";
+import {
+  useShowOrganization,
+  useUpdateOrganization,
+} from "hooks/reactQuery/useOrganizationApi";
 
 import { SETTINGS_TABS, SETTINGS_TAB_IDS } from "./constants";
 
@@ -19,19 +21,16 @@ const General = () => {
   const [siteName, setSiteName] = useState("");
   const [initialName, setInitialName] = useState("");
 
+  const { mutate: updateOrganization } = useUpdateOrganization();
+
   const {
     data: { organization = "" } = {},
     isLoading,
     refetch,
   } = useShowOrganization();
 
-  const handleSiteUpdate = async () => {
-    try {
-      await organizationApi.update({ name: siteName });
-      refetch();
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleUpdate = () => {
+    updateOrganization({ name: siteName.trim() }, { onSuccess: refetch });
   };
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const General = () => {
             <Button
               disabled={initialName === siteName}
               label={t("labels.saveChanges")}
-              onClick={handleSiteUpdate}
+              onClick={handleUpdate}
             />
             <Button
               disabled={initialName === siteName}

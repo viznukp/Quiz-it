@@ -21,7 +21,7 @@ const Card = ({ name, slug, category, questionsCount = 0 }) => {
         type="solid"
       />
       <Typography className="mt-6">
-        {t("labels.questions", { count: questionsCount })}
+        {t("labels.questionsCount", { count: questionsCount })}
       </Typography>
       <Button
         fullWidth
