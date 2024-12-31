@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { Button } from "neetoui";
 import { mergeLeft, isEmpty } from "ramda";
@@ -25,6 +25,7 @@ import { isLoggedIn } from "utils/auth";
 import { buildUrl } from "utils/url";
 
 import Card from "./Card";
+import { COLORS } from "./constants";
 import Filter from "./Filter";
 
 const PublicPage = () => {
@@ -35,6 +36,15 @@ const PublicPage = () => {
   const [organizationName, setOrganizationName] = useState("");
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE_PUBLIC } =
     queryParams;
+  const colorIndex = useRef(0);
+
+  const generateColor = (currentCategory, index) => {
+    if (index === 0 || currentCategory !== quizzes[index - 1].category) {
+      colorIndex.current = (colorIndex.current + 1) % COLORS.length;
+    }
+
+    return COLORS[colorIndex.current];
+  };
 
   const updateSearchTerm = searchTerm => {
     setSearchTerm(searchTerm);
@@ -87,8 +97,12 @@ const PublicPage = () => {
         ) : (
           <>
             <div className="grid grid-cols-3 gap-3">
-              {quizzes?.map(quiz => (
-                <Card key={quiz.id} {...quiz} />
+              {quizzes?.map((quiz, index) => (
+                <Card
+                  key={quiz.id}
+                  {...quiz}
+                  color={generateColor(quiz.category, index)}
+                />
               ))}
             </div>
             <Pagination

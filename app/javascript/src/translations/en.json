@@ -169,7 +169,7 @@
   "filters": {
     "category": "Category: {{category}} ",
     "email": "Email: {{email}}",
-    "status": "status: {{status}}",
+    "status": "Status: {{status}}",
     "quizName": "Quiz: {{quizName}}",
     "name": "Name: {{name}}"
   },
