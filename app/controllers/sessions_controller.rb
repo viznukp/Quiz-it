@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
 
   def destroy
     @current_user = nil
+    render_notice(t("session.successfully_logged_out"))
   end
 
   private

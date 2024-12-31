@@ -3,9 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { LeftArrow } from "neetoicons";
 import { Avatar, Typography, Button } from "neetoui";
+import routes from "src/routes";
 
-import authApi from "apis/authentication";
 import { resetAuthTokens } from "apis/axios";
+import { useLogout } from "hooks/reactQuery/useAuthenticationApi";
 import { isLoggedIn } from "utils/auth";
 import {
   STORAGE_KEYS,
@@ -19,20 +20,21 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
   const userName = getFromLocalStorage(STORAGE_KEYS.USERNAME);
   const userEmail = getFromLocalStorage(STORAGE_KEYS.EMAIL);
 
-  const handleLogout = async () => {
-    try {
-      await authApi.logout();
-      setToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
-      });
-      resetAuthTokens();
-      window.location.href = "/";
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: logoutUser } = useLogout();
+
+  const handleLogout = () => {
+    logoutUser(null, {
+      onSuccess: () => {
+        setToLocalStorage({
+          authToken: null,
+          email: null,
+          userId: null,
+          userName: null,
+        });
+        resetAuthTokens();
+        window.location.href = routes.login;
+      },
+    });
   };
 
   useEffect(() => {
