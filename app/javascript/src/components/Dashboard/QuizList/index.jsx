@@ -5,17 +5,13 @@ import { Table, Button, Dropdown, Typography } from "neetoui";
 import { isEmpty, mergeLeft, find, propEq } from "ramda";
 import { useTranslation, Trans } from "react-i18next";
 import { useQueryClient } from "react-query";
-import routes from "src/routes";
 
-import quizzesApi from "apis/quizzes";
 import {
   PageLoader,
   ColumnFilter,
-  StatusTag,
   NoData,
   Pagination,
   ActiveFilters,
-  TruncatedLabel,
   ConfirmationModal,
 } from "components/commons";
 import {
@@ -23,14 +19,18 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_INDEX,
 } from "components/constants";
-import { useFetchQuizzes } from "hooks/reactQuery/useQuizzesApi";
+import {
+  useFetchQuizzes,
+  useDeleteMultipleQuiz,
+  useUpdateMultipleQuiz,
+} from "hooks/reactQuery/useQuizzesApi";
 import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
 
-import ActionList from "./ActionList";
 import { QUIZ_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
 import SearchableCategorySelector from "./SearchableCategorySelector";
+import { transformQuizDataForTableDisplay } from "./utils";
 
 const QuizList = () => {
   const { t } = useTranslation();
@@ -45,12 +45,14 @@ const QuizList = () => {
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
 
+  const { mutate: deleteMultipleQuizzes } = useDeleteMultipleQuiz();
+  const { mutate: updateMultipleQuizzes } = useUpdateMultipleQuiz();
+
   const closeDeleteConfirmationModal = () =>
     setIsDeleteConfirmationModalOpen(false);
 
   const handleConfirmationMessage = () => {
     const selectedQuizCount = selectedQuizzesSlugs.length;
-
     if (selectedQuizCount === 0) return "";
 
     const entity =
@@ -67,34 +69,6 @@ const QuizList = () => {
     );
   };
 
-  const transformQuizDataForTableDisplay = (quizzes, reloadQuizzes) =>
-    quizzes?.map(
-      ({ id, name, submissionsCount, status, createdOn, category, slug }) => ({
-        id,
-        slug,
-        key: id,
-        name: (
-          <TruncatedLabel
-            isLink
-            label={name}
-            pathForLink={routes.quiz.questions.replace(":slug", slug)}
-          />
-        ),
-        submissionsCount,
-        status: <StatusTag label={status} primaryLabel="published" />,
-        category,
-        createdOn,
-        actions: (
-          <ActionList
-            quizName={name}
-            reloadQuizzes={reloadQuizzes}
-            slug={slug}
-            status={status}
-          />
-        ),
-      })
-    );
-
   const handleRowSelection = (selectedRowKeys, selectedRows) => {
     setSelectedQuizzesSlugs(selectedRows.map(row => row.slug));
     setSelectedQuizzesIds(selectedRowKeys);
@@ -107,22 +81,17 @@ const QuizList = () => {
     queryClient.invalidateQueries("categories");
   };
 
-  const handleDeleteMultipleQuizzes = async () => {
-    try {
-      await quizzesApi.deleteMultiple(selectedQuizzesSlugs);
-      handleResetAfterAction();
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleDeleteMultipleQuizzes = () => {
+    deleteMultipleQuizzes(selectedQuizzesSlugs, {
+      onSuccess: handleResetAfterAction,
+    });
   };
 
-  const handleUpdateMultipleQuizzes = async updateParams => {
-    try {
-      await quizzesApi.updateMultiple(selectedQuizzesSlugs, updateParams);
-      handleResetAfterAction();
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleUpdateMultipleQuizzes = updateFields => {
+    updateMultipleQuizzes(
+      { slugs: selectedQuizzesSlugs, updateFields },
+      { onSuccess: handleResetAfterAction }
+    );
   };
 
   const {
@@ -231,13 +200,9 @@ const QuizList = () => {
       <Table
         rowSelection
         columnData={visibleColumns}
+        rowData={transformQuizDataForTableDisplay(quizzes)}
         scroll={{ x: "100%" }}
         selectedRowKeys={selectedQuizzesIds}
-        rowData={
-          quizzes
-            ? transformQuizDataForTableDisplay(quizzes, reloadQuizzes)
-            : []
-        }
         onRowSelect={handleRowSelection}
       />
       <Pagination

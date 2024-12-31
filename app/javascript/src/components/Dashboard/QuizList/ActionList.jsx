@@ -39,7 +39,7 @@ const ActionList = ({ slug, quizName, status }) => {
         : QUIZ_STATUSES.PUBLISHED.STATUS;
 
     updateQuiz(
-      { slug, status: updatedStatus },
+      { slug, payload: { status: updatedStatus } },
       { onSuccess: invalidateQuizzes }
     );
   };

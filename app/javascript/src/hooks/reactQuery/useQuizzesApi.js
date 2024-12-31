@@ -22,3 +22,8 @@ export const useUpdateQuiz = () => useMutation(quizzesApi.update);
 export const useDeleteQuiz = () => useMutation(quizzesApi.destroy);
 
 export const useCloneQuiz = () => useMutation(quizzesApi.clone);
+
+export const useDeleteMultipleQuiz = () =>
+  useMutation(quizzesApi.deleteMultiple);
+export const useUpdateMultipleQuiz = () =>
+  useMutation(quizzesApi.updateMultiple);

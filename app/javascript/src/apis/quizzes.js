@@ -17,7 +17,7 @@ const clone = ({ slug, name }) =>
 const deleteMultiple = slugs =>
   axios.delete("/quizzes/bulk_destroy", { data: { quizzes: { slugs } } });
 
-const updateMultiple = (slugs, updateFields) =>
+const updateMultiple = ({ slugs, updateFields }) =>
   axios.put("/quizzes/bulk_update", { quizzes: { updateFields, slugs } });
 
 const quizzesApi = {
