@@ -11,14 +11,14 @@ const SUBMISSION_TABLE_COLUMNS = [
   "status",
 ];
 
-const OTHER_PROPS = {
+const EXCLUSIVE_PROPS = {
   name: { isDisabledInColumnFilter: true, width: 150 },
   email: { width: 200 },
 };
 
 export const SUBMISSION_TABLE_SCHEMA = columnsToTableSchema(
   SUBMISSION_TABLE_COLUMNS,
-  OTHER_PROPS
+  EXCLUSIVE_PROPS
 );
 
 export const FILTER_INITIAL_VALUES = {
