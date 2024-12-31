@@ -5,13 +5,20 @@ import { Dropdown, Button, Typography, Input } from "neetoui";
 import { useTranslation, Trans } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import quizzesApi from "apis/quizzes";
 import { ConfirmationModal } from "components/commons";
 import { QUIZ_STATUSES } from "components/constants";
+import {
+  useUpdateQuiz,
+  useDeleteQuiz,
+  useCloneQuiz,
+} from "hooks/reactQuery/useQuizzesApi";
 
-const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
+const ActionList = ({ slug, quizName, status }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { mutate: updateQuiz } = useUpdateQuiz();
+  const { mutate: deleteQuiz } = useDeleteQuiz();
+  const { mutate: cloneQuiz } = useCloneQuiz();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isCloneModalOpen, setIsCloneModalOpen] = useState(false);
   const [newQuizName, setNewQuizName] = useState(quizName);
@@ -23,41 +30,31 @@ const ActionList = ({ slug, quizName, status, reloadQuizzes }) => {
 
   const closeConfirmationModal = () => setIsConfirmationModalOpen(false);
   const closeNewQuizModal = () => setIsCloneModalOpen(false);
+  const invalidateQuizzes = () => queryClient.invalidateQueries("quizzes");
 
-  const handleUpdate = async () => {
+  const handleUpdate = () => {
     const updatedStatus =
       status === QUIZ_STATUSES.PUBLISHED.STATUS
         ? QUIZ_STATUSES.DRAFT.STATUS
         : QUIZ_STATUSES.PUBLISHED.STATUS;
 
-    try {
-      await quizzesApi.update(slug, {
-        status: updatedStatus,
-      });
-      queryClient.invalidateQueries("quizzes");
-    } catch (error) {
-      logger.error(error);
-    }
+    updateQuiz(
+      { slug, status: updatedStatus },
+      { onSuccess: invalidateQuizzes }
+    );
   };
 
-  const handleDelete = async () => {
-    try {
-      await quizzesApi.destroy(slug);
-      reloadQuizzes();
-      queryClient.invalidateQueries("categories");
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleDelete = () => {
+    deleteQuiz(slug, {
+      onSuccess: () => {
+        invalidateQuizzes();
+        queryClient.invalidateQueries("categories");
+      },
+    });
   };
 
-  const handleClone = async () => {
-    try {
-      await quizzesApi.clone(slug, newQuizName);
-      setNewQuizName(quizName);
-      reloadQuizzes();
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleClone = () => {
+    cloneQuiz({ slug, name: newQuizName }, { onSuccess: invalidateQuizzes });
   };
 
   return (

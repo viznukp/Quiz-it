@@ -5,8 +5,8 @@ import { Input, Form } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import quizzesApi from "apis/quizzes";
 import { CategorySelector } from "components/commons";
+import { useCreateQuiz } from "hooks/reactQuery/useQuizzesApi";
 
 import {
   CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA,
@@ -20,18 +20,19 @@ const NewQuizPane = () => {
 
   const closePane = () => setIsPaneOpen(false);
 
-  const handleCreateNewQuiz = async formData => {
-    try {
-      await quizzesApi.create({
-        name: formData.name,
-        categoryId: formData.category.value.id,
-      });
-      queryClient.invalidateQueries("quizzes");
-      queryClient.invalidateQueries("categories");
-      closePane();
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: createQuiz } = useCreateQuiz();
+
+  const handleCreate = ({ name, category }) => {
+    createQuiz(
+      { name, categoryId: category.value.id },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries("quizzes");
+          queryClient.invalidateQueries("categories");
+          closePane();
+        },
+      }
+    );
   };
 
   return (
@@ -48,7 +49,7 @@ const NewQuizPane = () => {
             formikProps={{
               initialValues: NEW_QUIZ_FORM_INITIAL_VALUES,
               validationSchema: CREATE_NEW_QUIZ_FORM_VALIDATION_SCHEMA,
-              onSubmit: handleCreateNewQuiz,
+              onSubmit: handleCreate,
             }}
           >
             {({ isSubmitting, dirty }) => (
