@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-import CreateOrEdit from "./CreateOrEdit";
+import { REDIRECTION_FORM_MODES } from "./constants";
+import CreateEdit from "./CreateEdit";
 import Show from "./Show";
 
 const UrlCard = ({ redirectionData }) => {
@@ -9,9 +10,9 @@ const UrlCard = ({ redirectionData }) => {
   return (
     <div className="bg-white p-4 shadow-sm">
       {isEditing ? (
-        <CreateOrEdit
+        <CreateEdit
           id={redirectionData.id}
-          mode="update"
+          mode={REDIRECTION_FORM_MODES.edit}
           initialValues={{
             fromUrl: redirectionData.source,
             toUrl: redirectionData.destination,

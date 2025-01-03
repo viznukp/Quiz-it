@@ -6,36 +6,47 @@ import { Form, Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import redirectionsApi from "apis/redirections";
 import { BASE_URL } from "components/constants";
+import {
+  useCreateRedirection,
+  useUpdateRedirection,
+} from "hooks/reactQuery/useRedirectionsApi";
 import { prefixUrl } from "utils/url";
 
 import {
   URL_VALIDATION_SCHEMA,
   CREATE_REDIRECTION_FORM_INITIAL_VALUES,
+  REDIRECTION_FORM_MODES,
 } from "./constants";
 import UrlPreview from "./UrlPreview";
 
-const CreateOrEdit = ({ id, initialValues, onClose, mode = "create" }) => {
+const CreateEdit = ({
+  id,
+  initialValues,
+  onClose,
+  mode = REDIRECTION_FORM_MODES.create,
+}) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const handleCreateOrUpdateRedirection = async ({ fromUrl, toUrl }) => {
-    try {
-      const payload = {
-        source: prefixUrl(fromUrl, BASE_URL, true),
-        destination: prefixUrl(toUrl, BASE_URL),
-      };
+  const { mutate: createRedirection } = useCreateRedirection();
+  const { mutate: updateRedirection } = useUpdateRedirection();
 
-      if (mode === "update") {
-        await redirectionsApi.update(id, payload);
-      } else {
-        await redirectionsApi.create(payload);
-      }
-      queryClient.invalidateQueries("redirections");
-      onClose();
-    } catch (error) {
-      logger.error(error);
+  const reloadRedirections = () => {
+    queryClient.invalidateQueries("redirections");
+    onClose();
+  };
+
+  const handleCreateOrUpdateRedirection = ({ fromUrl, toUrl }) => {
+    const payload = {
+      source: prefixUrl(fromUrl, BASE_URL, true),
+      destination: prefixUrl(toUrl, BASE_URL),
+    };
+
+    if (mode === REDIRECTION_FORM_MODES.edit) {
+      updateRedirection({ id, payload }, { onSuccess: reloadRedirections });
+    } else {
+      createRedirection(payload, { onSuccess: reloadRedirections });
     }
   };
 
@@ -95,4 +106,4 @@ const CreateOrEdit = ({ id, initialValues, onClose, mode = "create" }) => {
   );
 };
 
-export default CreateOrEdit;
+export default CreateEdit;

@@ -6,23 +6,25 @@ import { Form as NeetoUIForm } from "neetoui/formik";
 import { useTranslation, Trans } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import categoriesApi from "apis/categories";
 import { ConfirmationModal, CategorySelector } from "components/commons";
+import { useDestroyCategory } from "hooks/reactQuery/useCategoriesApi";
 
 const Delete = ({ id, name, quizCount, categoryCount, isOpen, onClose }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const handleCategoryDelete = async formData => {
-    try {
-      await categoriesApi.destroy(id, {
-        replacementCategoryId: formData?.category?.value.id,
-      });
-      queryClient.invalidateQueries("categories");
-      queryClient.invalidateQueries("quizzes");
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: deleteCategory } = useDestroyCategory();
+
+  const handleDelete = formData => {
+    deleteCategory(
+      { id, payload: { replacementCategoryId: formData?.category?.value.id } },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries("categories");
+          queryClient.invalidateQueries("quizzes");
+        },
+      }
+    );
   };
 
   return (
@@ -33,7 +35,7 @@ const Delete = ({ id, name, quizCount, categoryCount, isOpen, onClose }) => {
           initialValues: {
             category: null,
           },
-          onSubmit: handleCategoryDelete,
+          onSubmit: handleDelete,
         }}
       >
         {({ isSubmitting, dirty, submitForm }) => (

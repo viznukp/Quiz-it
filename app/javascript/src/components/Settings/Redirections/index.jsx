@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Container, ContentWrapper, NavBar } from "components/commons";
 import { useFetchRedirections } from "hooks/reactQuery/useRedirectionsApi";
 
-import CreateOrEdit from "./CreateOrEdit";
+import CreateEdit from "./CreateEdit";
 import UrlCard from "./UrlCard";
 
 import { SETTINGS_TABS, SETTINGS_TAB_IDS } from "../constants";
@@ -41,7 +41,7 @@ const Redirection = () => {
           ))}
           {isCreatingRedirection && (
             <div className="bg-white p-4 shadow-sm">
-              <CreateOrEdit onClose={() => setIsCreatingRedirection(false)} />
+              <CreateEdit onClose={() => setIsCreatingRedirection(false)} />
             </div>
           )}
         </div>

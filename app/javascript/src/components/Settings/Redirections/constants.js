@@ -32,3 +32,5 @@ export const CREATE_REDIRECTION_FORM_INITIAL_VALUES = {
   fromUrl: "/",
   toUrl: "",
 };
+
+export const REDIRECTION_FORM_MODES = { create: "create", edit: "edit" };

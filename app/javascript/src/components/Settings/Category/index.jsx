@@ -5,9 +5,11 @@ import { Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 
-import categoriesApi from "apis/categories";
 import { Container, ContentWrapper, NavBar } from "components/commons";
-import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
+import {
+  useFetchCategories,
+  useReorderCategory,
+} from "hooks/reactQuery/useCategoriesApi";
 
 import Card from "./Card";
 import Create from "./Create";
@@ -18,18 +20,16 @@ const Category = () => {
   const { t } = useTranslation();
   const [categoryList, setCategoryList] = useState([]);
 
+  const { mutation: reorderCategory } = useReorderCategory();
+
   const { data: { categories = [] } = {} } = useFetchCategories();
 
   useEffect(() => {
     if (!isEmpty(categories)) setCategoryList(categories);
   }, [categories]);
 
-  const handleUpdateOrder = async (draggableId, position) => {
-    try {
-      await categoriesApi.updateOrder(draggableId, position);
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleReorder = (id, position) => {
+    reorderCategory({ id, position });
   };
 
   const handleOnDragEnd = ({ draggableId, source, destination }) => {
@@ -46,7 +46,7 @@ const Category = () => {
     const sourceItem = reorderedCategoryList.splice(source.index, 1);
     reorderedCategoryList.splice(destination.index, 0, sourceItem[0]);
     setCategoryList(reorderedCategoryList);
-    handleUpdateOrder(draggableId, destination.index + 1);
+    handleReorder(draggableId, destination.index + 1);
   };
 
   return (

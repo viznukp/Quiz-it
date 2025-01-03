@@ -9,7 +9,7 @@ class RedirectionsController < ApplicationController
   end
 
   def index
-    @redirections = Redirection.all.order(updated_at: :desc)
+    @redirections = Redirection.all.order(:created_at)
   end
 
   def update
