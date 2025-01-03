@@ -6,13 +6,13 @@ import { useHistory, useParams } from "react-router-dom";
 import { useShowQuestion } from "src/hooks/reactQuery/useQuestionsApi";
 import routes from "src/routes";
 
-import questionsApi from "apis/questions";
 import {
   Container,
   NavBar,
   PageLoader,
   ContentWrapper,
 } from "components/commons";
+import { useEditQuestion } from "hooks/reactQuery/useQuestionsApi";
 
 import Form from "./Form";
 
@@ -22,16 +22,19 @@ const Edit = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
+  const { mutate: editQuestion } = useEditQuestion();
   const { data: { quiz } = {}, isLoading } = useShowQuestion(slug, id);
 
-  const handleSubmit = async ({ formData }) => {
-    try {
-      await questionsApi.update(id, formData);
-      queryClient.invalidateQueries("quiz");
-      history.push(routes.quiz.questions.replace(":slug", slug));
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleEdit = ({ formData }) => {
+    editQuestion(
+      { id, payload: formData },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries("quiz");
+          history.push(routes.quiz.questions.replace(":slug", slug));
+        },
+      }
+    );
   };
 
   if (isLoading) return <PageLoader fullScreen />;
@@ -41,7 +44,7 @@ const Edit = () => {
       <NavBar backButtonVisible title={quiz?.name} />
       <ContentWrapper>
         <Form
-          handleSubmit={handleSubmit}
+          handleSubmit={handleEdit}
           initialValues={quiz.question || {}}
           primaryButtonLabel={t("labels.update")}
         />

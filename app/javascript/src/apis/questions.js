@@ -6,7 +6,7 @@ const create = ({ slug, questionData }) =>
 const show = ({ slug, id }) =>
   axios.get(`/questions/${id}`, { params: { slug } });
 
-const update = (id, payload) =>
+const update = ({ id, payload }) =>
   axios.put(`/questions/${id}`, { question: payload });
 
 const destroy = id => axios.delete(`/questions/${id}`);

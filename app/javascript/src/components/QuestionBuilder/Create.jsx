@@ -4,16 +4,16 @@ import {
   useHistory,
   useParams,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
-import questionsApi from "apis/questions";
 import {
   Container,
   NavBar,
   PageLoader,
   ContentWrapper,
 } from "components/commons";
+import { useCreateQuestion } from "hooks/reactQuery/useQuestionsApi";
+import { useShowQuiz } from "hooks/reactQuery/useQuizzesApi";
 
 import Form from "./Form";
 
@@ -21,21 +21,24 @@ const Create = () => {
   const history = useHistory();
   const { slug } = useParams();
 
-  const { data: { quiz } = {}, isLoading, refetch } = useShowQuiz(slug);
+  const { data: { quiz } = {}, refetch, isLoading } = useShowQuiz(slug);
 
-  const handleSubmit = async ({ formData, resetForm, submissionSource }) => {
-    try {
-      await questionsApi.create({ questionData: formData, slug });
-      refetch();
+  const { mutate: createQuestion } = useCreateQuestion();
 
-      if (submissionSource === "primary") {
-        history.push(routes.quiz.questions.replace(":slug", slug));
-      } else {
-        resetForm();
-      }
-    } catch (error) {
-      logger.error(error);
+  const handleRedirection = (source, resetForm) => {
+    refetch();
+    if (source === "primary") {
+      history.push(routes.quiz.questions.replace(":slug", slug));
+    } else {
+      resetForm();
     }
+  };
+
+  const handleCreate = ({ formData, resetForm, submissionSource }) => {
+    createQuestion(
+      { questionData: formData, slug },
+      { onSuccess: () => handleRedirection(submissionSource, resetForm) }
+    );
   };
 
   if (isLoading) return <PageLoader fullScreen />;
@@ -44,7 +47,7 @@ const Create = () => {
     <Container>
       <NavBar backButtonVisible title={quiz?.name} />
       <ContentWrapper>
-        <Form isSecondaryButtonVisible handleSubmit={handleSubmit} />
+        <Form isSecondaryButtonVisible handleSubmit={handleCreate} />
       </ContentWrapper>
     </Container>
   );

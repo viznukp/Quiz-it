@@ -9,7 +9,6 @@ import { useParams, useHistory } from "react-router-dom";
 import { useShowQuiz } from "src/hooks/reactQuery/useQuizzesApi";
 import routes from "src/routes";
 
-import quizzesApi from "apis/quizzes";
 import { Container, NavBar, NoData, ContentWrapper } from "components/commons";
 import {
   QUIZ_STATUSES,
@@ -17,6 +16,7 @@ import {
   QUIZ_TABS,
   QUIZ_TAB_IDS,
 } from "components/constants";
+import { useUpdateQuiz } from "hooks/reactQuery/useQuizzesApi";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
 
@@ -30,15 +30,7 @@ const Show = () => {
     PUBLISHED: { STATUS: STATUS_PUBLISHED },
   } = QUIZ_STATUSES;
 
-  const handleQuizSave = async saveType => {
-    try {
-      await quizzesApi.update(slug, { status: saveType });
-      refetchQuiz();
-      queryClient.invalidateQueries("quizzes");
-    } catch (error) {
-      logger.error(error);
-    }
-  };
+  const { mutate: updateQuiz } = useUpdateQuiz();
 
   const copyQuizLink = async () => {
     const link = `${BASE_URL}${routes.attemptQuiz.replace(":slug", slug)}`;
@@ -55,6 +47,21 @@ const Show = () => {
     isLoading,
     refetch: refetchQuiz,
   } = useShowQuiz(slug);
+
+  const handleQuizSave = status => {
+    updateQuiz(
+      {
+        slug,
+        payload: { status: status === STATUS_DRAFT ? "published" : "draft" },
+      },
+      {
+        onSuccess: () => {
+          refetchQuiz();
+          queryClient.invalidateQueries("quizzes");
+        },
+      }
+    );
+  };
 
   return (
     <Container>
@@ -81,11 +88,7 @@ const Show = () => {
                   ? t("labels.publish")
                   : t("labels.unpublish")
               }
-              onClick={() => {
-                const saveType =
-                  quiz?.status === STATUS_DRAFT ? "published" : "draft";
-                handleQuizSave(saveType);
-              }}
+              onClick={() => handleQuizSave(quiz?.status)}
             />
             {quiz?.status === STATUS_PUBLISHED && (
               <Button
@@ -126,7 +129,6 @@ const Show = () => {
                 key={question.id}
                 slug={slug}
                 {...question}
-                refetchQuiz={refetchQuiz}
               />
             ))}
           </div>

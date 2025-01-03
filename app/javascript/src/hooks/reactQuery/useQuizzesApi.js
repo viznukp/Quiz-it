@@ -12,7 +12,6 @@ export const useShowQuiz = queryParams =>
   useQuery({
     queryKey: ["quiz", queryParams],
     queryFn: () => quizzesApi.show(queryParams),
-    cacheTime: 0,
   });
 
 export const useCreateQuiz = () => useMutation(quizzesApi.create);
