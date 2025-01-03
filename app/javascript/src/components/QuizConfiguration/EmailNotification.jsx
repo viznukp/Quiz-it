@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import quizzesApi from "apis/quizzes";
 import { FeatureToggle } from "components/commons";
+import { useUpdateQuiz } from "hooks/reactQuery/useQuizzesApi";
 
 import { CONFIGURATION_PANELS } from "./constants";
 import PanelWrapper from "./PanelWrapper";
@@ -14,15 +14,13 @@ const EmailNotification = ({ slug, emailNotification, setActivePanel }) => {
   const queryClient = useQueryClient();
   const [isChecked, setIsChecked] = useState(emailNotification);
 
-  const handleEmailNotificationUpdate = async () => {
-    try {
-      await quizzesApi.update(slug, {
-        emailNotification: isChecked,
-      });
-      queryClient.invalidateQueries("quiz");
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: updateQuiz } = useUpdateQuiz();
+
+  const handleEmailNotificationUpdate = () => {
+    updateQuiz(
+      { slug, payload: { emailNotification: isChecked } },
+      { onSuccess: () => queryClient.invalidateQueries("quiz") }
+    );
   };
 
   return (

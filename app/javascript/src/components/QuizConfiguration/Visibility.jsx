@@ -4,8 +4,8 @@ import { Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import quizzesApi from "apis/quizzes";
 import { FeatureToggle } from "components/commons";
+import { useUpdateQuiz } from "hooks/reactQuery/useQuizzesApi";
 
 import { CONFIGURATION_PANELS } from "./constants";
 import PanelWrapper from "./PanelWrapper";
@@ -16,15 +16,16 @@ const Visibility = ({ accessibility, status, slug, setActivePanel }) => {
   const initialState = accessibility === "discoverable";
   const [isChecked, setIsChecked] = useState(initialState);
 
+  const { mutate: updateQuiz } = useUpdateQuiz();
+
   const handleAccessibilityUpdate = async () => {
-    try {
-      await quizzesApi.update(slug, {
-        accessibility: isChecked ? "discoverable" : "hidden",
-      });
-      queryClient.invalidateQueries("quiz");
-    } catch (error) {
-      logger.error(error);
-    }
+    updateQuiz(
+      {
+        slug,
+        payload: { accessibility: isChecked ? "discoverable" : "hidden" },
+      },
+      { onSuccess: () => queryClient.invalidateQueries("quiz") }
+    );
   };
 
   return (

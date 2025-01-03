@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import quizzesApi from "apis/quizzes";
 import { FeatureToggle } from "components/commons";
+import { useUpdateQuiz } from "hooks/reactQuery/useQuizzesApi";
 
 import { CONFIGURATION_PANELS } from "./constants";
 import PanelWrapper from "./PanelWrapper";
@@ -27,16 +27,19 @@ const QuizRandomizer = ({
     isCheckedRandomQuestions === randomizeQuestions &&
     isCheckedRandomOptions === randomizeOptions;
 
-  const handleEmailNotificationUpdate = async () => {
-    try {
-      await quizzesApi.update(slug, {
-        randomizeQuestions: isCheckedRandomQuestions,
-        randomizeOptions: isCheckedRandomOptions,
-      });
-      queryClient.invalidateQueries("quiz");
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: updateQuiz } = useUpdateQuiz();
+
+  const handleRandomization = () => {
+    updateQuiz(
+      {
+        slug,
+        payload: {
+          randomizeQuestions: isCheckedRandomQuestions,
+          randomizeOptions: isCheckedRandomOptions,
+        },
+      },
+      { onSuccess: () => queryClient.invalidateQueries("quiz") }
+    );
   };
 
   return (
@@ -45,7 +48,7 @@ const QuizRandomizer = ({
       isPrimaryButtonDisabled={isConfigurationsNotDirty}
       isSecondaryButtonDisabled={isConfigurationsNotDirty}
       setActivePanel={setActivePanel}
-      onSave={handleEmailNotificationUpdate}
+      onSave={handleRandomization}
       onCancel={() => {
         setIsCheckedRandomQuestions(randomizeQuestions);
         setIsCheckedRandomOptions(randomizeOptions);

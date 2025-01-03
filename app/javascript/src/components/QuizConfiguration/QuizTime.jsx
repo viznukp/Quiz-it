@@ -4,8 +4,8 @@ import { Form, Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import quizzesApi from "apis/quizzes";
 import { FeatureToggle } from "components/commons";
+import { useUpdateQuiz } from "hooks/reactQuery/useQuizzesApi";
 import {
   convertMinutesToHoursAndMinutes,
   convertHoursAndMinutesToMinutes,
@@ -21,17 +21,20 @@ const QuizTime = ({ timeLimit = 90, slug, setActivePanel }) => {
   const { hours, minutes } = convertMinutesToHoursAndMinutes(timeLimit);
   const [isChecked, setIsChecked] = useState(initialState);
 
-  const handleAccessibilityUpdate = async formData => {
-    try {
-      await quizzesApi.update(slug, {
-        time_limit: isChecked
-          ? convertHoursAndMinutesToMinutes(formData.hours, formData.minutes)
-          : 0,
-      });
-      queryClient.invalidateQueries("quiz");
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: updateQuiz } = useUpdateQuiz();
+
+  const handleQuizTimeUpdate = ({ hours, minutes }) => {
+    updateQuiz(
+      {
+        slug,
+        payload: {
+          time_limit: isChecked
+            ? convertHoursAndMinutesToMinutes(hours, minutes)
+            : 0,
+        },
+      },
+      { onSuccess: () => queryClient.invalidateQueries("quiz") }
+    );
   };
 
   const isPrimaryButtonDisabled = (dirty, values) =>
@@ -53,7 +56,7 @@ const QuizTime = ({ timeLimit = 90, slug, setActivePanel }) => {
           isPrimaryButtonDisabled={isPrimaryButtonDisabled(dirty, values)}
           isSecondaryButtonDisabled={isChecked === initialState && !dirty}
           setActivePanel={setActivePanel}
-          onSave={() => handleAccessibilityUpdate(values)}
+          onSave={() => handleQuizTimeUpdate(values)}
           onCancel={() => {
             resetForm();
             setIsChecked(initialState);
