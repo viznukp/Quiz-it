@@ -21,6 +21,7 @@ class EvaluationService
       @submission = Submission.find_or_initialize_by(user:, quiz: @quiz)
       @submission.answers = submission_params[:answers]
       @submission.status = submission_params[:status]
+      @submission.seed = submission_params[:seed]
     end
 
     def generate_answer_key
@@ -57,6 +58,6 @@ class EvaluationService
     end
 
     def submission_params
-      @params.require(:submission).permit(:status, answers: [:question_id, :selected_choice])
+      @params.require(:submission).permit(:status, :seed, answers: [:question_id, :selected_choice])
     end
 end

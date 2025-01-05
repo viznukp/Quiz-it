@@ -18,7 +18,7 @@ const Visibility = ({ accessibility, status, slug, setActivePanel }) => {
 
   const { mutate: updateQuiz } = useUpdateQuiz();
 
-  const handleAccessibilityUpdate = async () => {
+  const handleAccessibilityUpdate = () => {
     updateQuiz(
       {
         slug,

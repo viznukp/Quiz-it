@@ -29,14 +29,17 @@ const QuizAttempt = () => {
   const questionCount = questions.length;
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questionCount - 1;
+  const [randomSeed, setRandomSeed] = useState(0);
 
   const { data = {}, isLoading } = useShowQuiz(slug);
   const fetchQuestions = async userId => {
     try {
-      const { quiz: { questions = [], timeLimit = 0 } = {} } =
-        await publicApi.fetchQuestionsForAttempt(slug, userId);
+      const {
+        quiz: { questions = [], timeLimit = 0, randomizationSeed } = {},
+      } = await publicApi.fetchQuestionsForAttempt(slug, userId);
       setQuestions(questions);
       setTimeLimit(timeLimit);
+      setRandomSeed(randomizationSeed);
       setIsUserAuthenticated(true);
     } catch (error) {
       logger.error(error);
@@ -59,6 +62,7 @@ const QuizAttempt = () => {
         submission: {
           status,
           answers: userAnswers,
+          seed: randomSeed,
         },
         slug,
         userId,

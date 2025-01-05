@@ -3,7 +3,8 @@ class Public::QuestionsController < ApplicationController
   before_action :check_if_already_attempted, only: :show
 
   def show
-    @questions = @quiz.questions.order(questions_order)
+    @questions = @quiz.questions.order(:created_at)
+    @seed = rand(1..1000)
   end
 
   private
@@ -17,9 +18,5 @@ class Public::QuestionsController < ApplicationController
     user = User.find(params[:user_id])
     submission = Submission.find_by(user: user, quiz: @quiz)
     render_error(t("user_already_attempted_quiz"), :conflict) if submission
-  end
-
-  def questions_order
-    @quiz.randomize_questions ? "RANDOM()" : :created_at
   end
 end
