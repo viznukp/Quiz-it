@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Submissions::ReportsController < ApplicationController
+class Api::V1::Submissions::ReportsController < ApplicationController
   def create
     ReportsJob.perform_async(current_user.id, report_params[:slug], report_path.to_s)
   end

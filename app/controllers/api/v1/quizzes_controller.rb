@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class QuizzesController < ApplicationController
+class Api::V1::QuizzesController < ApplicationController
   before_action :load_quiz, only: %i[update destroy]
   before_action :load_quizzes, only: %i[bulk_update bulk_destroy]
   after_action :verify_authorized, only: :show

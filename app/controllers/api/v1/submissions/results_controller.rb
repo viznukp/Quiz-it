@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Submissions::ResultsController < ApplicationController
+class Api::V1::Submissions::ResultsController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token, only: :show
 
   def show

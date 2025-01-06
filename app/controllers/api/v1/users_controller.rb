@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UsersController < ApplicationController
+class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token
   before_action :load_organization
 

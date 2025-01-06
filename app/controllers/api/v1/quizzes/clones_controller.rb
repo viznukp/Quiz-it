@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Quizzes::ClonesController < ApplicationController
+class Api::V1::Quizzes::ClonesController < ApplicationController
   before_action :load_quiz, only: :create
 
   def create

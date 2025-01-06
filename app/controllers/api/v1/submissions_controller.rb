@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SubmissionsController < ApplicationController
+class Api::V1::SubmissionsController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token, only: %i[create result_email]
 
   def create

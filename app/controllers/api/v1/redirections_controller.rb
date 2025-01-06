@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RedirectionsController < ApplicationController
+class Api::V1::RedirectionsController < ApplicationController
   before_action :load_redirection, only: %i[update destroy]
 
   def create

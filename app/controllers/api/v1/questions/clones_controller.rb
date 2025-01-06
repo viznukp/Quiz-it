@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Questions::ClonesController < ApplicationController
+class Api::V1::Questions::ClonesController < ApplicationController
   def create
     question = Question.find(params[:question_id])
     question.deep_clone.save!

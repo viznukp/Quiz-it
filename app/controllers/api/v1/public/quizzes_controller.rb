@@ -1,4 +1,4 @@
-class Public::QuizzesController < ApplicationController
+class Api::V1::Public::QuizzesController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token
   before_action :load_organization, only: :index
 

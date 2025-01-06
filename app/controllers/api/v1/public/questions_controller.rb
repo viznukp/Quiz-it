@@ -1,4 +1,4 @@
-class Public::QuestionsController < ApplicationController
+class Api::V1::Public::QuestionsController < ApplicationController
   skip_before_action :authenticate_user_using_x_auth_token, only: :show
   before_action :check_if_already_attempted, only: :show
 

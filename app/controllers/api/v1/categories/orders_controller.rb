@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Categories::OrdersController < ApplicationController
+class Api::V1::Categories::OrdersController < ApplicationController
   before_action :load_category, only: :update
 
   def update

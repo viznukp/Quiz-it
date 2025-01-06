@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class QuestionsController < ApplicationController
+class Api::V1::QuestionsController < ApplicationController
   before_action :load_question, only: %i[update destroy]
   before_action :load_quiz, only: %i[create show]
 
