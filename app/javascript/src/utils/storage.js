@@ -20,4 +20,16 @@ const getFromLocalStorage = key => {
   }
 };
 
-export { STORAGE_KEYS, setToLocalStorage, getFromLocalStorage };
+const setPublicUserToLocalStorage = userId => {
+  localStorage.setItem("publicUser", JSON.stringify(userId));
+};
+
+const getPublicUserFromLocalStorage = () => getFromLocalStorage("publicUser");
+
+export {
+  STORAGE_KEYS,
+  setToLocalStorage,
+  getFromLocalStorage,
+  setPublicUserToLocalStorage,
+  getPublicUserFromLocalStorage,
+};

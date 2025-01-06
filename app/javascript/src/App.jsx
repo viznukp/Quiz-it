@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import routes from "src/routes";
 
-import { Login, Signup, RegisterStandardUser } from "components/Authentication";
+import { Login, Signup } from "components/Authentication";
 import { PrivateRoute, PageNotFound } from "components/commons";
 import Dashboard from "components/Dashboard";
 import PublicPage from "components/PublicPage";
@@ -15,6 +15,7 @@ import {
   EditQuestion,
 } from "components/QuestionBuilder";
 import QuizAttempt from "components/QuizAttempt";
+import QuizManager from "components/QuizAttempt/QuizManager";
 import QuizConfiguration from "components/QuizConfiguration";
 import QuizResult from "components/QuizResult";
 import { General, Category, Redirection } from "components/Settings";
@@ -30,10 +31,11 @@ const App = () => (
         <Route exact component={Signup} path={routes.signup} />
         <Route exact component={Login} path={routes.login} />
         <Route exact component={PublicPage} path={routes.publicPage} />
-        <Route exact component={QuizAttempt} path={routes.attemptQuiz} />
+        <Route exact component={QuizAttempt} path={routes.registerQuiz} />
         <Route exact component={QuizResult} path={routes.quiz.result} />
         <Route exact component={General} path={routes.settings.general} />
         <Route exact component={Category} path={routes.settings.categories} />
+        <Route exact component={QuizManager} path={routes.attemptQuiz} />
         <Route
           exact
           component={Redirection}
@@ -59,11 +61,6 @@ const App = () => (
           exact
           component={SubmissionList}
           path={routes.quiz.submissions}
-        />
-        <Route
-          exact
-          component={RegisterStandardUser}
-          path={routes.registerStandardUser}
         />
         <PrivateRoute
           exact

@@ -5,12 +5,18 @@ import publicApi from "apis/public";
 export const useFetchQuizzes = queryParams =>
   useQuery({
     queryKey: ["quizzesPublic", queryParams],
-    queryFn: () => publicApi.fetch(queryParams),
+    queryFn: () => publicApi.fetchQuizzes(queryParams),
   });
 
 export const useShowQuiz = queryParams =>
   useQuery({
-    queryKey: ["quiz", queryParams],
-    queryFn: () => publicApi.show(queryParams),
-    cacheTime: 0,
+    queryKey: ["quizPublic", queryParams],
+    queryFn: () => publicApi.showQuiz(queryParams),
+  });
+
+export const useFetchQuestions = queryParams =>
+  useQuery({
+    queryKey: ["questionsPublic", queryParams],
+    queryFn: () => publicApi.fetchQuestions(queryParams),
+    retry: 0,
   });

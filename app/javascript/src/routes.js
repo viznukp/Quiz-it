@@ -13,7 +13,7 @@ const routes = {
     configure: "/:slug/configure",
   },
   publicPage: "/public",
-  registerStandardUser: "/user/standard/register/:slug",
+  registerQuiz: "/quiz/:slug/register",
   attemptQuiz: "/quiz/:slug",
   settings: {
     base: "/settings",

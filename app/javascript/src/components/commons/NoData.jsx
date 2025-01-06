@@ -32,7 +32,7 @@ const NoData = ({
 NoData.propTypes = {
   message: PropTypes.string,
   className: PropTypes.string,
-  buttonProps: PropTypes.string,
+  buttonProps: PropTypes.object,
 };
 
 export default NoData;
