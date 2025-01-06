@@ -115,7 +115,8 @@
     "question": "Question",
     "confirm": "Confirm",
     "redirectionLower": "redirection",
-    "questionLower": "question"
+    "questionLower": "question",
+    "filters": "Filters"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",

@@ -61,7 +61,7 @@ const Filter = () => {
         isOpen={isFilterPaneOpen}
         onClose={closeFilter}
       >
-        <Typography style="h2"> Filters</Typography>
+        <Typography style="h2"> {t("labels.filters")}</Typography>
         <NeetoUIForm
           className="mt-4 flex flex-col gap-3"
           formikProps={{
