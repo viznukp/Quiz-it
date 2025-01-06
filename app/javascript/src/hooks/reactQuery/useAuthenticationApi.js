@@ -7,3 +7,6 @@ export const useSignup = () => useMutation(authenticationApi.signup);
 export const useLogin = () => useMutation(authenticationApi.login);
 
 export const useLogout = () => useMutation(authenticationApi.logout);
+
+export const useRegisterStandardUser = () =>
+  useMutation(authenticationApi.registerStandardUser);

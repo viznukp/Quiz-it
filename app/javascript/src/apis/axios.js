@@ -87,7 +87,7 @@ const responseInterceptors = () => {
     error => {
       handleErrorResponse(error);
 
-      return Promise.reject("reason for error");
+      return Promise.reject(error);
     }
   );
 };
