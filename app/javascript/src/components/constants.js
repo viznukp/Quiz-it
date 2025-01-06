@@ -21,17 +21,17 @@ export const QUIZ_TABS = [
   {
     label: i18n.t("labels.questions"),
     id: QUIZ_TAB_IDS.questions,
-    path: routes.quiz.questions,
+    path: routes.admin.quiz.questions,
   },
   {
     label: i18n.t("labels.submissions"),
     id: QUIZ_TAB_IDS.submissions,
-    path: routes.quiz.submissions,
+    path: routes.admin.quiz.submissions,
   },
   {
     label: i18n.t("labels.configure"),
     id: QUIZ_TAB_IDS.configure,
-    path: routes.quiz.configure,
+    path: routes.admin.quiz.configure,
   },
 ];
 

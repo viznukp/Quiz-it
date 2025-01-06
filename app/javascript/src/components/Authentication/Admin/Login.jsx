@@ -30,7 +30,7 @@ const Login = () => {
           userName: name,
         });
         setAuthHeaders();
-        window.location.href = routes.root;
+        window.location.href = routes.admin.dashboard;
       },
     });
   };
@@ -46,7 +46,7 @@ const Login = () => {
             label={t("labels.registerNow")}
             size="small"
             style="link"
-            to={routes.signup}
+            to={routes.admin.signup}
           />
         </div>
         <Formik

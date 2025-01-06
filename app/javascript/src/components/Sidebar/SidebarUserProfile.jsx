@@ -32,7 +32,7 @@ const SidebarUserProfile = ({ isExpanded = false }) => {
           userName: null,
         });
         resetAuthTokens();
-        window.location.href = routes.login;
+        window.location.href = routes.admin.login;
       },
     });
   };

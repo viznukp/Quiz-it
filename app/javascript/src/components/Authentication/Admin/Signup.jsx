@@ -21,7 +21,7 @@ const Signup = () => {
   const { mutate: signupUser } = useSignup();
 
   const handleSignup = formData => {
-    signupUser(formData, { onSuccess: () => history.push(routes.login) });
+    signupUser(formData, { onSuccess: () => history.push(routes.admin.login) });
   };
 
   return (
@@ -35,7 +35,7 @@ const Signup = () => {
             label={t("labels.loginNow")}
             size="small"
             style="link"
-            to={routes.login}
+            to={routes.admin.login}
           />
         </div>
         <Formik

@@ -31,7 +31,7 @@ const Edit = () => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries("quiz");
-          history.push(routes.quiz.questions.replace(":slug", slug));
+          history.push(routes.admin.quiz.questions.replace(":slug", slug));
         },
       }
     );

@@ -35,7 +35,7 @@ const QuizManager = () => {
 
   useEffect(() => {
     if (isError) {
-      history.replace(routes.publicPage);
+      history.replace(routes.public.home);
     }
   }, [history, isError]);
 
@@ -60,7 +60,9 @@ const QuizManager = () => {
       },
       {
         onSuccess: () =>
-          history.replace(buildRoute(routes.quiz.result, { slug, userId })),
+          history.replace(
+            buildRoute(routes.public.quiz.result, { slug, userId })
+          ),
       }
     );
   };

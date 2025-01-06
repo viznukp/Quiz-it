@@ -62,24 +62,24 @@ const Sidebar = () => {
               toolTipEnabled
               icon={<List />}
               label={t("labels.quizzes")}
-              onClickRoute={routes.root}
+              onClickRoute={routes.admin.dashboard}
             />
             <QuizFilter
-              isVisible={isExpanded && currentRoute === routes.root}
+              isVisible={isExpanded && currentRoute === routes.admin.dashboard}
             />
             <SidebarNavItem
               toolTipEnabled
-              baseRoute={routes.settings.base}
+              baseRoute={routes.admin.settings.base}
               icon={<SettingsIcon />}
               label={t("labels.settings")}
-              onClickRoute={routes.settings.general}
+              onClickRoute={routes.admin.settings.general}
             />
             <SidebarNavItem
               toolTipEnabled
               icon={<Globe />}
               label={t("labels.publicPage")}
               style="button"
-              onClickAction={() => window.open(routes.publicPage, "_blank")}
+              onClickAction={() => window.open(routes.public.home, "_blank")}
             />
           </div>
         </div>

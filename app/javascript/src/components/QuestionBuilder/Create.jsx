@@ -28,7 +28,7 @@ const Create = () => {
   const handleRedirection = (source, resetForm) => {
     refetch();
     if (source === "primary") {
-      history.push(routes.quiz.questions.replace(":slug", slug));
+      history.push(routes.admin.quiz.questions.replace(":slug", slug));
     } else {
       resetForm();
     }

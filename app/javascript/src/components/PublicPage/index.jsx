@@ -66,9 +66,9 @@ const PublicPage = () => {
     <Container sideBarDisabled>
       <NavBar title={organizationName}>
         <Button
-          label="Login as admin"
+          label={t("labels.loginAsAdmin")}
           onClick={() =>
-            history.push(isLoggedIn() ? routes.root : routes.login)
+            history.push(isLoggedIn() ? routes.root : routes.admin.login)
           }
         />
       </NavBar>

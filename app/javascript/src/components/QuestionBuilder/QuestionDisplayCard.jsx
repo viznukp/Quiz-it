@@ -47,7 +47,7 @@ const QuestionDisplayCard = ({ question, id, options, answerId, slug }) => {
               style="text"
               onClick={() =>
                 history.push(
-                  routes.quiz.question.edit
+                  routes.admin.quiz.question.edit
                     .replace(":slug", slug)
                     .replace(":id", id)
                 )

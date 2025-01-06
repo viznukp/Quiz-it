@@ -11,16 +11,16 @@ export const SETTINGS_TABS = [
   {
     id: SETTINGS_TAB_IDS.general,
     label: i18n.t("labels.general"),
-    path: routes.settings.general,
+    path: routes.admin.settings.general,
   },
   {
     id: SETTINGS_TAB_IDS.redirections,
     label: i18n.t("labels.redirections"),
-    path: routes.settings.redirections,
+    path: routes.admin.settings.redirections,
   },
   {
     id: SETTINGS_TAB_IDS.category,
     label: i18n.t("labels.category"),
-    path: routes.settings.categories,
+    path: routes.admin.settings.categories,
   },
 ];

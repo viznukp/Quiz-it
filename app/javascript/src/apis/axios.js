@@ -11,7 +11,7 @@ import {
   setToLocalStorage,
 } from "utils/storage";
 
-const LOGIN_URL = routes.login;
+const LOGIN_URL = routes.admin.login;
 const DEFAULT_ERROR_NOTIFICATION = i18n.t("messages.error.default");
 const AXIOS_HEADER_AUTH_KEY_EMAIL = "X-Auth-Email";
 const AXIOS_HEADER_AUTH_KEY_TOKEN = "X-Auth-Token";

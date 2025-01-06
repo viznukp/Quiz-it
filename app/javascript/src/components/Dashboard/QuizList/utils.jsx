@@ -17,7 +17,7 @@ export const transformQuizDataForTableDisplay = quizzes =>
         <TruncatedLabel
           isLink
           label={name}
-          pathForLink={routes.quiz.questions.replace(":slug", slug)}
+          pathForLink={routes.admin.quiz.questions.replace(":slug", slug)}
         />
       ),
       submissionsCount,

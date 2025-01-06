@@ -37,7 +37,7 @@ const QuizResult = () => {
             icon={LeftArrow}
             iconPosition="left"
             label={t("labels.backToHome")}
-            onClick={() => history.push(routes.publicPage)}
+            onClick={() => history.push(routes.public.home)}
           />
           <Typography>
             {t("labels.totalQuestionsCount", { count: totalQuestions })}

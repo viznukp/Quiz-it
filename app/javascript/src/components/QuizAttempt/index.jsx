@@ -21,7 +21,7 @@ const QuizAttempt = () => {
 
   const redirectAfterRegistration = responseData => {
     setPublicUserToLocalStorage(responseData.id);
-    history.push(routes.attemptQuiz.replace(":slug", slug));
+    history.push(routes.public.quiz.attempt.replace(":slug", slug));
   };
 
   if (isLoading) {
@@ -35,7 +35,7 @@ const QuizAttempt = () => {
           message={t("messages.error.invalidQuizLink")}
           buttonProps={{
             label: t("labels.tryOtherQuiz"),
-            onClick: () => history.push(routes.publicPage),
+            onClick: () => history.push(routes.public.home),
           }}
         />
       </div>

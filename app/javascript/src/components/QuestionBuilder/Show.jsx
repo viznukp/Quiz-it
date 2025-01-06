@@ -34,7 +34,10 @@ const Show = () => {
   const { mutate: updateQuiz } = useUpdateQuiz();
 
   const copyQuizLink = async () => {
-    const link = `${BASE_URL}${routes.attemptQuiz.replace(":slug", slug)}`;
+    const link = `${BASE_URL}${routes.public.quiz.attempt.replace(
+      ":slug",
+      slug
+    )}`;
     try {
       await navigator.clipboard.writeText(link);
       Toastr.info(t("messages.info.linkCopied"));

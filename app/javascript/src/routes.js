@@ -1,25 +1,33 @@
 const routes = {
-  root: "/dashboard",
-  signup: "/signup",
-  login: "/login",
-  quiz: {
-    questions: "/:slug/questions",
-    question: {
-      new: "/:slug/question/new",
-      edit: "/:slug/questions/:id/edit",
+  index: "",
+  root: "/",
+  admin: {
+    dashboard: "/admin/dashboard",
+    signup: "/admin/signup",
+    login: "/admin/login",
+    quiz: {
+      questions: "/admin/quiz/:slug/questions",
+      question: {
+        new: "/admin/quiz/:slug/question/new",
+        edit: "/admin/quiz/:slug/questions/:id/edit",
+      },
+      submissions: "/admin/quiz/:slug/submissions",
+      configure: "/admin/quiz/:slug/configure",
     },
-    submissions: "/:slug/submissions",
-    result: "/submissions/:slug/:userId/result",
-    configure: "/:slug/configure",
+    settings: {
+      base: "/admin/settings",
+      general: "/admin/settings/general",
+      categories: "/admin/settings/categories",
+      redirections: "/admin/settings/redirections",
+    },
   },
-  publicPage: "/public",
-  registerQuiz: "/quiz/:slug/register",
-  attemptQuiz: "/quiz/:slug",
-  settings: {
-    base: "/settings",
-    general: "/settings/general",
-    categories: "/settings/categories",
-    redirections: "/settings/redirections",
+  public: {
+    home: "/quizit",
+    quiz: {
+      register: "/quizit/quiz/:slug/register",
+      attempt: "/quizit/quiz/:slug/attempt",
+      result: "/quizit/quiz/:slug/:userId/result",
+    },
   },
 };
 
