@@ -9,8 +9,7 @@ json.quizzes do
       :name,
       :status,
       :slug,
-      :questions_count,
-      :updated_at
+      :questions_count
     json.category quiz&.category&.name
   end
 end

@@ -17,7 +17,7 @@ json.submissions do
         :total_questions,
         :status
 
-      json.submission_date date_and_time_from_timestamp(submission.updated_at)
+      json.submission_date submission.updated_at
     end
 
   end

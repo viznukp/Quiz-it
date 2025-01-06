@@ -17,6 +17,7 @@ import {
   QUIZ_TAB_IDS,
 } from "components/constants";
 import { useUpdateQuiz } from "hooks/reactQuery/useQuizzesApi";
+import { utcToLocalTime } from "utils/dateTime";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
 
@@ -78,7 +79,7 @@ const Show = () => {
             {quiz?.status === STATUS_DRAFT && (
               <Typography className="italic text-gray-400">
                 {t("labels.draftSavedAt", {
-                  dateAndTime: quiz?.lastUpdatedAt,
+                  dateAndTime: utcToLocalTime(quiz?.lastUpdatedAt),
                 })}
               </Typography>
             )}

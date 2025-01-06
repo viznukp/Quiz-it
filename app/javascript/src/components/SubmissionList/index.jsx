@@ -25,6 +25,7 @@ import {
 } from "components/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 import useQueryParams from "hooks/useQueryParams";
+import { utcToLocalTime } from "utils/dateTime";
 import { buildUrl } from "utils/url";
 
 import { SUBMISSION_TABLE_SCHEMA } from "./constants";
@@ -58,7 +59,7 @@ const SubmissionList = () => {
       key: submission.id,
       name: user.name,
       email: user.email,
-      submissionDate: submission.submissionDate,
+      submissionDate: utcToLocalTime(submission.submissionDate),
       correctAnswers: submission.correctAnswersCount,
       wrongAnswers: submission.wrongAnswersCount,
       unanswered: submission.unansweredCount,

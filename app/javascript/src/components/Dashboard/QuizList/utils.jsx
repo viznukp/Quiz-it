@@ -3,6 +3,7 @@ import React from "react";
 import routes from "src/routes";
 
 import { StatusTag, TruncatedLabel } from "components/commons";
+import { utcToLocalTime } from "utils/dateTime";
 
 import ActionList from "./ActionList";
 
@@ -22,7 +23,7 @@ export const transformQuizDataForTableDisplay = quizzes =>
       submissionsCount,
       status: <StatusTag label={status} primaryLabel="published" />,
       category,
-      createdOn,
+      createdOn: utcToLocalTime(createdOn),
       actions: <ActionList quizName={name} slug={slug} status={status} />,
     })
   );

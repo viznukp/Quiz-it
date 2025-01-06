@@ -11,7 +11,7 @@ json.quizzes @paginated_quizzes do |quiz|
     :submissions_count,
     :updated_at
   json.category quiz.category.name
-  json.created_on date_from_timestamp(quiz.updated_at)
+  json.created_on quiz.updated_at
 end
 
 json.extract! @quizzes_metadata,
