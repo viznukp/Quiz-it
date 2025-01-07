@@ -49,7 +49,7 @@ const PublicPage = () => {
   const updateSearchTerm = searchTerm => {
     setSearchTerm(searchTerm);
     history.replace(
-      buildUrl("", mergeLeft({ quizName: searchTerm }, queryParams))
+      buildUrl(routes.index, mergeLeft({ quizName: searchTerm }, queryParams))
     );
   };
 

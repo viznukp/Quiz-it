@@ -5,6 +5,7 @@ import { Button } from "neetoui";
 import { either, isNil, isEmpty, mergeLeft, pick, map } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
@@ -19,7 +20,7 @@ const ActiveFilters = ({ filters, className = "" }) => {
   const filtersFromQueryParams = pick(filters, queryParams);
 
   const clearFilter = filter => {
-    history.replace(buildUrl("", mergeLeft(filter, queryParams)));
+    history.replace(buildUrl(routes.index, mergeLeft(filter, queryParams)));
   };
 
   return (
@@ -40,7 +41,7 @@ const ActiveFilters = ({ filters, className = "" }) => {
             onClick={() =>
               history.replace(
                 buildUrl(
-                  "",
+                  routes.index,
                   mergeLeft(
                     map(() => "", filtersFromQueryParams),
                     queryParams

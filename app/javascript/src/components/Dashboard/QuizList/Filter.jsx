@@ -6,6 +6,7 @@ import { Form as NeetoUIForm, Input, Select } from "neetoui/formik";
 import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import { CategorySelector } from "components/commons";
 import { QUIZ_STATUSES } from "components/constants";
@@ -34,7 +35,7 @@ const Filter = () => {
   const handleFilterSubmit = formData => {
     history.replace(
       buildUrl(
-        "",
+        routes.index,
         mergeLeft(
           {
             quizName: formData.quizName,

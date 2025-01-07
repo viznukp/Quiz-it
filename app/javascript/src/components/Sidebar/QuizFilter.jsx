@@ -2,6 +2,7 @@ import React from "react";
 
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import { DEFAULT_PAGE_SIZE } from "components/constants";
 import useQueryParams from "hooks/useQueryParams";
@@ -26,7 +27,7 @@ const QuizFilter = ({ isVisible = false }) => {
   } = quizCounts;
 
   const handleFilterSubmit = status =>
-    history.replace(buildUrl("", { pageSize, status }));
+    history.replace(buildUrl(routes.index, { pageSize, status }));
 
   return (
     isVisible && (

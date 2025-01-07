@@ -5,6 +5,7 @@ import { Form as NeetoUIForm, Input, Select } from "neetoui/formik";
 import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import { SUBMISSION_STATUSES } from "components/constants";
 import useQueryParams from "hooks/useQueryParams";
@@ -22,7 +23,7 @@ const Filter = ({ isOpen, closeFilter }) => {
   const handleFilterSubmit = formData => {
     history.replace(
       buildUrl(
-        "",
+        routes.index,
         mergeLeft(
           {
             ...formData,

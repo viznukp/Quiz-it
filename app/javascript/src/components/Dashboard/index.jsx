@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import {
   Container,
@@ -32,7 +33,7 @@ const Dashboard = () => {
   const updateSearchTerm = searchTerm => {
     setSearchTerm(searchTerm);
     history.replace(
-      buildUrl("", mergeLeft({ quizName: searchTerm }, queryParams))
+      buildUrl(routes.index, mergeLeft({ quizName: searchTerm }, queryParams))
     );
   };
 

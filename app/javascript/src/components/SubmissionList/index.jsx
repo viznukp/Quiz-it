@@ -5,6 +5,7 @@ import { Table, Typography, Button } from "neetoui";
 import { mergeLeft, isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import {
   Container,
@@ -46,7 +47,9 @@ const SubmissionList = () => {
 
   const updateSearchTerm = searchTerm => {
     setSearchTerm(searchTerm);
-    history.replace(buildUrl("", mergeLeft({ name: searchTerm }, queryParams)));
+    history.replace(
+      buildUrl(routes.index, mergeLeft({ name: searchTerm }, queryParams))
+    );
   };
 
   const {

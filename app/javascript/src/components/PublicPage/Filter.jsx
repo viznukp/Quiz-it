@@ -5,6 +5,7 @@ import { Typography, Dropdown } from "neetoui";
 import { mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import useQueryParams from "hooks/useQueryParams";
@@ -18,7 +19,9 @@ const Filter = () => {
   const { data: { categories = [] } = {} } = useFetchCategories();
 
   const handleCategoryFilterSubmit = category => {
-    history.replace(buildUrl("", mergeLeft({ category }, queryParams)));
+    history.replace(
+      buildUrl(routes.index, mergeLeft({ category }, queryParams))
+    );
   };
 
   return (
