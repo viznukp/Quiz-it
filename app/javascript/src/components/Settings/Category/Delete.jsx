@@ -40,16 +40,14 @@ const Delete = ({ id, name, quizCount, categoryCount, isOpen, onClose }) => {
       >
         {({ isSubmitting, dirty, submitForm }) => (
           <ConfirmationModal
+            isFooterVisible={!(name === "General" && categoryCount === 1)}
             isOpen={isOpen}
             primaryButtonAction={submitForm}
             primaryButtonLabel={t("labels.proceed")}
             primaryButtonStyle="danger"
             title={t("messages.warnings.deleteCategory")}
             isPrimaryButtonDisabled={
-              ((isSubmitting || !dirty) &&
-                categoryCount > 1 &&
-                quizCount > 0) ||
-              (name === "General" && categoryCount === 1)
+              (isSubmitting || !dirty) && categoryCount > 1 && quizCount > 0
             }
             onClose={onClose}
           >

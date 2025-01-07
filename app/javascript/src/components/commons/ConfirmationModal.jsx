@@ -11,6 +11,7 @@ const ConfirmationModal = ({
   primaryButtonAction,
   isPrimaryButtonDisabled = false,
   primaryButtonStyle = "primary",
+  isFooterVisible = true,
   children,
 }) => {
   const { t } = useTranslation();
@@ -22,22 +23,24 @@ const ConfirmationModal = ({
           {title}
         </Typography>
         {children}
-        <div className="flex gap-3">
-          <Button
-            disabled={isPrimaryButtonDisabled}
-            label={primaryButtonLabel || t("labels.confirm")}
-            style={primaryButtonStyle}
-            onClick={() => {
-              primaryButtonAction();
-              onClose();
-            }}
-          />
-          <Button
-            label={t("labels.cancel")}
-            style="secondary"
-            onClick={onClose}
-          />
-        </div>
+        {isFooterVisible && (
+          <div className="flex gap-3">
+            <Button
+              disabled={isPrimaryButtonDisabled}
+              label={primaryButtonLabel || t("labels.confirm")}
+              style={primaryButtonStyle}
+              onClick={() => {
+                primaryButtonAction();
+                onClose();
+              }}
+            />
+            <Button
+              label={t("labels.cancel")}
+              style="secondary"
+              onClick={onClose}
+            />
+          </div>
+        )}
       </div>
     </Modal>
   );
