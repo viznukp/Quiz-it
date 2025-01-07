@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Quiz < ApplicationRecord
+  include Sluggable
+
   MAX_NAME_LENGTH = 125
   VALID_NAME_REGEX = /\A.*[a-zA-Z0-9].*\z/i
 
@@ -27,13 +29,7 @@ class Quiz < ApplicationRecord
   validate :slug_not_changed
   validate :ensure_questions_present, if: :published?
 
-  before_validation :set_slug, on: :create
-
   private
-
-    def set_slug
-      self.slug = SlugGeneratorService.new(self, :name, :slug).process!
-    end
 
     def slug_not_changed
       if slug_changed? && self.persisted?
