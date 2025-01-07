@@ -18,7 +18,7 @@ const QuizAttempt = () => {
   const history = useHistory();
 
   const { data = {}, isLoading } = useShowQuiz(slug);
-  const { quiz: { name: quizName } = {} } = data;
+  const { quiz: { name: quizName, timeLimit = 0 } = {} } = data;
 
   const redirectAfterRegistration = responseData => {
     setPublicUserToLocalStorage(responseData.id);
@@ -47,6 +47,11 @@ const QuizAttempt = () => {
     <div className="neeto-ui-bg-gray-100 flex h-screen items-center justify-center overflow-y-auto p-6">
       <div className=" max-w-6xl sm:max-w-md lg:max-w-xl ">
         <Typography style="h1">{quizName}</Typography>
+        {timeLimit > 0 && (
+          <Typography className="mt-4">
+            {t("messages.info.timedQuiz")}
+          </Typography>
+        )}
         <RegisterStandardUser
           afterRegistration={redirectAfterRegistration}
           className="mt-12"

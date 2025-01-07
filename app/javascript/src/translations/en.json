@@ -155,7 +155,8 @@
       "searchFor": "Search for {{entity}}",
       "searchName": "Search name",
       "linkCopied": "Quiz link copied to clipboard!",
-      "rearrangeOrder": "Drag and drop to rearrange order"
+      "rearrangeOrder": "Drag and drop to rearrange order",
+      "timedQuiz": "This quiz is a timed quiz. Once the quiz is started, the timer begins counting down. The quiz will automatically submit once the timer reaches zero, ensuring that no further answers can be submitted."
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",

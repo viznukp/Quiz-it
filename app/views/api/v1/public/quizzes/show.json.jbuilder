@@ -4,5 +4,6 @@ json.quiz do
     :name,
     :slug,
     :category,
-    :status
+    :status,
+    :time_limit
 end
