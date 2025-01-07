@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { ConfirmationModal } from "components/commons";
 
-const Form = ({ submitAction, initialValue = "", isOpen, onClose }) => {
+const Form = ({ title, submitAction, initialValue = "", isOpen, onClose }) => {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState(initialValue);
 
@@ -15,7 +15,7 @@ const Form = ({ submitAction, initialValue = "", isOpen, onClose }) => {
       isOpen={isOpen}
       primaryButtonAction={() => submitAction(inputValue)}
       primaryButtonLabel={t("labels.add")}
-      title={t("labels.newCategory")}
+      title={title}
       isPrimaryButtonDisabled={either(
         isEmpty,
         equals(initialValue)

@@ -36,6 +36,7 @@ const Create = () => {
       <Form
         isOpen={isModalOpen}
         submitAction={handleCreate}
+        title={t("labels.newCategory")}
         onClose={() => setIsModalOpen(false)}
       />
     </>
