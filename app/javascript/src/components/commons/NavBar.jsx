@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
+import { buildRoute } from "utils/url";
+
 const NavBar = ({
   title,
   backButtonVisible = false,
@@ -36,7 +38,7 @@ const NavBar = ({
           <Tab noUnderline>
             {tabs.map(({ label, path, id }) => (
               <Tab.Item active={id === activeTab} key={id}>
-                <Link to={path.replace(":slug", quizSlug)}> {label}</Link>
+                <Link to={buildRoute(path, { slug: quizSlug })}> {label}</Link>
               </Tab.Item>
             ))}
           </Tab>

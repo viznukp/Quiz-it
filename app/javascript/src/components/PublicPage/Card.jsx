@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import routes from "src/routes";
 
+import { buildRoute } from "utils/url";
+
 const Card = ({ name, slug, category, questionsCount = 0, color }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -27,7 +29,7 @@ const Card = ({ name, slug, category, questionsCount = 0, color }) => {
         className="mt-2"
         label={t("labels.startQuiz")}
         onClick={() =>
-          history.push(routes.public.quiz.register.replace(":slug", slug))
+          history.push(buildRoute(routes.public.quiz.register, { slug }))
         }
       />
     </div>

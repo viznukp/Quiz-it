@@ -4,6 +4,7 @@ import routes from "src/routes";
 
 import { StatusTag, TruncatedLabel } from "components/commons";
 import { utcToLocalTime } from "utils/dateTime";
+import { buildRoute } from "utils/url";
 
 import ActionList from "./ActionList";
 
@@ -17,7 +18,7 @@ export const transformQuizDataForTableDisplay = quizzes =>
         <TruncatedLabel
           isLink
           label={name}
-          pathForLink={routes.admin.quiz.questions.replace(":slug", slug)}
+          pathForLink={buildRoute(routes.admin.quiz.questions, { slug })}
         />
       ),
       submissionsCount,

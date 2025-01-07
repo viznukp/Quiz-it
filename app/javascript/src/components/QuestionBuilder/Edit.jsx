@@ -13,6 +13,7 @@ import {
   ContentWrapper,
 } from "components/commons";
 import { useEditQuestion } from "hooks/reactQuery/useQuestionsApi";
+import { buildRoute } from "utils/url";
 
 import Form from "./Form";
 
@@ -31,7 +32,7 @@ const Edit = () => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries("quiz");
-          history.push(routes.admin.quiz.questions.replace(":slug", slug));
+          history.push(buildRoute(routes.admin.quiz.questions, { slug }));
         },
       }
     );

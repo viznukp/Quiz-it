@@ -18,6 +18,7 @@ import {
 } from "components/constants";
 import { useUpdateQuiz } from "hooks/reactQuery/useQuizzesApi";
 import { utcToLocalTime } from "utils/dateTime";
+import { buildRoute } from "utils/url";
 
 import QuestionDisplayCard from "./QuestionDisplayCard";
 
@@ -34,10 +35,9 @@ const Show = () => {
   const { mutate: updateQuiz } = useUpdateQuiz();
 
   const copyQuizLink = async () => {
-    const link = `${BASE_URL}${routes.public.quiz.attempt.replace(
-      ":slug",
-      slug
-    )}`;
+    const link = `${BASE_URL}${buildRoute(routes.public.quiz.register, {
+      slug,
+    })}`;
     try {
       await navigator.clipboard.writeText(link);
       Toastr.info(t("messages.info.linkCopied"));
@@ -113,7 +113,7 @@ const Show = () => {
           <Button
             label={t("labels.addNewQuestion")}
             onClick={() =>
-              history.push(routes.quiz.question.new.replace(":slug", slug))
+              history.push(buildRoute(routes.quiz.question.new, { slug }))
             }
           />
         </div>

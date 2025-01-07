@@ -12,6 +12,7 @@ import {
   useDeleteQuestion,
   useCloneQuestion,
 } from "hooks/reactQuery/useQuestionsApi";
+import { buildRoute } from "utils/url";
 
 const QuestionDisplayCard = ({ question, id, options, answerId, slug }) => {
   const { t } = useTranslation();
@@ -47,9 +48,7 @@ const QuestionDisplayCard = ({ question, id, options, answerId, slug }) => {
               style="text"
               onClick={() =>
                 history.push(
-                  routes.admin.quiz.question.edit
-                    .replace(":slug", slug)
-                    .replace(":id", id)
+                  buildRoute(routes.admin.quiz.question.edit, { slug, id })
                 )
               }
             />

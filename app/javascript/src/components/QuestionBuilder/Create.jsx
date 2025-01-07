@@ -14,6 +14,7 @@ import {
 } from "components/commons";
 import { useCreateQuestion } from "hooks/reactQuery/useQuestionsApi";
 import { useShowQuiz } from "hooks/reactQuery/useQuizzesApi";
+import { buildRoute } from "utils/url";
 
 import Form from "./Form";
 
@@ -28,7 +29,7 @@ const Create = () => {
   const handleRedirection = (source, resetForm) => {
     refetch();
     if (source === "primary") {
-      history.push(routes.admin.quiz.questions.replace(":slug", slug));
+      history.push(buildRoute(routes.admin.quiz.questions, { slug }));
     } else {
       resetForm();
     }

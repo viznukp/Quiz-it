@@ -12,6 +12,7 @@ export const useShowQuiz = queryParams =>
   useQuery({
     queryKey: ["quizPublic", queryParams],
     queryFn: () => publicApi.showQuiz(queryParams),
+    retry: 0,
   });
 
 export const useFetchQuestions = queryParams =>

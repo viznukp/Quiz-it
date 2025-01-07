@@ -10,6 +10,7 @@ import { RegisterStandardUser } from "components/Authentication";
 import { PageLoader, NoData } from "components/commons";
 import { useShowQuiz } from "hooks/reactQuery/usePublicApi";
 import { setPublicUserToLocalStorage } from "utils/storage";
+import { buildRoute } from "utils/url";
 
 const QuizAttempt = () => {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ const QuizAttempt = () => {
 
   const redirectAfterRegistration = responseData => {
     setPublicUserToLocalStorage(responseData.id);
-    history.push(routes.public.quiz.attempt.replace(":slug", slug));
+    history.push(buildRoute(routes.public.quiz.attempt, { slug }));
   };
 
   if (isLoading) {
