@@ -6,14 +6,14 @@ import PropTypes from "prop-types";
 
 import useFuncDebounce from "hooks/useFuncDebounce";
 
-const SearchBar = ({ placeholder = "", searchTerm, setSearchTerm }) => {
+const SearchBar = ({ placeholder = "", searchTerm = "", setSearchTerm }) => {
   const debouncedSearch = useFuncDebounce(value => setSearchTerm(value));
 
   useEffect(() => {
-    setInputValue(searchTerm || "");
+    setInputValue(searchTerm);
   }, [searchTerm]);
 
-  const [inputValue, setInputValue] = useState(searchTerm || "");
+  const [inputValue, setInputValue] = useState(searchTerm);
 
   return (
     <div>

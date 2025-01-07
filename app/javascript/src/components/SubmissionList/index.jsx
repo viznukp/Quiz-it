@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Filter as FilterIcon } from "neetoicons";
 import { Table, Typography, Button } from "neetoui";
-import { mergeLeft, isEmpty } from "ramda";
+import { mergeLeft, isEmpty, isNil } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
 import routes from "src/routes";
@@ -40,7 +40,7 @@ const SubmissionList = () => {
   const [visibleColumns, setVisibleColumns] = useState(SUBMISSION_TABLE_SCHEMA);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [quizTitle, setQuizTitle] = useState("");
-  const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
+  const [searchTerm, setSearchTerm] = useState(queryParams.name || "");
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
   const history = useHistory();
@@ -75,6 +75,10 @@ const SubmissionList = () => {
       setQuizTitle(quiz);
     }
   }, [quiz]);
+
+  useEffect(() => {
+    if (isNil(queryParams.name)) setSearchTerm("");
+  }, [queryParams]);
 
   return (
     <Container>

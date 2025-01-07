@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { mergeLeft } from "ramda";
+import { mergeLeft, isNil } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "src/routes";
@@ -15,6 +15,7 @@ import useQueryParams from "hooks/useQueryParams";
 import useQuizzesStore from "stores/useQuizzesStore";
 import { buildUrl } from "utils/url";
 
+import { PAGE_TITLES } from "./constants";
 import NewQuizPane from "./NewQuizPane";
 import QuizList from "./QuizList";
 
@@ -24,11 +25,6 @@ const Dashboard = () => {
   const history = useHistory();
   const { resultType } = useQuizzesStore();
   const [searchTerm, setSearchTerm] = useState(queryParams.quizName || "");
-  const pageTitles = {
-    all: t("pageTitles.allQuizzes"),
-    published: t("pageTitles.publishedQuizzes"),
-    draft: t("pageTitles.draftQuizzes"),
-  };
 
   const updateSearchTerm = searchTerm => {
     setSearchTerm(searchTerm);
@@ -37,9 +33,13 @@ const Dashboard = () => {
     );
   };
 
+  useEffect(() => {
+    if (isNil(queryParams.quizName)) setSearchTerm("");
+  }, [queryParams]);
+
   return (
     <Container>
-      <NavBar title={pageTitles[resultType]}>
+      <NavBar title={PAGE_TITLES[resultType]}>
         <SearchBar
           searchTerm={searchTerm}
           setSearchTerm={updateSearchTerm}

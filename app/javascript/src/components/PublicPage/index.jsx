@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { Button } from "neetoui";
-import { mergeLeft, isEmpty } from "ramda";
+import { mergeLeft, isEmpty, isNil } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { useFetchQuizzes } from "src/hooks/reactQuery/usePublicApi";
@@ -61,6 +61,10 @@ const PublicPage = () => {
   useEffect(() => {
     if (organization) setOrganizationName(organization);
   }, [organization]);
+
+  useEffect(() => {
+    if (isNil(queryParams.quizName)) setSearchTerm("");
+  }, [queryParams]);
 
   return (
     <Container sideBarDisabled>
