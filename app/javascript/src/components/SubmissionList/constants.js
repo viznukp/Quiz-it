@@ -26,3 +26,5 @@ export const FILTER_INITIAL_VALUES = {
   email: null,
   status: null,
 };
+
+export const SUBMISSION_REPORT_FILENAME = "quiz_submissions_report.pdf";

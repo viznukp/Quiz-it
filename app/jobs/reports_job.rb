@@ -10,7 +10,7 @@ class ReportsJob
       assigns: {
         submissions:
       },
-      template: "submissions/report/download",
+      template: "api/v1/submissions/report/download",
       layout: "pdf"
     )
     ActionCable.server.broadcast(user_id, { message: I18n.t("report.generate"), progress: 50 })

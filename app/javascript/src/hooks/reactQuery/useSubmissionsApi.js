@@ -16,3 +16,7 @@ export const useFetchResult = (slug, userId) =>
   });
 
 export const useCreateSubmission = () => useMutation(submissionsApi.create);
+
+export const useGeneratePdf = () => useMutation(submissionsApi.generatePdf);
+
+export const useDownloadPdf = () => useMutation(submissionsApi.downloadPdf);

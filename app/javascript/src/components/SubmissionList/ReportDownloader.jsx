@@ -5,10 +5,15 @@ import { Download as DownloadIcon } from "neetoicons";
 import { Button, Modal } from "neetoui";
 import { useTranslation } from "react-i18next";
 
-import submissionsApi from "apis/submissions";
 import createConsumer from "channels/consumer";
 import { subscribeToReportDownloadChannel } from "channels/reportDownloadChannel";
 import { ProgressBar } from "components/commons";
+import {
+  useGeneratePdf,
+  useDownloadPdf,
+} from "hooks/reactQuery/useSubmissionsApi";
+
+import { SUBMISSION_REPORT_FILENAME } from "./constants";
 
 const ReportDownloader = ({ slug }) => {
   const { t } = useTranslation();
@@ -19,29 +24,25 @@ const ReportDownloader = ({ slug }) => {
 
   const consumer = createConsumer();
 
+  const { mutate: generatePdf } = useGeneratePdf();
+  const { mutate: downloadPdf } = useDownloadPdf();
+
   const closeModal = () => setIsModalOpen(false);
 
-  const generatePdf = async () => {
-    try {
-      await submissionsApi.generatePdf(slug);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
+  const handleGeneratePdf = () => generatePdf(slug);
 
-  const downloadPdf = async () => {
-    try {
-      const data = await submissionsApi.download();
-      FileSaver.saveAs(data, "quiz_submissions_report.pdf");
-      closeModal();
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleDownloadPdf = () => {
+    downloadPdf(null, {
+      onSuccess: data => {
+        FileSaver.saveAs(data, SUBMISSION_REPORT_FILENAME);
+        closeModal();
+      },
+    });
   };
 
   useEffect(() => {
     if (progress === 100) {
-      downloadPdf();
+      handleDownloadPdf();
     }
   }, [progress]);
 
@@ -60,7 +61,7 @@ const ReportDownloader = ({ slug }) => {
             consumer,
             setMessage,
             setProgress,
-            generatePdf,
+            generatePdf: handleGeneratePdf,
           });
         }}
       />

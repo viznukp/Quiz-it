@@ -11,7 +11,7 @@ const fetchResult = (slug, userId) =>
 const generatePdf = slug =>
   axios.post("/submissions/report", { submission: { slug } });
 
-const download = () =>
+const downloadPdf = () =>
   axios.get("/submissions/report/download", { responseType: "blob" });
 
 const submissionsApi = {
@@ -19,7 +19,7 @@ const submissionsApi = {
   create,
   fetchResult,
   generatePdf,
-  download,
+  downloadPdf,
 };
 
 export default submissionsApi;
