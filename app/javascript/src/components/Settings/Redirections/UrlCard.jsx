@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { stripDomainFromUrl } from "utils/url";
+
 import { REDIRECTION_FORM_MODES } from "./constants";
 import CreateEdit from "./CreateEdit";
 import Show from "./Show";
@@ -14,8 +16,8 @@ const UrlCard = ({ redirectionData }) => {
           id={redirectionData.id}
           mode={REDIRECTION_FORM_MODES.edit}
           initialValues={{
-            fromUrl: redirectionData.source,
-            toUrl: redirectionData.destination,
+            fromUrl: stripDomainFromUrl(redirectionData.source),
+            toUrl: stripDomainFromUrl(redirectionData.destination),
           }}
           onClose={() => setIsEditing(false)}
         />
