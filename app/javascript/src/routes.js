@@ -2,7 +2,7 @@ const routes = {
   index: "",
   root: "/",
   admin: {
-    dashboard: "/admin/dashboard",
+    home: "/admin/home",
     signup: "/admin/signup",
     login: "/admin/login",
     quiz: {

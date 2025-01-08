@@ -30,7 +30,7 @@ const Login = () => {
           userName: name,
         });
         setAuthHeaders();
-        window.location.href = routes.admin.dashboard;
+        window.location.href = routes.admin.home;
       },
     });
   };

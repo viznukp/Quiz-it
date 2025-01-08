@@ -62,10 +62,10 @@ const Sidebar = () => {
               toolTipEnabled
               icon={<List />}
               label={t("labels.quizzes")}
-              onClickRoute={routes.admin.dashboard}
+              onClickRoute={routes.admin.home}
             />
             <QuizFilter
-              isVisible={isExpanded && currentRoute === routes.admin.dashboard}
+              isVisible={isExpanded && currentRoute === routes.admin.home}
             />
             <SidebarNavItem
               toolTipEnabled

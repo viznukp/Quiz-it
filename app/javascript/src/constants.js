@@ -1,18 +1,19 @@
 import routes from "src/routes";
 
-import { Login, Signup } from "components/Authentication";
-import PublicPage from "components/PublicPage";
+import { QuizConfiguration, SubmissionList } from "components/Admin";
 import {
   ShowQuestions,
   CreateQuestion,
   EditQuestion,
-} from "components/QuestionBuilder";
-import QuizAttempt from "components/QuizAttempt";
-import QuizManager from "components/QuizAttempt/QuizManager";
-import QuizConfiguration from "components/QuizConfiguration";
-import QuizResult from "components/QuizResult";
-import { General, Category, Redirection } from "components/Settings";
-import SubmissionList from "components/SubmissionList";
+} from "components/Admin/QuestionBuilder";
+import { General, Category, Redirection } from "components/Admin/Settings";
+import { Login, Signup } from "components/Authentication";
+import {
+  PublicHome,
+  QuizAttempt,
+  QuizResult,
+  RegisterQuiz,
+} from "components/Public";
 
 export const APP_ROUTES = [
   { component: Login, path: routes.admin.login },
@@ -25,8 +26,8 @@ export const APP_ROUTES = [
   { component: General, path: routes.admin.settings.general },
   { component: Category, path: routes.admin.settings.categories },
   { component: Redirection, path: routes.admin.settings.redirections },
-  { component: PublicPage, path: routes.public.home },
-  { component: QuizAttempt, path: routes.public.quiz.register },
-  { component: QuizManager, path: routes.public.quiz.attempt },
+  { component: PublicHome, path: routes.public.home },
+  { component: RegisterQuiz, path: routes.public.quiz.register },
+  { component: QuizAttempt, path: routes.public.quiz.attempt },
   { component: QuizResult, path: routes.public.quiz.result },
 ];
