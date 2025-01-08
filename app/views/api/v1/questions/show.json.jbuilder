@@ -9,6 +9,6 @@ json.quiz do
     json.extract! @question,
       :question,
       :answer_id
-    json.options @question.options["options"]
+    json.options @question.options["entries"]
   end
 end

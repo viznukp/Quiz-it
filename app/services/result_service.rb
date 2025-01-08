@@ -23,7 +23,7 @@ class ResultService
       seed = @submission.seed
       questions = @quiz.questions.order(:created_at).shuffle(random: Random.new(seed))
       questions.each do | question |
-        question.options["options"] = question.options["options"].shuffle(random: Random.new(seed))
+        question.options["entries"] = question.options["entries"].shuffle(random: Random.new(seed))
       end
       questions
     end
@@ -41,7 +41,7 @@ class ResultService
     def add_submitted_answer_to_each_question
       @questions.map do |question|
         question_hash = question.attributes.slice("id", "question")
-        question_hash["options"] = question.options["options"]
+        question_hash["options"] = question.options["entries"]
         question_hash["correct_answer_id"] = question.answer_id
         question_hash["user_selection_id"] = find_user_choice(question)
         question_hash

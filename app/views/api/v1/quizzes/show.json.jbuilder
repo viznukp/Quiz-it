@@ -18,7 +18,7 @@ json.quiz do
       :id,
       :question,
       :answer_id
-    json.options question.options["options"]
+    json.options question.options["entries"]
   end
   json.last_updated_at @quiz.updated_at
 end

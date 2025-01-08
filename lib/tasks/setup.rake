@@ -60,7 +60,7 @@ def create_quizzes(categories, user)
     questions.each do |question|
       Question.create!(
         question: question[:question],
-        options: question[:options],
+        options: {entries: question[:options]},
         answer_id: question[:answer_id],
         quiz: quiz
       )
@@ -101,7 +101,7 @@ end
 
 def create_random_answers(quiz)
   answers = quiz.questions.map do |question|
-    options = question.options["options"]
+    options = question.options["entries"]
     selected_choice = options.sample["id"]
 
     { question_id: question.id, selected_choice: selected_choice }
@@ -131,62 +131,52 @@ def sample_questions(category)
     [
       {
         "question": "What is the chemical symbol for water?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "H2O" },
-            { "id": 2, "option": "CO2" },
-            { "id": 3, "option": "O2" },
-            { "id": 4, "option": "N2" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "H2O" },
+          { "id": 2, "option": "CO2" },
+          { "id": 3, "option": "O2" },
+          { "id": 4, "option": "N2" }
+        ],
         "answer_id": 1
       },
       {
         "question": "What planet is known as the Red Planet?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Earth" },
-            { "id": 2, "option": "Mars" },
-            { "id": 3, "option": "Venus" },
-            { "id": 4, "option": "Jupiter" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Earth" },
+          { "id": 2, "option": "Mars" },
+          { "id": 3, "option": "Venus" },
+          { "id": 4, "option": "Jupiter" }
+        ],
         "answer_id": 2
       },
       {
         "question": "What is the process by which plants make their food?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Respiration" },
-            { "id": 2, "option": "Photosynthesis" },
-            { "id": 3, "option": "Digestion" },
-            { "id": 4, "option": "Absorption" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Respiration" },
+          { "id": 2, "option": "Photosynthesis" },
+          { "id": 3, "option": "Digestion" },
+          { "id": 4, "option": "Absorption" }
+        ],
         "answer_id": 2
       },
       {
         "question": "What is the atomic number of Carbon?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "6" },
-            { "id": 2, "option": "8" },
-            { "id": 3, "option": "12" },
-            { "id": 4, "option": "14" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "6" },
+          { "id": 2, "option": "8" },
+          { "id": 3, "option": "12" },
+          { "id": 4, "option": "14" }
+        ],
         "answer_id": 1
       },
       {
         "question": "What is the hardest natural substance on Earth?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Gold" },
-            { "id": 2, "option": "Diamond" },
-            { "id": 3, "option": "Iron" },
-            { "id": 4, "option": "Steel" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Gold" },
+          { "id": 2, "option": "Diamond" },
+          { "id": 3, "option": "Iron" },
+          { "id": 4, "option": "Steel" }
+        ],
         "answer_id": 2
       }
     ]
@@ -194,62 +184,52 @@ def sample_questions(category)
     [
       {
         "question": "What is 5 + 7?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "11" },
-            { "id": 2, "option": "12" },
-            { "id": 3, "option": "13" },
-            { "id": 4, "option": "14" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "11" },
+          { "id": 2, "option": "12" },
+          { "id": 3, "option": "13" },
+          { "id": 4, "option": "14" }
+        ],
         "answer_id": 2
       },
       {
         "question": "What is 9 * 8?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "72" },
-            { "id": 2, "option": "64" },
-            { "id": 3, "option": "75" },
-            { "id": 4, "option": "78" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "72" },
+          { "id": 2, "option": "64" },
+          { "id": 3, "option": "75" },
+          { "id": 4, "option": "78" }
+        ],
         "answer_id": 1
       },
       {
         "question": "What is the square root of 16?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "2" },
-            { "id": 2, "option": "3" },
-            { "id": 3, "option": "4" },
-            { "id": 4, "option": "5" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "2" },
+          { "id": 2, "option": "3" },
+          { "id": 3, "option": "4" },
+          { "id": 4, "option": "5" }
+        ],
         "answer_id": 3
       },
       {
         "question": "What is 100 divided by 5?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "10" },
-            { "id": 2, "option": "15" },
-            { "id": 3, "option": "20" },
-            { "id": 4, "option": "25" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "10" },
+          { "id": 2, "option": "15" },
+          { "id": 3, "option": "20" },
+          { "id": 4, "option": "25" }
+        ],
         "answer_id": 3
       },
       {
         "question": "What is the result of 7^2?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "49" },
-            { "id": 2, "option": "56" },
-            { "id": 3, "option": "64" },
-            { "id": 4, "option": "42" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "49" },
+          { "id": 2, "option": "56" },
+          { "id": 3, "option": "64" },
+          { "id": 4, "option": "42" }
+        ],
         "answer_id": 1
       }
     ]
@@ -258,62 +238,52 @@ def sample_questions(category)
     [
       {
         "question": "Who was the first president of the United States?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "George Washington" },
-            { "id": 2, "option": "Abraham Lincoln" },
-            { "id": 3, "option": "Thomas Jefferson" },
-            { "id": 4, "option": "Andrew Jackson" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "George Washington" },
+          { "id": 2, "option": "Abraham Lincoln" },
+          { "id": 3, "option": "Thomas Jefferson" },
+          { "id": 4, "option": "Andrew Jackson" }
+        ],
         "answer_id": 1
       },
       {
         "question": "In which year did World War I begin?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "1912" },
-            { "id": 2, "option": "1914" },
-            { "id": 3, "option": "1916" },
-            { "id": 4, "option": "1918" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "1912" },
+          { "id": 2, "option": "1914" },
+          { "id": 3, "option": "1916" },
+          { "id": 4, "option": "1918" }
+        ],
         "answer_id": 2
       },
       {
         "question": "Who was the leader of Nazi Germany during World War II?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Adolf Hitler" },
-            { "id": 2, "option": "Joseph Stalin" },
-            { "id": 3, "option": "Winston Churchill" },
-            { "id": 4, "option": "Franklin D. Roosevelt" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Adolf Hitler" },
+          { "id": 2, "option": "Joseph Stalin" },
+          { "id": 3, "option": "Winston Churchill" },
+          { "id": 4, "option": "Franklin D. Roosevelt" }
+        ],
         "answer_id": 1
       },
       {
         "question": "Which ancient civilization built the pyramids?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Romans" },
-            { "id": 2, "option": "Greeks" },
-            { "id": 3, "option": "Egyptians" },
-            { "id": 4, "option": "Aztecs" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Romans" },
+          { "id": 2, "option": "Greeks" },
+          { "id": 3, "option": "Egyptians" },
+          { "id": 4, "option": "Aztecs" }
+        ],
         "answer_id": 3
       },
       {
         "question": "Who wrote the Declaration of Independence?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "George Washington" },
-            { "id": 2, "option": "Thomas Jefferson" },
-            { "id": 3, "option": "Abraham Lincoln" },
-            { "id": 4, "option": "Benjamin Franklin" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "George Washington" },
+          { "id": 2, "option": "Thomas Jefferson" },
+          { "id": 3, "option": "Abraham Lincoln" },
+          { "id": 4, "option": "Benjamin Franklin" }
+        ],
         "answer_id": 2
       }
     ]
@@ -321,62 +291,52 @@ def sample_questions(category)
     [
       {
         "question": "Who wrote 'Romeo and Juliet'?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Shakespeare" },
-            { "id": 2, "option": "Dickens" },
-            { "id": 3, "option": "Austen" },
-            { "id": 4, "option": "Hemingway" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Shakespeare" },
+          { "id": 2, "option": "Dickens" },
+          { "id": 3, "option": "Austen" },
+          { "id": 4, "option": "Hemingway" }
+        ],
         "answer_id": 1
       },
       {
         "question": "What is the title of the first Harry Potter book?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "The Philosopher's Stone" },
-            { "id": 2, "option": "The Chamber of Secrets" },
-            { "id": 3, "option": "The Prisoner of Azkaban" },
-            { "id": 4, "option": "The Goblet of Fire" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "The Philosopher's Stone" },
+          { "id": 2, "option": "The Chamber of Secrets" },
+          { "id": 3, "option": "The Prisoner of Azkaban" },
+          { "id": 4, "option": "The Goblet of Fire" }
+        ],
         "answer_id": 1
       },
       {
         "question": "Who wrote 'Moby-Dick'?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Herman Melville" },
-            { "id": 2, "option": "Mark Twain" },
-            { "id": 3, "option": "Ernest Hemingway" },
-            { "id": 4, "option": "John Steinbeck" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Herman Melville" },
+          { "id": 2, "option": "Mark Twain" },
+          { "id": 3, "option": "Ernest Hemingway" },
+          { "id": 4, "option": "John Steinbeck" }
+        ],
         "answer_id": 1
       },
       {
         "question": "What is the name of the hobbit in 'The Hobbit'?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Frodo Baggins" },
-            { "id": 2, "option": "Samwise Gamgee" },
-            { "id": 3, "option": "Bilbo Baggins" },
-            { "id": 4, "option": "Gandalf" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Frodo Baggins" },
+          { "id": 2, "option": "Samwise Gamgee" },
+          { "id": 3, "option": "Bilbo Baggins" },
+          { "id": 4, "option": "Gandalf" }
+        ],
         "answer_id": 3
       },
       {
         "question": "Who wrote 'Pride and Prejudice'?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Charlotte Brontë" },
-            { "id": 2, "option": "Jane Austen" },
-            { "id": 3, "option": "Emily Dickinson" },
-            { "id": 4, "option": "Virginia Woolf" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Charlotte Brontë" },
+          { "id": 2, "option": "Jane Austen" },
+          { "id": 3, "option": "Emily Dickinson" },
+          { "id": 4, "option": "Virginia Woolf" }
+        ],
         "answer_id": 2
       }
     ]
@@ -385,62 +345,52 @@ def sample_questions(category)
     [
       {
         "question": "Who is known as the father of the computer?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Charles Babbage" },
-            { "id": 2, "option": "Alan Turing" },
-            { "id": 3, "option": "Bill Gates" },
-            { "id": 4, "option": "Steve Jobs" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Charles Babbage" },
+          { "id": 2, "option": "Alan Turing" },
+          { "id": 3, "option": "Bill Gates" },
+          { "id": 4, "option": "Steve Jobs" }
+        ],
         "answer_id": 1
       },
       {
         "question": "What year was the first iPhone released?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "2005" },
-            { "id": 2, "option": "2007" },
-            { "id": 3, "option": "2009" },
-            { "id": 4, "option": "2010" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "2005" },
+          { "id": 2, "option": "2007" },
+          { "id": 3, "option": "2009" },
+          { "id": 4, "option": "2010" }
+        ],
         "answer_id": 2
       },
       {
         "question": "What does HTML stand for?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "HyperText Markup Language" },
-            { "id": 2, "option": "HighText Markup Language" },
-            { "id": 3, "option": "HyperTool Markup Language" },
-            { "id": 4, "option": "HyperText Management Language" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "HyperText Markup Language" },
+          { "id": 2, "option": "HighText Markup Language" },
+          { "id": 3, "option": "HyperTool Markup Language" },
+          { "id": 4, "option": "HyperText Management Language" }
+        ],
         "answer_id": 1
       },
       {
         "question": "Who invented the first practical telephone?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Thomas Edison" },
-            { "id": 2, "option": "Alexander Graham Bell" },
-            { "id": 3, "option": "Nikola Tesla" },
-            { "id": 4, "option": "Michael Faraday" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Thomas Edison" },
+          { "id": 2, "option": "Alexander Graham Bell" },
+          { "id": 3, "option": "Nikola Tesla" },
+          { "id": 4, "option": "Michael Faraday" }
+        ],
         "answer_id": 2
       },
       {
         "question": "What is the main programming language used for iOS development?",
-        "options": {
-          "options": [
-            { "id": 1, "option": "Java" },
-            { "id": 2, "option": "Swift" },
-            { "id": 3, "option": "C#" },
-            { "id": 4, "option": "Python" }
-          ]
-        },
+        "options": [
+          { "id": 1, "option": "Java" },
+          { "id": 2, "option": "Swift" },
+          { "id": 3, "option": "C#" },
+          { "id": 4, "option": "Python" }
+        ],
         "answer_id": 2
       }
     ]

@@ -9,7 +9,7 @@ json.quiz do
     json.extract! question,
       :id,
       :question
-    json.options question.options["options"].shuffle(random: Random.new(@seed))
+    json.options question.options["entries"].shuffle(random: Random.new(@seed))
   end
   json.randomization_seed @seed
 end

@@ -55,7 +55,7 @@ const Form = ({
     return {
       ...formData,
       answerId: selectedOptionIndex + 1,
-      options: { options: formattedOptions },
+      options: { entries: formattedOptions },
     };
   };
 
