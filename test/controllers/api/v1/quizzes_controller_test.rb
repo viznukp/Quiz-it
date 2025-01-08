@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class QuizzesControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::QuizzesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = create(:user, user_type: "admin")
     @category = create(:category)
@@ -12,9 +12,9 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   def test_index_action_should_list_all_quizzes
     quiz_count = 5
-    create_list(:quiz, quiz_count, creator: @user, status: "draft")
+    create_list(:quiz, quiz_count, creator: @user, status: "draft", category: @category)
 
-    get quizzes_path, headers: @headers
+    get api_v1_quizzes_path, headers: @headers
     assert_response :success
 
     response_json = response.parsed_body
@@ -27,7 +27,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_create_valid_quiz
     assert_difference "Quiz.count", 1 do
-      post quizzes_path, params: { quiz: { name: "Example quiz", category_id: @category.id } }, headers: @headers
+      post api_v1_quizzes_path, params: { quiz: { name: "Example quiz", category_id: @category.id } }, headers: @headers
       assert_response :success
     end
   end
@@ -35,14 +35,14 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   def test_should_delete_quiz
     @quiz.save!
     assert_difference "Quiz.count", -1 do
-      delete quiz_path(slug: @quiz.slug), headers: @headers
+      delete api_v1_quiz_path(slug: @quiz.slug), headers: @headers
       assert_response :success
     end
   end
 
   def test_should_show_quiz
     @quiz.save!
-    get quiz_path(slug: @quiz.slug), headers: @headers
+    get api_v1_quiz_path(slug: @quiz.slug), headers: @headers
     assert_response :success
     response_quiz = response.parsed_body["quiz"]
     response_quiz_slug = response_quiz["slug"]
@@ -52,13 +52,13 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   def test_should_update_with_valid_params
     @quiz.save!
     new_quiz_name = @quiz.name + "updated"
-    put quiz_path(@quiz.slug), params: { quiz: { name: new_quiz_name } }, headers: @headers
+    put api_v1_quiz_path(@quiz.slug), params: { quiz: { name: new_quiz_name } }, headers: @headers
     assert_response :success
     assert_equal new_quiz_name, @quiz.reload.name
   end
 
   def test_should_bulk_update_quiz
-    quizzes = create_list(:quiz, 3, creator: @user, status: "draft")
+    quizzes = create_list(:quiz, 3, creator: @user, status: "draft", category: @category)
     update_params = {
       quizzes: {
         slugs: quizzes.map(&:slug),
@@ -66,7 +66,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    put bulk_update_quizzes_path, params: update_params, headers: @headers
+    put bulk_update_api_v1_quizzes_path, params: update_params, headers: @headers
     assert_response :success
 
     response_json = response.parsed_body
@@ -79,10 +79,10 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_bulk_destroy_quizzes
     quiz_count = 3
-    quizzes = create_list(:quiz, quiz_count, creator: @user)
+    quizzes = create_list(:quiz, quiz_count, creator: @user, category: @category)
 
     assert_difference "Quiz.count", -quiz_count do
-      delete bulk_destroy_quizzes_path, params: { quizzes: { slugs: quizzes.map(&:slug) } }, headers: @headers
+      delete bulk_destroy_api_v1_quizzes_path, params: { quizzes: { slugs: quizzes.map(&:slug) } }, headers: @headers
     end
 
     assert_response :success
@@ -92,12 +92,12 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   def test_filter_quizzes_by_category
     quiz_count_per_category = 3
-    category_one = create(:category)
-    category_two = create(:category)
+    category_one = create(:category, name: "category 1")
+    category_two = create(:category, name: "category 2")
     create_list(:quiz, quiz_count_per_category, category: category_one, creator: @user)
     create_list(:quiz, quiz_count_per_category, category: category_two, creator: @user)
 
-    get quizzes_path(filters: { category: category_one.name }), headers: @headers
+    get api_v1_quizzes_path(filters: { category: category_one.name }), headers: @headers
     assert_response :success
     response_quiz_ids = response.parsed_body["quizzes"].pluck("id")
 
@@ -110,19 +110,19 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_filter_quizzes_by_name
-    create(:quiz, name: "First quiz", creator: @user)
+    create(:quiz, name: "First quiz", creator: @user, category: @category)
     quiz_to_search = create(:quiz, name: "Second quiz", creator: @user)
-    create(:quiz, name: "Third quiz", creator: @user)
+    create(:quiz, name: "Third quiz", creator: @user, category: @category)
 
     quiz_to_search = Quiz.first
-    get quizzes_path(filters: { quiz_name: quiz_to_search.name }), headers: @headers
+    get api_v1_quizzes_path(filters: { quiz_name: quiz_to_search.name }), headers: @headers
     assert_response :success
     response_quiz_ids = response.parsed_body["quizzes"].pluck("id")
     assert_equal quiz_to_search.id, response_quiz_ids[0]
   end
 
   def test_should_not_bulk_update_with_invalid_slugs
-    quizzes = create_list(:quiz, 3, creator: @user, status: "draft")
+    quizzes = create_list(:quiz, 3, creator: @user, status: "draft", category: @category)
 
     update_params = {
       quizzes: {
@@ -131,7 +131,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    put bulk_update_quizzes_path, params: update_params, headers: @headers
+    put bulk_update_api_v1_quizzes_path, params: update_params, headers: @headers
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body

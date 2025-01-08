@@ -5,14 +5,13 @@ require "test_helper"
 class QuizTest < ActiveSupport::TestCase
   def setup
     @user = create(:user)
-    category = create(:category)
-    @quiz = build(:quiz, creator: @user, category:)
+    @category = create(:category)
+    @quiz = build(:quiz, creator: @user, category: @category)
   end
 
   def build_quiz
     user = create(:user)
-    category = create(:category)
-    build(:quiz, creator: user, category:)
+    build(:quiz, creator: user, category: @category)
   end
 
   def test_name_should_not_be_empty
@@ -94,7 +93,7 @@ class QuizTest < ActiveSupport::TestCase
   end
 
   def test_creates_multiple_quizzes_with_unique_slug
-    quizzes = create_list(:quiz, 10)
+    quizzes = create_list(:quiz, 10, category: @category)
     slugs = quizzes.pluck(:slug)
     assert_equal slugs.uniq, slugs
   end

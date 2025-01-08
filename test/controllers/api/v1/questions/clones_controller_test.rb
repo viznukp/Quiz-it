@@ -3,7 +3,7 @@
 require "test_helper"
 require "sidekiq/testing"
 
-class Questions::ClonesControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::Questions::ClonesControllerTest < ActionDispatch::IntegrationTest
   def setup
     user = create(:user)
     quiz = create(:quiz, creator: user)
@@ -13,7 +13,7 @@ class Questions::ClonesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_successfully_clone_question
     assert_difference "Question.count", 1 do
-      post question_clone_path(@question.id), headers: @headers
+      post api_v1_question_clone_path(@question.id), headers: @headers
       assert_response :success
     end
   end

@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class RedirectionsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::RedirectionsControllerTest < ActionDispatch::IntegrationTest
   def setup
     user = create(:user)
     @headers = headers(user)
@@ -11,7 +11,7 @@ class RedirectionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_successfully_create_redirection
     assert_difference "Redirection.count", 1 do
-      post redirections_path,
+      post api_v1_redirections_path,
         params: { redirection: { source: @redirection.source, destination: @redirection.destination } },
         headers: @headers
       assert_response :success
@@ -21,7 +21,7 @@ class RedirectionsControllerTest < ActionDispatch::IntegrationTest
   def test_should_successfully_delete_redirection
     @redirection.save!
     assert_difference "Redirection.count", -1 do
-      delete redirection_path(@redirection.id), headers: @headers
+      delete api_v1_redirection_path(@redirection.id), headers: @headers
       assert_response :success
     end
   end
@@ -29,7 +29,7 @@ class RedirectionsControllerTest < ActionDispatch::IntegrationTest
   def test_should_successfully_update_redirection
     @redirection.save!
     updated_source = @redirection.source + "/updated"
-    put redirection_path(@redirection.id),
+    put api_v1_redirection_path(@redirection.id),
       params: { redirection: { source: updated_source } },
       headers: @headers
     assert_response :success
@@ -38,7 +38,7 @@ class RedirectionsControllerTest < ActionDispatch::IntegrationTest
   def test_should_list_all_redirections
     redirection_count = 5
     create_list(:redirection, redirection_count)
-    get redirections_path, headers: @headers
+    get api_v1_redirections_path, headers: @headers
     assert_response :success
 
     response_json = response.parsed_body

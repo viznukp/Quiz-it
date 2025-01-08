@@ -3,7 +3,7 @@
 require "test_helper"
 require "sidekiq/testing"
 
-class Public::QuestionsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::Public::QuestionsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = create(:user)
     @quiz = create(:quiz, creator: @user)
@@ -13,7 +13,7 @@ class Public::QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_show_quiz_for_attempt_without_answers
-    get public_question_path(slug: @quiz.slug), params:{user_id: @user.id}, headers: @headers
+    get api_v1_public_question_path(slug: @quiz.slug), params:{user_id: @user.id}, headers: @headers
     assert_response :success
     response_quiz = response.parsed_body["quiz"]
     response_quiz_questions = response_quiz["questions"]
@@ -25,7 +25,7 @@ class Public::QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_not_show_quiz_if_user_has_already_attempted_the_quiz
     create(:submission, quiz: @quiz, user: @user, answers: {question_id: @question.id, selected_choice: 1} )
-    get public_question_path(slug: @quiz.slug), params:{user_id: @user.id}, headers: @headers
+    get api_v1_public_question_path(slug: @quiz.slug), params:{user_id: @user.id}, headers: @headers
     assert_response :conflict
 
     error_message = JSON.parse(response.body)["error"]

@@ -3,7 +3,7 @@
 require "test_helper"
 require "sidekiq/testing"
 
-class Categories::OrdersControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::Categories::OrdersControllerTest < ActionDispatch::IntegrationTest
   def setup
     user = create(:user)
     @headers = headers(user)
@@ -16,7 +16,7 @@ class Categories::OrdersControllerTest < ActionDispatch::IntegrationTest
 
     first_category = Category.order(:sort_order).first
 
-    put category_order_path(first_category.id),
+    put api_v1_category_order_path(first_category.id),
       params: { position: 3 },
       headers: @headers
 

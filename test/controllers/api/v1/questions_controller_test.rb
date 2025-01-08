@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class QuestionsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::QuestionsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = create(:user)
     @quiz = create(:quiz, creator: @user)
@@ -11,7 +11,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_create_valid_question
-    post questions_path,
+    post api_v1_questions_path,
       params: {
         question: {
           question: "Sample question",
@@ -27,7 +27,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_show_single_question
     @question.save!
-    get question_path(@question.id),
+    get api_v1_question_path(@question.id),
       params: { slug: @quiz.slug },
       headers: @headers
 
@@ -37,7 +37,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   def test_should_update_quiz
     @question.save!
     new_question = "New question"
-    put question_path(@question.id),
+    put api_v1_question_path(@question.id),
       params: {
         question: { question: new_question }
       },
@@ -52,7 +52,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     @question.save!
 
     assert_difference "Question.count", -1 do
-      delete question_path(@question.id), headers: @headers
+      delete api_v1_question_path(@question.id), headers: @headers
       assert_response :success
     end
   end

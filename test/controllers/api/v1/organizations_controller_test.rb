@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class OrganizationsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @organization = create(:organization)
     @user = create(:user, organization: @organization)
@@ -10,7 +10,7 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_list_organization
-    get organization_path, headers: @headers
+    get api_v1_organization_path, headers: @headers
     assert_response :success
     response_json = response.parsed_body
     expected_name = @organization.name
@@ -20,7 +20,7 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_organization
     new_name = "Updated name"
-    put organization_path,
+    put api_v1_organization_path,
       params: { organization: { name: new_name } },
       headers: @headers
     assert_response :success

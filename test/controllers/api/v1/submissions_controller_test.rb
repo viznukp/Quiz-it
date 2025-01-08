@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class SubmissionsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::SubmissionsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = create(:user)
     @quiz = create(:quiz)
@@ -11,7 +11,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def create_submission(user, quiz, question, headers)
-    post submissions_path, params: {
+    post api_v1_submissions_path, params: {
       submission: {
         status: "completed",
         answers: [{ question_id: question.id, selected_choice: 1 }]
@@ -25,7 +25,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     submission_count = 5
     create_list(:submission, submission_count, quiz: @quiz)
 
-    get submissions_path, params: { slug: @quiz.slug }, headers: @headers
+    get api_v1_submissions_path, params: { slug: @quiz.slug }, headers: @headers
     assert_response :success
 
     response_json = response.parsed_body

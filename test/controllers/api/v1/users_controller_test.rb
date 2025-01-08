@@ -2,14 +2,14 @@
 
 require "test_helper"
 
-class UsersControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = create(:user)
     @headers = headers(@user)
   end
 
   def test_admin_should_signup_with_valid_credentials
-    post users_path, params: {
+    post api_v1_users_path, params: {
       user: {
         first_name: "Sam",
         last_name: "Smith",
@@ -25,7 +25,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_admin_should_not_signup_with_invalid_credentials
-    post users_path, params: {
+    post api_v1_users_path, params: {
       user: {
         first_name: "Sam",
         last_name: "Smith",
@@ -42,7 +42,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_create_standard_user_without_password
     email = "sam@example.com"
-    post create_standard_user_users_path, params: {
+    post create_standard_user_api_v1_users_path, params: {
       user: {
         first_name: "Sam",
         last_name: "Smith",
@@ -52,6 +52,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     }, headers: @headers
     assert_response :success
     response_json = response.parsed_body
-    assert_equal response_json["status"], "success"
+    assert_equal email, response_json["email"]
   end
 end
