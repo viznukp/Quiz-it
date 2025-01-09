@@ -41,6 +41,7 @@ const QuizList = () => {
   const [selectedQuizzesIds, setSelectedQuizzesIds] = useState([]);
   const [selectedQuizzesSlugs, setSelectedQuizzesSlugs] = useState([]);
   const [visibleColumns, setVisibleColumns] = useState(QUIZ_TABLE_SCHEMA);
+  const [columnsToHide, setColumnsToHide] = useState([]);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
 
@@ -190,7 +191,9 @@ const QuizList = () => {
         </div>
         <div className="flex gap-2">
           <ColumnFilter
+            columnsToHide={columnsToHide}
             schema={QUIZ_TABLE_SCHEMA}
+            setColumnsToHide={setColumnsToHide}
             setVisibleColumns={setVisibleColumns}
           />
           <Filter />

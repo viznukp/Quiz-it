@@ -40,6 +40,7 @@ const SubmissionList = () => {
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [quizTitle, setQuizTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState(queryParams.name || "");
+  const [columnsToHide, setColumnsToHide] = useState([]);
   const { page = DEFAULT_PAGE_INDEX, pageSize = DEFAULT_PAGE_SIZE } =
     queryParams;
   const history = useHistory();
@@ -106,7 +107,9 @@ const SubmissionList = () => {
               <div className="flex gap-2">
                 <ReportDownloader slug={slug} />
                 <ColumnFilter
+                  columnsToHide={columnsToHide}
                   schema={SUBMISSION_TABLE_SCHEMA}
+                  setColumnsToHide={setColumnsToHide}
                   setVisibleColumns={setVisibleColumns}
                 />
                 <Button
@@ -121,14 +124,9 @@ const SubmissionList = () => {
               </div>
             </div>
             <Table
-              rowSelection
               columnData={visibleColumns}
+              rowData={transformSubmissionDataForTableDisplay(submissions)}
               scroll={{ x: "100%" }}
-              rowData={
-                submissions
-                  ? transformSubmissionDataForTableDisplay(submissions)
-                  : []
-              }
             />
             <Pagination
               className="mt-3"

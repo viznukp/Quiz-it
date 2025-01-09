@@ -9,7 +9,6 @@ const useSideBarStore = create(
     }),
     {
       name: "sidebar-storage",
-      getStorage: () => localStorage,
     }
   )
 );

@@ -11,7 +11,7 @@ import {
   setToLocalStorage,
 } from "utils/storage";
 
-const HOME_URL = routes.public.home;
+const LOGIN_URL = routes.admin.login;
 const DEFAULT_ERROR_NOTIFICATION = i18n.t("messages.error.default");
 const AXIOS_HEADER_AUTH_KEY_EMAIL = "X-Auth-Email";
 const AXIOS_HEADER_AUTH_KEY_TOKEN = "X-Auth-Token";
@@ -65,7 +65,7 @@ const handleErrorResponse = axiosErrorObject => {
       userId: null,
       userName: null,
     });
-    setTimeout(() => (window.location.href = HOME_URL), 2000);
+    setTimeout(() => (window.location.href = LOGIN_URL), 2000);
   }
 
   Toastr.error(
@@ -73,7 +73,7 @@ const handleErrorResponse = axiosErrorObject => {
   );
 
   if (axiosErrorObject.response?.status === 423) {
-    window.location.href = HOME_URL;
+    window.location.href = LOGIN_URL;
   }
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Column } from "neetoicons";
 import { Dropdown, Checkbox } from "neetoui";
@@ -6,9 +6,13 @@ import PropTypes from "prop-types";
 import { without } from "ramda";
 import { useTranslation } from "react-i18next";
 
-const ColumnFilter = ({ schema = [], setVisibleColumns }) => {
+const ColumnFilter = ({
+  schema = [],
+  columnsToHide,
+  setColumnsToHide,
+  setVisibleColumns,
+}) => {
   const { t } = useTranslation();
-  const [columnsToHide, setColumnsToHide] = useState([]);
 
   const filterColumns = (schema, columnsToFilter) =>
     schema.filter(column => !columnsToFilter.includes(column.key));
