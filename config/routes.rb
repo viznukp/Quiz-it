@@ -35,6 +35,7 @@ Rails.application.routes.draw do
         namespace :public do
           resources :quizzes, only: %i[index show], param: :slug
           resources :questions, only: :show, param: :slug
+          resources :categories, only: :index
         end
         resources :redirections, only: %i[index create update destroy]
 

@@ -21,3 +21,9 @@ export const useFetchQuestions = queryParams =>
     queryFn: () => publicApi.fetchQuestions(queryParams),
     retry: 0,
   });
+
+export const useFetchCategories = () =>
+  useQuery({
+    queryKey: ["categoriesPublic"],
+    queryFn: () => publicApi.fetchCategories(),
+  });

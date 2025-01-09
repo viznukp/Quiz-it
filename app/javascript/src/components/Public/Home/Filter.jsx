@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "src/routes";
 
-import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
+import { useFetchCategories } from "hooks/reactQuery/usePublicApi";
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
 

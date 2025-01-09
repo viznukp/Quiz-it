@@ -25,7 +25,7 @@ const App = () => (
           component={AdminHome}
           condition={isLoggedIn()}
           path={routes.admin.home}
-          redirectRoute={routes.admin.login}
+          redirectRoute={routes.public.home}
         />
         <Redirect exact from={routes.root} to={routes.admin.home} />
         <Route component={PageNotFound} path="*" />
