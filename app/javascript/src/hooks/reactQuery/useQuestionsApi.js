@@ -6,7 +6,6 @@ export const useShowQuestion = (slug, id) =>
   useQuery({
     queryKey: ["question", slug, id],
     queryFn: () => questionsApi.show({ slug, id }),
-    staleTime: 0,
     cacheTime: 0,
   });
 

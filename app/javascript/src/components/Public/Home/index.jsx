@@ -111,8 +111,8 @@ const Home = () => {
             </div>
             <Pagination
               className="mt-12"
-              page={page}
-              pageCount={paginationData.count}
+              page={Number(page)}
+              pageCount={Number(paginationData.count)}
               pageNumberFromApi={Number(paginationData.page)}
               pageSize={pageSize}
             />

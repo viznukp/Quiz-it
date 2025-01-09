@@ -36,7 +36,7 @@ export const QUIZ_TABS = [
 ];
 
 export const DEFAULT_PAGE_SIZE = 5;
-export const DEFAULT_PAGE_SIZE_PUBLIC = 5;
+export const DEFAULT_PAGE_SIZE_PUBLIC = 6;
 export const DEFAULT_PAGE_INDEX = 1;
 
 export const BASE_URL = "http://localhost:3000";

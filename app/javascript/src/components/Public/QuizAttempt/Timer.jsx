@@ -23,6 +23,7 @@ const Timer = ({
 
   useEffect(() => {
     if (timeRemaining <= 0) {
+      clearInterval(timerRef.current);
       onTimerEnd();
     } else {
       timerRef.current = setInterval(() => {
@@ -46,7 +47,7 @@ const Timer = ({
     }
 
     return () => clearInterval(timerRef.current);
-  }, [timeRemaining, onTimerEnd, callbackIntervalInSeconds, onFixedInterval]);
+  }, [timeRemaining]);
 
   return (
     <div className="bg rounded-md bg-gray-100 p-3">
