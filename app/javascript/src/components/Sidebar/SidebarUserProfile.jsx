@@ -7,6 +7,7 @@ import routes from "src/routes";
 
 import { resetAuthTokens } from "apis/axios";
 import { useLogout } from "hooks/reactQuery/useAuthenticationApi";
+import useSideBarStore from "stores/useSideBarStore";
 import { isLoggedIn } from "utils/auth";
 import {
   STORAGE_KEYS,
@@ -14,9 +15,10 @@ import {
   setToLocalStorage,
 } from "utils/storage";
 
-const SidebarUserProfile = ({ isExpanded = false }) => {
+const SidebarUserProfile = () => {
   const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
   const profileRef = useRef(null);
+  const { isExpanded } = useSideBarStore();
   const userName = getFromLocalStorage(STORAGE_KEYS.USERNAME);
   const userEmail = getFromLocalStorage(STORAGE_KEYS.EMAIL);
 
