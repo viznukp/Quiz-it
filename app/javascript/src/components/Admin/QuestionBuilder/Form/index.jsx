@@ -14,6 +14,7 @@ import {
   QUESTION_BUILDER_FORM_INITIAL_VALUES,
   QUESTION_BUILDER_FORM_VALIDATION_SCHEMA,
 } from "./constants";
+import { getFormattedData } from "./utils";
 
 const Form = ({
   handleSubmit,
@@ -46,19 +47,6 @@ const Form = ({
         ? !isDirty
         : selectedOptionIndex === initialAnswerIndex));
 
-  const prepareFormDataBeforeSubmit = formData => {
-    const formattedOptions = formData.options.map((option, index) => ({
-      id: index + 1,
-      option,
-    }));
-
-    return {
-      ...formData,
-      answerId: selectedOptionIndex + 1,
-      options: { entries: formattedOptions },
-    };
-  };
-
   return (
     <div className="py-12">
       <Formik
@@ -66,7 +54,7 @@ const Form = ({
         validationSchema={QUESTION_BUILDER_FORM_VALIDATION_SCHEMA}
         onSubmit={(values, { resetForm }) =>
           handleSubmit({
-            formData: prepareFormDataBeforeSubmit(values),
+            formData: getFormattedData(values, selectedOptionIndex + 1),
             resetForm,
             submissionSource: submissionSource.current,
           })

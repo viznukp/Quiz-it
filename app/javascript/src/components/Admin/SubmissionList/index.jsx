@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
 import routes from "src/routes";
 
-import { ColumnFilter, StatusTag } from "components/Admin/commons";
+import { ColumnFilter } from "components/Admin/commons";
 import {
   Container,
   NavBar,
@@ -25,12 +25,12 @@ import {
 } from "components/constants";
 import { useFetchSubmissions } from "hooks/reactQuery/useSubmissionsApi";
 import useQueryParams from "hooks/useQueryParams";
-import { utcToLocalTime } from "utils/dateTime";
 import { buildUrl } from "utils/url";
 
 import { SUBMISSION_TABLE_SCHEMA } from "./constants";
 import Filter from "./Filter";
 import ReportDownloader from "./ReportDownloader";
+import { transformSubmissionDataForTableDisplay } from "./utils";
 
 const SubmissionList = () => {
   const { t } = useTranslation();
@@ -55,19 +55,6 @@ const SubmissionList = () => {
     data: { submissions = [], paginationData = {}, quiz } = {},
     isLoading,
   } = useFetchSubmissions(slug, mergeLeft({ pageSize }, queryParams));
-
-  const transformSubmissionDataForTableDisplay = data =>
-    data?.map(({ submission, user }) => ({
-      key: submission.id,
-      name: user.name,
-      email: user.email,
-      submissionDate: utcToLocalTime(submission.submissionDate),
-      correctAnswers: submission.correctAnswersCount,
-      wrongAnswers: submission.wrongAnswersCount,
-      unanswered: submission.unansweredCount,
-      questions: submission.totalQuestions,
-      status: <StatusTag label={submission.status} primaryLabel="completed" />,
-    }));
 
   useEffect(() => {
     if (quiz) {
