@@ -1,6 +1,7 @@
 import React from "react";
 
 import classNames from "classnames";
+import { capitalize } from "neetocist";
 import { Button } from "neetoui";
 import { either, isNil, isEmpty, mergeLeft, pick, map } from "ramda";
 import { useTranslation } from "react-i18next";
@@ -31,7 +32,7 @@ const ActiveFilters = ({ filters, className = "" }) => {
             <FilterTag
               key={filter}
               label={filter}
-              value={value}
+              value={capitalize(value)}
               onClose={clearFilter}
             />
           ))}
