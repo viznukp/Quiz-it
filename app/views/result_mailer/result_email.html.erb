@@ -4,3 +4,21 @@
 <p>Correct answers: <%= @submission.correct_answers_count %></p>
 <p>Wrong answers: <%= @submission.wrong_answers_count %></p>
 <p>Unanswered: <%= @submission.unanswered_count %></p>
+
+<h2>Your Answers:</h2>
+<% @result[:questions].each do |entry| %>
+  <div>
+    <h4>Question: <%= entry["question"] %></h4>
+    <h4>Options:</h4>
+    <ol>
+      <% entry["options"].each do |entry| %>
+        <li><%= entry["option"] %></li>
+      <% end %>
+    </ol>
+    <% correct_answer_index = entry["options"].find_index { |option| option["id"] == entry["correct_answer_id"] } %>
+    <% user_selection_index = entry["options"].find_index { |option| option["id"] == entry["user_selection_id"] } %>
+    <p>Correct answer: <%= correct_answer_index + 1 %></p>
+    <p>Your choice: <%= user_selection_index ? user_selection_index +1 : "Unanswered" %></p>
+  </div>
+  <hr>
+<% end %>

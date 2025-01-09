@@ -8,6 +8,20 @@ class ResultMailer < ApplicationMailer
 
     @user = @submission.user
     @quiz = @submission.quiz
+    @result = fetch_result
+
     mail(to: @user.email, subject: "#{@quiz.name} submitted by #{@user.name}")
   end
+
+  private
+
+    def fetch_result
+      ResultService.new(submission_params).process!
+    end
+
+    def submission_params
+      ActionController::Parameters.new(
+        { submission_slug: @quiz.slug, user_id: @user.id }
+      )
+    end
 end
