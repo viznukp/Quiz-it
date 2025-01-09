@@ -54,4 +54,12 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     response_json = response.parsed_body
     assert_equal email, response_json["email"]
   end
+
+  def test_standard_users_should_not_get_access_to_admin_actions
+    user = create(:user, user_type: "standard")
+    quiz = create(:quiz, creator: user)
+    get api_v1_quiz_path(slug: quiz.slug), headers: @headers
+
+    assert_response :forbidden
+  end
 end
