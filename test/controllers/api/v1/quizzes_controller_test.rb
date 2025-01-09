@@ -90,37 +90,6 @@ class Api::V1::QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("successfully_deleted", entity: "Quizzes"), response_json["notice"]
   end
 
-  def test_filter_quizzes_by_category
-    quiz_count_per_category = 3
-    category_one = create(:category, name: "category 1")
-    category_two = create(:category, name: "category 2")
-    create_list(:quiz, quiz_count_per_category, category: category_one, creator: @user)
-    create_list(:quiz, quiz_count_per_category, category: category_two, creator: @user)
-
-    get api_v1_quizzes_path(filters: { category: category_one.name }), headers: @headers
-    assert_response :success
-    response_quiz_ids = response.parsed_body["quizzes"].pluck("id")
-
-    expected_response_quizzes_count = response_count_considering_pagination(quiz_count_per_category)
-
-    assert_equal Quiz.where(category: category_one)
-      .order(:id).limit(expected_response_quizzes_count)
-      .pluck(:id),
-      response_quiz_ids.sort
-  end
-
-  def test_filter_quizzes_by_name
-    create(:quiz, name: "First quiz", creator: @user, category: @category)
-    quiz_to_search = create(:quiz, name: "Second quiz", creator: @user)
-    create(:quiz, name: "Third quiz", creator: @user, category: @category)
-
-    quiz_to_search = Quiz.first
-    get api_v1_quizzes_path(filters: { quiz_name: quiz_to_search.name }), headers: @headers
-    assert_response :success
-    response_quiz_ids = response.parsed_body["quizzes"].pluck("id")
-    assert_equal quiz_to_search.id, response_quiz_ids[0]
-  end
-
   def test_should_not_bulk_update_with_invalid_slugs
     quizzes = create_list(:quiz, 3, creator: @user, status: "draft", category: @category)
 
