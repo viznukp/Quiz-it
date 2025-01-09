@@ -3,8 +3,8 @@ class Api::V1::Public::QuizzesController < ApplicationController
   before_action :load_organization, only: :index
 
   def index
-    filtered_quizzes, = QuizFilterService.new(filter_params, nil).process!
-    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filtered_quizzes).process!
+    filter_result = QuizFilterService.new(filter_params, nil).process!
+    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, filter_result[:quizzes]).process!
   end
 
   def show

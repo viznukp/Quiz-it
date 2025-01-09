@@ -10,17 +10,6 @@ class Api::V1::SubmissionsControllerTest < ActionDispatch::IntegrationTest
     @headers = headers(@user)
   end
 
-  def create_submission(user, quiz, question, headers)
-    post api_v1_submissions_path, params: {
-      submission: {
-        status: "completed",
-        answers: [{ question_id: question.id, selected_choice: 1 }]
-      },
-      user_id: user.id,
-      slug: quiz.slug
-    }, headers:
-  end
-
   def test_should_list_all_submissions
     submission_count = 5
     create_list(:submission, submission_count, quiz: @quiz)
@@ -52,4 +41,17 @@ class Api::V1::SubmissionsControllerTest < ActionDispatch::IntegrationTest
       create_submission(@user, @quiz, @question, @headers)
     end
   end
+
+  private
+
+    def create_submission(user, quiz, question, headers)
+      post api_v1_submissions_path, params: {
+        submission: {
+          status: "completed",
+          answers: [{ question_id: question.id, selected_choice: 1 }]
+        },
+        user_id: user.id,
+        slug: quiz.slug
+      }, headers:
+    end
 end

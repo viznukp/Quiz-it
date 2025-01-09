@@ -13,10 +13,6 @@ class Api::V1::Submissions::ReportsControllerTest < ActionDispatch::IntegrationT
     @pdf_report_path = Rails.root.join("tmp/submission_report.pdf")
   end
 
-  def create_submission_report
-    post api_v1_report_path, params: { submission: { slug: @quiz.slug } }, headers: @headers
-  end
-
   def test_should_create_submission_report_for_given_quiz
     create_submission_report
     assert File.exist?(@pdf_report_path)
@@ -42,4 +38,10 @@ class Api::V1::Submissions::ReportsControllerTest < ActionDispatch::IntegrationT
     assert_response :not_found
     assert_includes response.body, I18n.t("not_found", entity: "report")
   end
+
+  private
+
+    def create_submission_report
+      post api_v1_report_path, params: { submission: { slug: @quiz.slug } }, headers: @headers
+    end
 end

@@ -19,14 +19,10 @@ class DeleteCategoryService
     end
 
     def valid_replacement_category
-      Category.find_by(id: replacement_category_id_param) || create_or_find_general_category
+      Category.find_by(id: @params[:replacement_category_id]) || create_or_find_general_category
     end
 
     def create_or_find_general_category
       Category.find_or_create_by(name: "General")
-    end
-
-    def replacement_category_id_param
-      @params[:replacement_category_id]
     end
 end

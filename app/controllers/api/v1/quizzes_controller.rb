@@ -8,8 +8,8 @@ class Api::V1::QuizzesController < ApplicationController
 
   def index
     scoped_quizzes = policy_scope(Quiz.all)
-    @filtered_quizzes, @quizzes_metadata = QuizFilterService.new(filter_params, scoped_quizzes).process!
-    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, @filtered_quizzes).process!
+    @filter_result = QuizFilterService.new(filter_params, scoped_quizzes).process!
+    @pagination_metadata, @paginated_quizzes = PaginationService.new(params, @filter_result[:quizzes]).process!
   end
 
   def create

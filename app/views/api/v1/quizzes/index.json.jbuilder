@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-json.result_type @result_type
 json.quizzes @paginated_quizzes do |quiz|
   json.extract! quiz,
     :id,
@@ -14,7 +13,7 @@ json.quizzes @paginated_quizzes do |quiz|
   json.created_on quiz.updated_at
 end
 
-json.extract! @quizzes_metadata,
+json.extract! @filter_result[:metadata],
   :result_type,
   :total_quizzes,
   :published_quizzes,

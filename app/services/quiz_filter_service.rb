@@ -5,11 +5,14 @@ class QuizFilterService
 
   def initialize(filters, scoped_quizzes)
     @filters = filters
-    @scoped_quizzes = scoped_quizzes || Quiz.all
+    @scoped_quizzes = scoped_quizzes || Quiz
   end
 
   def process!
-    [filter_quizzes, quiz_metadata]
+    {
+      quizzes: filter_quizzes,
+      metadata: quiz_metadata
+    }
   end
 
   private
@@ -44,11 +47,15 @@ class QuizFilterService
 
     def quiz_metadata
       count_by_status = @scoped_quizzes.group(:status).count
+      published_quizzes = count_by_status.fetch("published", 0)
+      draft_quizzes = count_by_status.fetch("draft", 0)
+      total_quizzes = published_quizzes + draft_quizzes
+
       {
         result_type: filters[:status] || "all",
-        total_quizzes: @scoped_quizzes.count,
-        published_quizzes: count_by_status.fetch("published", 0),
-        draft_quizzes: count_by_status.fetch("draft", 0)
+        total_quizzes:,
+        published_quizzes:,
+        draft_quizzes:
       }
     end
 end
