@@ -6,6 +6,7 @@
     <tr>
       <th>Name</th>
       <th>Email</th>
+      <th>Submission date</th>
       <th>Correct answers</th>
       <th>Wrong answers</th>
       <th>Unanswered</th>
@@ -19,6 +20,7 @@
    <tr>
       <td><%= submission.user.name %> </td>
       <td><%= submission.user.email %> </td>
+      <td><%= date_and_time_from_timestamp(submission.updated_at, @timezone) %> </td>
       <td><%= submission.correct_answers_count %> </td>
       <td><%= submission.wrong_answers_count %> </td>
       <td><%= submission.unanswered_count %> </td>

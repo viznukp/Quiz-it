@@ -2,7 +2,7 @@
 
 class Api::V1::Submissions::ReportsController < ApplicationController
   def create
-    ReportsJob.perform_async(current_user.id, report_params[:slug], report_path.to_s)
+    ReportsJob.perform_async(current_user.id, report_params[:slug], report_params[:timezone], report_path.to_s)
   end
 
   def download
@@ -29,6 +29,6 @@ class Api::V1::Submissions::ReportsController < ApplicationController
     end
 
     def report_params
-      params.require(:submission).permit(:slug)
+      params.require(:submission).permit(:slug, :timezone)
     end
 end
