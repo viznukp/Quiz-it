@@ -21,9 +21,13 @@ class ResultService
 
     def shuffle_questions_and_options
       seed = @submission.seed
-      questions = @quiz.questions.order(:created_at).shuffle(random: Random.new(seed))
-      questions.each do | question |
-        question.options["entries"] = question.options["entries"].shuffle(random: Random.new(seed))
+      questions = @quiz.questions
+      questions = @quiz.questions.order(:created_at).shuffle(random: Random.new(seed)) if @quiz.randomize_questions
+
+      if @quiz.randomize_options
+        questions.each do | question |
+          question.options["entries"] = question.options["entries"].shuffle(random: Random.new(seed))
+        end
       end
       questions
     end
