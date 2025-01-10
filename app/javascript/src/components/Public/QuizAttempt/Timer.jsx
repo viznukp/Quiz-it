@@ -2,12 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { Typography } from "neetoui";
 
-const Timer = ({
-  totalTimeInMinutes = 1,
-  onTimerEnd = () => {},
-  callbackIntervalInSeconds = 0,
-  onFixedInterval = () => {},
-}) => {
+const Timer = ({ totalTimeInMinutes = 1, onTimerEnd = () => {} }) => {
   const [timeRemaining, setTimeRemaining] = useState(totalTimeInMinutes * 60);
   const timerRef = useRef(null);
 
@@ -29,18 +24,6 @@ const Timer = ({
       timerRef.current = setInterval(() => {
         setTimeRemaining(prev => {
           const newTime = prev - 1;
-
-          if (
-            callbackIntervalInSeconds > 0 &&
-            newTime % callbackIntervalInSeconds === 0
-          ) {
-            onFixedInterval(newTime);
-          }
-
-          if (newTime <= 0) {
-            clearInterval(timerRef.current);
-          }
-
           return newTime;
         });
       }, 1000);

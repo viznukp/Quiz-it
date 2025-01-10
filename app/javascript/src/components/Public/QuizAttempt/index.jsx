@@ -100,8 +100,7 @@ const QuizAttempt = () => {
           <Timer
             callbackIntervalInSeconds={60}
             totalTimeInMinutes={timeLimit}
-            onFixedInterval={() => handleSubmission("incomplete")}
-            onTimerEnd={() => handleSubmission("completed")}
+            onTimerEnd={() => handleSubmission("incomplete")}
           />
         )}
         <Typography weight="semibold">
