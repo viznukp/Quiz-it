@@ -1,14 +1,13 @@
 import React from "react";
 
 import { Form, Formik } from "formik";
-import { capitalize } from "neetocist";
 import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 import routes from "src/routes";
 
-import authApi from "apis/authentication";
 import { setAuthHeaders } from "apis/axios";
+import { useLogin } from "hooks/reactQuery/useAuthenticationApi";
 import { setToLocalStorage } from "utils/storage";
 
 import {
@@ -19,25 +18,21 @@ import {
 const Login = () => {
   const { t } = useTranslation();
 
-  const handleLogin = async formData => {
-    try {
-      const responseData = await authApi.login(formData);
-      setToLocalStorage({
-        authToken: responseData.authenticationToken,
-        email: responseData.email,
-        userId: responseData.id,
-        userName: [
-          capitalize(responseData.firstName),
-          capitalize(responseData.lastName),
-        ]
-          .join(" ")
-          .trim(),
-      });
-      setAuthHeaders();
-      window.location.href = routes.root;
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: loginUser } = useLogin();
+
+  const handleLogin = formData => {
+    loginUser(formData, {
+      onSuccess: ({ authenticationToken, email, id, name }) => {
+        setToLocalStorage({
+          authToken: authenticationToken,
+          email,
+          userId: id,
+          userName: name,
+        });
+        setAuthHeaders();
+        window.location.href = routes.admin.home;
+      },
+    });
   };
 
   return (
@@ -51,7 +46,7 @@ const Login = () => {
             label={t("labels.registerNow")}
             size="small"
             style="link"
-            to={routes.signup}
+            to={routes.admin.signup}
           />
         </div>
         <Formik

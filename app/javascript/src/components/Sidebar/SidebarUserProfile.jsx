@@ -3,9 +3,11 @@ import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { LeftArrow } from "neetoicons";
 import { Avatar, Typography, Button } from "neetoui";
+import routes from "src/routes";
 
-import authApi from "apis/authentication";
 import { resetAuthTokens } from "apis/axios";
+import { useLogout } from "hooks/reactQuery/useAuthenticationApi";
+import useSideBarStore from "stores/useSideBarStore";
 import { isLoggedIn } from "utils/auth";
 import {
   STORAGE_KEYS,
@@ -13,26 +15,28 @@ import {
   setToLocalStorage,
 } from "utils/storage";
 
-const SidebarUserProfile = ({ isExpanded = false }) => {
+const SidebarUserProfile = () => {
   const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
   const profileRef = useRef(null);
+  const { isExpanded } = useSideBarStore();
   const userName = getFromLocalStorage(STORAGE_KEYS.USERNAME);
   const userEmail = getFromLocalStorage(STORAGE_KEYS.EMAIL);
 
-  const handleLogout = async () => {
-    try {
-      await authApi.logout();
-      setToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
-      });
-      resetAuthTokens();
-      window.location.href = "/";
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: logoutUser } = useLogout();
+
+  const handleLogout = () => {
+    logoutUser(null, {
+      onSuccess: () => {
+        setToLocalStorage({
+          authToken: null,
+          email: null,
+          userId: null,
+          userName: null,
+        });
+        resetAuthTokens();
+        window.location.href = routes.admin.login;
+      },
+    });
   };
 
   useEffect(() => {

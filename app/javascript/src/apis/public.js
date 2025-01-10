@@ -1,12 +1,15 @@
 import axios from "axios";
 
-const fetch = filters => axios.get("/public/quizzes", { params: filters });
+const fetchQuizzes = filters =>
+  axios.get("/public/quizzes", { params: filters });
 
-const show = slug => axios.get(`/public/quizzes/${slug}/`);
+const showQuiz = slug => axios.get(`/public/quizzes/${slug}/`);
 
-const fetchQuestionsForAttempt = (slug, userId) =>
+const fetchQuestions = ({ slug, userId }) =>
   axios.get(`/public/questions/${slug}`, { params: { userId } });
 
-const publicApi = { fetch, show, fetchQuestionsForAttempt };
+const fetchCategories = () => axios.get("/public/categories");
+
+const publicApi = { fetchQuizzes, showQuiz, fetchQuestions, fetchCategories };
 
 export default publicApi;

@@ -1,6 +1,6 @@
 import { keysToSnakeCase } from "neetocist";
 import { stringify } from "qs";
-import { toPairs, pipe, omit, reject, isNil } from "ramda";
+import { toPairs, pipe, omit, reject, isNil, either, isEmpty } from "ramda";
 
 const PROTOCOL_REGEXP = /^https?:\/\//i;
 
@@ -30,21 +30,24 @@ export const buildRoute = (route, params) =>
   route.replace(/:(\w+)/g, (match, key) => params[key] || match);
 
 export const prefixUrl = (url, baseUrl, replaceDomain = false) => {
-  if (replaceDomain) {
-    const urlSegments = url.replace(PROTOCOL_REGEXP, "").split("/");
+  if (either(isNil, isEmpty)(url)) return baseUrl;
+
+  const withoutProtocol = url.replace(PROTOCOL_REGEXP, "");
+  const urlSegments = withoutProtocol.split("/");
+  const isDomainPresent = urlSegments[0].includes(".");
+
+  if (replaceDomain && isDomainPresent) {
     const path = urlSegments.slice(1).join("/");
 
     return `${baseUrl}/${path.replace(/^\/+/, "")}`;
   }
 
-  if (PROTOCOL_REGEXP.test(url)) return url;
-
-  const urlSegments = url.split("/");
-  const isSubdomainPresent = urlSegments[0].split(".").length > 1;
-
-  if (isSubdomainPresent) {
-    return `http://${url}`;
+  if (isDomainPresent) {
+    return `http://${withoutProtocol}`;
   }
 
-  return `${baseUrl}/${url.replace(/^\/+/, "")}`;
+  return `${baseUrl}/${withoutProtocol.replace(/^\/+/, "")}`;
 };
+
+export const stripDomainFromUrl = url =>
+  url.replace(PROTOCOL_REGEXP, "").split("/").slice(1).join("/");

@@ -11,12 +11,13 @@ import {
   setToLocalStorage,
 } from "utils/storage";
 
-const LOGIN_URL = routes.login;
+const LOGIN_URL = routes.admin.login;
 const DEFAULT_ERROR_NOTIFICATION = i18n.t("messages.error.default");
 const AXIOS_HEADER_AUTH_KEY_EMAIL = "X-Auth-Email";
 const AXIOS_HEADER_AUTH_KEY_TOKEN = "X-Auth-Token";
+const API_VERSION = "/api/v1";
 
-axios.defaults.baseURL = "/";
+axios.defaults.baseURL = routes.root;
 
 const transformResponseKeysToCamelCase = response => {
   if (response.data && !(response.data instanceof Blob)) {
@@ -86,13 +87,22 @@ const responseInterceptors = () => {
     },
     error => {
       handleErrorResponse(error);
+
+      return Promise.reject(error);
     }
   );
 };
 
+const prefixApiVersion = url =>
+  !url.startsWith(API_VERSION) ? `${API_VERSION}${url}` : url;
+
 const requestInterceptors = () => {
   axios.interceptors.request.use(
-    evolve({ data: serializeKeysToSnakeCase, params: serializeKeysToSnakeCase })
+    evolve({
+      url: prefixApiVersion,
+      data: serializeKeysToSnakeCase,
+      params: serializeKeysToSnakeCase,
+    })
   );
 };
 

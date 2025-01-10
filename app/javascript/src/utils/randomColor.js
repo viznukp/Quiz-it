@@ -1,4 +1,4 @@
-const COLORS = [
+export const COLORS = [
   "bg-red-300",
   "bg-blue-300",
   "bg-green-300",
@@ -7,5 +7,10 @@ const COLORS = [
   "bg-pink-300",
 ];
 
-export const randomColorClass = () =>
-  COLORS[Math.floor(Math.random() * COLORS.length)];
+// export const randomColorGenerator = (currntIndex, currentCategory, previousCategory) => {
+//   const hash = [...seed].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+//   return COLORS[hash % COLORS.length];
+// };
+
+export const AVAILABLE_COLORS_COUNT = COLORS.length;

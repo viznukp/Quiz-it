@@ -4,6 +4,7 @@ import { Pagination as NeetoUIPagination } from "neetoui";
 import PropTypes from "prop-types";
 import { mergeLeft } from "ramda";
 import { useHistory } from "react-router-dom";
+import routes from "src/routes";
 
 import useQueryParams from "hooks/useQueryParams";
 import { buildUrl } from "utils/url";
@@ -19,7 +20,7 @@ const Pagination = ({
   const queryParams = useQueryParams();
 
   const handlePageNavigation = page => {
-    history.replace(buildUrl("", mergeLeft({ page }, queryParams)));
+    history.replace(buildUrl(routes.index, mergeLeft({ page }, queryParams)));
   };
 
   const handlePageNumber = () => {

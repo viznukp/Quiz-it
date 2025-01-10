@@ -5,74 +5,29 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import routes from "src/routes";
 
-import { Login, Signup, RegisterStandardUser } from "components/Authentication";
+import { AdminHome } from "components/Admin";
 import { PrivateRoute, PageNotFound } from "components/commons";
-import Dashboard from "components/Dashboard";
-import PublicPage from "components/PublicPage";
-import {
-  ShowQuestions,
-  CreateQuestion,
-  EditQuestion,
-} from "components/QuestionBuilder";
-import QuizAttempt from "components/QuizAttempt";
-import QuizConfiguration from "components/QuizConfiguration";
-import QuizResult from "components/QuizResult";
-import { General, Category, Redirection } from "components/Settings";
-import SubmissionList from "components/SubmissionList";
 import { isLoggedIn } from "utils/auth";
 import queryClient from "utils/queryClient";
+
+import { APP_ROUTES } from "./constants";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <ToastContainer />
       <Switch>
-        <Route exact component={Signup} path={routes.signup} />
-        <Route exact component={Login} path={routes.login} />
-        <Route exact component={PublicPage} path={routes.publicPage} />
-        <Route exact component={QuizAttempt} path={routes.attemptQuiz} />
-        <Route exact component={QuizResult} path={routes.quiz.result} />
-        <Route exact component={General} path={routes.settings.general} />
-        <Route exact component={Category} path={routes.settings.categories} />
-        <Route
-          exact
-          component={Redirection}
-          path={routes.settings.redirections}
-        />
-        <Route exact component={ShowQuestions} path={routes.quiz.questions} />
-        <Route
-          exact
-          component={QuizConfiguration}
-          path={routes.quiz.configure}
-        />
-        <Route
-          exact
-          component={CreateQuestion}
-          path={routes.quiz.question.new}
-        />
-        <Route
-          exact
-          component={EditQuestion}
-          path={routes.quiz.question.edit}
-        />
-        <Route
-          exact
-          component={SubmissionList}
-          path={routes.quiz.submissions}
-        />
-        <Route
-          exact
-          component={RegisterStandardUser}
-          path={routes.registerStandardUser}
-        />
+        {APP_ROUTES.map((route, index) => (
+          <Route exact key={index} {...route} />
+        ))}
         <PrivateRoute
           exact
-          component={Dashboard}
+          component={AdminHome}
           condition={isLoggedIn()}
-          path={routes.root}
-          redirectRoute={routes.login}
+          path={routes.admin.home}
+          redirectRoute={routes.public.home}
         />
-        <Redirect exact from="/" to={routes.root} />
+        <Redirect exact from={routes.root} to={routes.admin.home} />
         <Route component={PageNotFound} path="*" />
       </Switch>
     </BrowserRouter>

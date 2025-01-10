@@ -27,6 +27,7 @@
     "delete": "Delete",
     "confirmDelete": "Yes, delete",
     "confirmDeleteTitle": "Delete quiz?",
+    "confirmDeleteTitle_other": "Delete quizzes?",
     "update": "Update",
     "draft": "Draft",
     "publish": "Publish",
@@ -99,6 +100,7 @@
     "add": "Add",
     "categoryName": "Category name",
     "newCategory": "New category",
+    "editCategory": "Edit category",
     "proceed": "Proceed",
     "thisQuiz": "this quiz",
     "thisQuiz_other": "these quizzes",
@@ -114,7 +116,9 @@
     "question": "Question",
     "confirm": "Confirm",
     "redirectionLower": "redirection",
-    "questionLower": "question"
+    "questionLower": "question",
+    "filters": "Filters",
+    "loginAsAdmin": "Login as admin"
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
@@ -151,7 +155,8 @@
       "searchFor": "Search for {{entity}}",
       "searchName": "Search name",
       "linkCopied": "Quiz link copied to clipboard!",
-      "rearrangeOrder": "Drag and drop to rearrange order"
+      "rearrangeOrder": "Drag and drop to rearrange order",
+      "timedQuiz": "This quiz is a timed quiz. Once the quiz is started, the timer begins counting down. The quiz will automatically submit once the timer reaches zero, ensuring that no further answers can be submitted."
     },
     "warnings": {
       "beforeDelete": "You are about to delete <strong>{{entity}}</strong>",
@@ -169,7 +174,7 @@
   "filters": {
     "category": "Category: {{category}} ",
     "email": "Email: {{email}}",
-    "status": "status: {{status}}",
+    "status": "Status: {{status}}",
     "quizName": "Quiz: {{quizName}}",
     "name": "Name: {{name}}"
   },

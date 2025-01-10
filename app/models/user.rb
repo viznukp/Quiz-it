@@ -30,6 +30,7 @@ class User < ApplicationRecord
 
   before_validation :set_default_password_for_standard_user, if: :standard?
   before_save :email_to_lowercase
+  before_save :capitalize_name
 
   def name
     [first_name, last_name].join(" ").strip
@@ -46,5 +47,10 @@ class User < ApplicationRecord
 
     def email_to_lowercase
       email.downcase!
+    end
+
+    def capitalize_name
+      self.first_name = first_name.capitalize if first_name.present?
+      self.last_name = last_name.capitalize if last_name.present?
     end
 end

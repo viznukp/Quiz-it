@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 
 import submissionsApi from "apis/submissions";
 
@@ -14,3 +14,9 @@ export const useFetchResult = (slug, userId) =>
     queryKey: ["result", slug, userId],
     queryFn: () => submissionsApi.fetchResult(slug, userId),
   });
+
+export const useCreateSubmission = () => useMutation(submissionsApi.create);
+
+export const useGeneratePdf = () => useMutation(submissionsApi.generatePdf);
+
+export const useDownloadPdf = () => useMutation(submissionsApi.downloadPdf);

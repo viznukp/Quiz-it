@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import classNames from "classnames";
 import { Tooltip, Typography } from "neetoui";
@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { isEmpty } from "ramda";
 import { Link, useLocation } from "react-router-dom";
 
-import SidebarContext from "contexts/SidebarContext";
+import useSideBarStore from "stores/useSideBarStore";
 
 const SidebarNavItem = ({
   label,
@@ -20,7 +20,7 @@ const SidebarNavItem = ({
   className,
 }) => {
   const { pathname: currentRoute } = useLocation();
-  const [isExpanded] = useContext(SidebarContext);
+  const { isExpanded } = useSideBarStore();
   const isActive =
     currentRoute === onClickRoute ||
     (currentRoute.includes(baseRoute) &&

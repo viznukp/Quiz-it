@@ -6,7 +6,7 @@ class EvaluationService
   end
 
   def process!
-    create_submission
+    build_submission
     evaluate_answers
     @submission.save!
     EmailJob.perform_async(@submission.id) if @quiz.email_notification && submission_params[:status] == "completed"
@@ -14,13 +14,14 @@ class EvaluationService
 
   private
 
-    def create_submission
+    def build_submission
       @quiz = Quiz.find_by!(slug: @params[:slug])
       user = User.find(@params[:user_id])
       @questions = @quiz.questions
       @submission = Submission.find_or_initialize_by(user:, quiz: @quiz)
       @submission.answers = submission_params[:answers]
       @submission.status = submission_params[:status]
+      @submission.seed = submission_params[:seed] || 0
     end
 
     def generate_answer_key
@@ -57,6 +58,6 @@ class EvaluationService
     end
 
     def submission_params
-      @params.require(:submission).permit(:status, answers: [:question_id, :selected_choice])
+      @params.require(:submission).permit(:status, :seed, answers: [:question_id, :selected_choice])
     end
 end

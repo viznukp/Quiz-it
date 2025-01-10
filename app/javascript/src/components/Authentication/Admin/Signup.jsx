@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import routes from "src/routes";
 
-import authApi from "apis/authentication";
+import { useSignup } from "hooks/reactQuery/useAuthenticationApi";
 
 import {
   SIGNUP_FORM_INITIAL_VALUES,
@@ -18,13 +18,10 @@ const Signup = () => {
   const { t } = useTranslation();
   const history = useHistory();
 
-  const handleSignup = async formData => {
-    try {
-      await authApi.signup(formData);
-      history.push(routes.login);
-    } catch (error) {
-      logger.error(error);
-    }
+  const { mutate: signupUser } = useSignup();
+
+  const handleSignup = formData => {
+    signupUser(formData, { onSuccess: () => history.push(routes.admin.login) });
   };
 
   return (
@@ -38,7 +35,7 @@ const Signup = () => {
             label={t("labels.loginNow")}
             size="small"
             style="link"
-            to={routes.login}
+            to={routes.admin.login}
           />
         </div>
         <Formik

@@ -21,22 +21,22 @@ export const QUIZ_TABS = [
   {
     label: i18n.t("labels.questions"),
     id: QUIZ_TAB_IDS.questions,
-    path: routes.quiz.questions,
+    path: routes.admin.quiz.questions,
   },
   {
     label: i18n.t("labels.submissions"),
     id: QUIZ_TAB_IDS.submissions,
-    path: routes.quiz.submissions,
+    path: routes.admin.quiz.submissions,
   },
   {
     label: i18n.t("labels.configure"),
     id: QUIZ_TAB_IDS.configure,
-    path: routes.quiz.configure,
+    path: routes.admin.quiz.configure,
   },
 ];
 
 export const DEFAULT_PAGE_SIZE = 5;
-export const DEFAULT_PAGE_SIZE_PUBLIC = 5;
+export const DEFAULT_PAGE_SIZE_PUBLIC = 6;
 export const DEFAULT_PAGE_INDEX = 1;
 
 export const BASE_URL = "http://localhost:3000";

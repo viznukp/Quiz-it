@@ -5,14 +5,8 @@ require "test_helper"
 class QuizTest < ActiveSupport::TestCase
   def setup
     @user = create(:user)
-    category = create(:category)
-    @quiz = build(:quiz, creator: @user, category:)
-  end
-
-  def build_quiz
-    user = create(:user)
-    category = create(:category)
-    build(:quiz, creator: user, category:)
+    @category = create(:category)
+    @quiz = build(:quiz, creator: @user, category: @category)
   end
 
   def test_name_should_not_be_empty
@@ -64,7 +58,8 @@ class QuizTest < ActiveSupport::TestCase
     @quiz.save!
     @quiz.slug = "new-slug"
     assert @quiz.invalid?
-    assert_includes @quiz.errors.full_messages, "Slug is immutable"
+
+    assert_includes @quiz.errors_to_sentence, I18n.t("quiz.slug.immutable")
   end
 
   def test_quiz_should_not_be_saved_without_status
@@ -94,14 +89,14 @@ class QuizTest < ActiveSupport::TestCase
   end
 
   def test_creates_multiple_quizzes_with_unique_slug
-    quizzes = create_list(:quiz, 10)
+    quizzes = create_list(:quiz, 10, category: @category)
     slugs = quizzes.pluck(:slug)
     assert_equal slugs.uniq, slugs
   end
 
   def test_quizzes_created_by_user_are_deleted_when_creator_is_deleted
     creator = create(:user)
-    create(:quiz, creator:)
+    create(:quiz, category: @category, creator:)
 
     assert_difference "Quiz.count", -1 do
       creator.destroy
@@ -113,6 +108,50 @@ class QuizTest < ActiveSupport::TestCase
     quiz.status = "published"
 
     assert quiz.invalid?
-    assert_includes quiz.errors.full_messages, "Quiz cannot be published without any questions"
+    assert_includes quiz.errors.full_messages, I18n.t("cannot_be_published_without_questions")
   end
+
+  def test_incremental_slug_generation_for_quizzes_with_duplicate_two_worded_names
+    first_quiz = create(:quiz, category: @category, name: "test quiz")
+    second_quiz = create(:quiz, category: @category, name: "test quiz")
+
+    assert_equal "test-quiz", first_quiz.slug
+    assert_equal "test-quiz-2", second_quiz.slug
+  end
+
+  def test_incremental_slug_generation_for_duplicate_hyphenated_names
+    first_quiz = create(:quiz, category: @category, name: "test quiz")
+    second_quiz = create(:quiz, category: @category, name: "test quiz")
+
+    assert_equal "test-quiz", first_quiz.slug
+    assert_equal "test-quiz-2", second_quiz.slug
+  end
+
+  def test_slug_generation_for_names_one_being_prefix_of_the_other
+    first_quiz = create(:quiz, category: @category, name: "fishing")
+    second_quiz = create(:quiz, category: @category, name: "fish")
+
+    assert_equal "fishing", first_quiz.slug
+    assert_equal "fish", second_quiz.slug
+  end
+
+  def test_error_raised_for_duplicate_slug
+    @quiz.save!
+
+    second_quiz = create(:quiz, category: @category, name: "another test quiz")
+
+    assert_raises ActiveRecord::RecordInvalid do
+      @quiz.update!(slug: second_quiz.slug)
+    end
+
+    error_message = @quiz.errors_to_sentence
+    assert_match I18n.t("quiz.slug.immutable"), error_message
+  end
+
+  private
+
+    def build_quiz
+      user = create(:user)
+      build(:quiz, creator: user, category: @category)
+    end
 end

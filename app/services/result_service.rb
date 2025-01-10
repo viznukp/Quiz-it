@@ -6,8 +6,9 @@ class ResultService
   end
 
   def process!
-    submission = fetch_submission
-    build_result(submission)
+    @submission = fetch_submission
+    @questions = shuffle_questions_and_options
+    build_result
   end
 
   private
@@ -18,29 +19,36 @@ class ResultService
       Submission.find_by!(user:, quiz: @quiz)
     end
 
-    def build_result(submission)
-      questions = @quiz.questions
+    def shuffle_questions_and_options
+      seed = @submission.seed
+      questions = @quiz.questions.order(:created_at).shuffle(random: Random.new(seed))
+      questions.each do | question |
+        question.options["entries"] = question.options["entries"].shuffle(random: Random.new(seed))
+      end
+      questions
+    end
 
-      submission.attributes
+    def build_result
+      @submission.attributes
         .slice("correct_answers_count", "wrong_answers_count", "unanswered_count")
         .merge({
           quiz_name: @quiz.name,
-          total_questions: questions.count,
-          questions: add_submitted_answer_to_each_question(questions, submission)
+          total_questions: @questions.count,
+          questions: add_submitted_answer_to_each_question
         })
     end
 
-    def add_submitted_answer_to_each_question(questions, submission)
-      questions.map do |question|
+    def add_submitted_answer_to_each_question
+      @questions.map do |question|
         question_hash = question.attributes.slice("id", "question")
-        question_hash["options"] = question.options["options"]
+        question_hash["options"] = question.options["entries"]
         question_hash["correct_answer_id"] = question.answer_id
-        question_hash["user_selection_id"] = find_user_selected_choice(question, submission)
+        question_hash["user_selection_id"] = find_user_choice(question)
         question_hash
       end
     end
 
-    def find_user_selected_choice(question, submission)
-      submission.answers.find { |answer| answer["question_id"] == question.id.to_s }&.dig("selected_choice")
+    def find_user_choice(question)
+      @submission.answers.find { |answer| answer["question_id"] == question.id.to_s }&.dig("selected_choice")
     end
 end

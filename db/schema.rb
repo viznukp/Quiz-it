@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_23_181753) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_03_204232) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -117,6 +117,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_23_181753) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "seed", default: 0
     t.index ["quiz_id"], name: "index_submissions_on_quiz_id"
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end

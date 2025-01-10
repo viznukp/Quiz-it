@@ -5,6 +5,7 @@ FactoryBot.define do
     name { Faker::Lorem.sentence(word_count: 3) }
     status { "draft" }
     questions_count { 0 }
+    submissions_count { 0 }
     accessibility { "discoverable" }
     association :creator, factory: :user
     association :category, factory: :category
