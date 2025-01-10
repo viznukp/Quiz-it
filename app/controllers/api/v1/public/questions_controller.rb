@@ -4,13 +4,17 @@ class Api::V1::Public::QuestionsController < ApplicationController
 
   def show
     @questions = @quiz.questions.order(:created_at)
-    @seed = rand(1..1000)
+    @seed = generate_seed
   end
 
   private
 
   def load_quiz
     @quiz = Quiz.includes(:questions).find_by!(slug: params[:slug])
+  end
+
+  def generate_seed
+    @quiz.randomize_questions || @quiz.randomize_options ? rand(1..1000) : 0
   end
 
   def check_if_already_attempted
