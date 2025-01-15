@@ -110,7 +110,7 @@ def create_random_answers(quiz)
 end
 
 def create_sample_data!
-  organization =  Organization.create!({name: "Big Binary Academy", slug: "Big-Binary-Academy"})
+  organization =  Organization.create!({name: "QuizIt", slug: "quiz-it"})
 
   admin_user = create_user!(email: "oliver@example.com", first_name: "Oliver", last_name: "Smith", user_type: "admin", organization: organization)
   luna = create_user!(email: "luna@example.com", first_name: "Luna", last_name: "Smith", user_type: "standard", organization: organization)
